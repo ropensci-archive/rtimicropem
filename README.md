@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/masalmon/ammon.svg?branch=master)](https://travis-ci.org/masalmon/ammon) [![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/ammon) [![codecov.io](https://codecov.io/github/masalmon/ammon/coverage.svg?branch=master)](https://codecov.io/github/masalmon/ammon?branch=master)
 
+Please note that this package is undergoing major changes.
+
 Installation
 ============
 
@@ -201,7 +203,7 @@ print(xtable(results),  type = "html", include.rownames = FALSE, floating=FALSE)
 ```
 
 <!-- html table generated in R 3.2.3 by xtable 1.8-2 package -->
-<!-- Tue Feb 23 16:05:59 2016 -->
+<!-- Tue Feb 23 16:08:37 2016 -->
 <table border="1">
 <tr>
 <th>
@@ -410,7 +412,7 @@ print(xtable(settings),  type = "html", include.rownames = FALSE, floating=FALSE
     ## = c("POSIXct", : class of 'x' was discarded
 
 <!-- html table generated in R 3.2.3 by xtable 1.8-2 package -->
-<!-- Tue Feb 23 16:06:00 2016 -->
+<!-- Tue Feb 23 16:08:37 2016 -->
 <table border="1">
 <tr>
 <th>
