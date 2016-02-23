@@ -32,7 +32,7 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
 
-![alt text](outputRTI.png)
+![alt text](master/vignettes/outputRTI.png)
 
 We will start by presenting the `control` field.
 
@@ -290,13 +290,13 @@ This app allows the exploration of a MicroPEM output file with no R experience.
 
 Below we show screenshots of the app.
 
-![alt text](shinyTabSummary.png)
+![alt text](master/vignettes/shinyTabSummary.png)
 
-![alt text](shinyTabAlarm.png)
+![alt text](master/vignettes/shinyTabAlarm.png)
 
-![alt text](shinyTabPlot.png)
+![alt text](master/vignettes/shinyTabPlot.png)
 
-![alt text](shinyTabSettings.png)
+![alt text](master/vignettes/shinyTabSettings.png)
 
 Modifying a `microPEM` object
 =============================
