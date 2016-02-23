@@ -13,9 +13,14 @@ vignette: >
 
 # Introduction
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+library("knitr")
+library("dplyr")
+```
+
 This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (https://en.wikipedia.org/wiki/Amun#Greece ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
 
-The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
+The goal of the package functions is to get data.frame with the time series of PM2.5 measures and other accompanying measures such as relative humidity ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
 
 
 # From input data to `MicroPEM` objects
@@ -36,7 +41,7 @@ Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing t
 
 We will start by presenting the `control` field.
 
-## `control` Slot
+## `control` field
 
 This field is a data.frame (dplyr tbl_df) that includes 41 variables:
 
@@ -123,7 +128,7 @@ This field is a data.frame (dplyr tbl_df) that includes 41 variables:
 * `ventilationOffset`            
 
 
-## Time-varying measures
+## `measures` field
 
 This field is a data.frame (dplyr tbl_df) with these 15 columns:
 
@@ -161,7 +166,7 @@ class(MicroPEMExample)
 
 ## Plot method
 
-The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" ggplot2 plot with 6 facets, or its interactive version produced with the ggiraph package -- the corresponding values of type are respectively "plain" and "interactive".
+The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `ggiraph` package -- the corresponding values of type are respectively "plain" and "interactive".
 
 Below we show to examples of uses of the plot method on a `MicroPEM` object.
 
@@ -194,7 +199,7 @@ Below is an example of use of this method.
 library("xtable")
 data("dummyMicroPEMChai")
 results <- dummyMicroPEMChai$summary()
-print(xtable(results),  type = "html", include.rownames = FALSE, floating=FALSE)
+results %>% knitr::kable()
 
 ```
 
@@ -206,7 +211,8 @@ When analysing the measures, one is also interesting into knowing if the paramet
 library("xtable")
 data("dummyMicroPEMChai")
 settings <- dummyMicroPEMChai$control
-print(xtable(settings),  type = "html", include.rownames = FALSE, floating=FALSE)
+controlTable <- data.frame(value = t(settings)[,1])
+controlTable %>% kable()
 
 ```
 
@@ -258,7 +264,7 @@ shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
 untilTime=NULL,
 fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))
 # look at the dimensions of the data.frame
-print(shorterMicroPEM$measures)
+shorterMicroPEM$measures %>% head() %>% knitr::kable()
 ```
 
 ## The `cleaningMeasures` function
