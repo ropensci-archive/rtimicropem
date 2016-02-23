@@ -2,7 +2,7 @@ Package: ammon
 Type: Package
 Title: Supports the Reproducible Analysis of RTI MicroPEM Output Files
 Version: 1.2
-Date: 2016-01-21
+Date: 2016-02-23
 Author: M. Salmon (CREAL - Center for Research in Environmental Epidemiology, ISGlobal alliance, Barcelona, Spain) and Z. Zhou (Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA)
 Maintainer: M. Salmon <maelle.salmon@yahoo.se>
 Description: The package supports the reproducible analysis of RTI MicroPEM output files.
