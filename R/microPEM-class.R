@@ -172,6 +172,7 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
 
   }
   return(p)
+   # nocov end
 }# nolint end
 ##########################################################################
 # SUMMARY METHOD
