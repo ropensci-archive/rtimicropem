@@ -15,7 +15,7 @@ Introduction
 
 This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (<https://en.wikipedia.org/wiki/Amun#Greece> ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
 
-The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
+The goal of the package functions is to get data.frame with the time series of PM2.5 measures and other accompanying measures such as relative humidity ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
 
 From input data to `MicroPEM` objects
 =====================================
@@ -36,8 +36,8 @@ Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing t
 
 We will start by presenting the `control` field.
 
-`control` Slot
---------------
+`control` field
+---------------
 
 This field is a data.frame (dplyr tbl\_df) that includes 41 variables:
 
@@ -123,8 +123,8 @@ This field is a data.frame (dplyr tbl\_df) that includes 41 variables:
 
 -   `ventilationOffset`
 
-Time-varying measures
----------------------
+`measures` field
+----------------
 
 This field is a data.frame (dplyr tbl\_df) with these 15 columns:
 
@@ -166,7 +166,7 @@ Visualizing information contained in a `MicroPEM` object
 Plot method
 -----------
 
-The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" ggplot2 plot with 6 facets, or its interactive version produced with the ggiraph package -- the corresponding values of type are respectively "plain" and "interactive".
+The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `ggiraph` package -- the corresponding values of type are respectively "plain" and "interactive".
 
 Below we show to examples of uses of the plot method on a `MicroPEM` object.
 
@@ -178,7 +178,7 @@ par(mar=c(1,4,2,1))
 dummyMicroPEMChai$plot()
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)<!-- -->
 
 This is a nicer and interactive representation: you can look at what happens if you put your mouse over the time series. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper.
 
@@ -199,197 +199,19 @@ Below is an example of use of this method.
 library("xtable")
 data("dummyMicroPEMChai")
 results <- dummyMicroPEMChai$summary()
-print(xtable(results),  type = "html", include.rownames = FALSE, floating=FALSE)
+results %>% knitr::kable()
 ```
 
-<!-- html table generated in R 3.2.3 by xtable 1.8-2 package -->
-<!-- Tue Feb 23 16:08:37 2016 -->
-<table border="1">
-<tr>
-<th>
-measure
-</th>
-<th>
-No. of no missing values
-</th>
-<th>
-Median
-</th>
-<th>
-Mean
-</th>
-<th>
-Minimum
-</th>
-<th>
-Maximum
-</th>
-<th>
-Variance
-</th>
-</tr>
-<tr>
-<td>
-nephelometer
-</td>
-<td align="right">
-8634
-</td>
-<td align="right">
-49.00
-</td>
-<td align="right">
-49.37
-</td>
-<td align="right">
-45.00
-</td>
-<td align="right">
-93.00
-</td>
-<td align="right">
-1.68
-</td>
-</tr>
-<tr>
-<td>
-temperature
-</td>
-<td align="right">
-2878
-</td>
-<td align="right">
-84.50
-</td>
-<td align="right">
-84.68
-</td>
-<td align="right">
-82.30
-</td>
-<td align="right">
-87.60
-</td>
-<td align="right">
-1.72
-</td>
-</tr>
-<tr>
-<td>
-relativeHumidity
-</td>
-<td align="right">
-8634
-</td>
-<td align="right">
-54.60
-</td>
-<td align="right">
-55.01
-</td>
-<td align="right">
-46.20
-</td>
-<td align="right">
-64.90
-</td>
-<td align="right">
-7.67
-</td>
-</tr>
-<tr>
-<td>
-battery
-</td>
-<td align="right">
-1464
-</td>
-<td align="right">
-4.10
-</td>
-<td align="right">
-4.09
-</td>
-<td align="right">
-3.90
-</td>
-<td align="right">
-4.30
-</td>
-<td align="right">
-0.01
-</td>
-</tr>
-<tr>
-<td>
-orificePressure
-</td>
-<td align="right">
-2878
-</td>
-<td align="right">
-0.15
-</td>
-<td align="right">
-0.15
-</td>
-<td align="right">
-0.14
-</td>
-<td align="right">
-0.16
-</td>
-<td align="right">
-0.00
-</td>
-</tr>
-<tr>
-<td>
-inletPressure
-</td>
-<td align="right">
-2878
-</td>
-<td align="right">
-0.11
-</td>
-<td align="right">
-0.11
-</td>
-<td align="right">
-0.10
-</td>
-<td align="right">
-0.13
-</td>
-<td align="right">
-0.00
-</td>
-</tr>
-<tr>
-<td>
-flow
-</td>
-<td align="right">
-2878
-</td>
-<td align="right">
-0.77
-</td>
-<td align="right">
-0.77
-</td>
-<td align="right">
-0.77
-</td>
-<td align="right">
-0.78
-</td>
-<td align="right">
-0.00
-</td>
-</tr>
-</table>
+| measure          |  No. of no missing values|  Median|        Mean|  Minimum|  Maximum|   Variance|
+|:-----------------|-------------------------:|-------:|-----------:|--------:|--------:|----------:|
+| nephelometer     |                      8634|   49.00|  49.3745657|    45.00|    93.00|  1.6780557|
+| temperature      |                      2878|   84.50|  84.6830438|    82.30|    87.60|  1.7180023|
+| relativeHumidity |                      8634|   54.60|  55.0061733|    46.20|    64.90|  7.6665285|
+| battery          |                      1464|    4.10|   4.0872268|     3.90|     4.30|  0.0078272|
+| orificePressure  |                      2878|    0.15|   0.1505455|     0.14|     0.16|  0.0000072|
+| inletPressure    |                      2878|    0.11|   0.1111015|     0.10|     0.13|  0.0000538|
+| flow             |                      2878|    0.77|   0.7703023|     0.77|     0.78|  0.0000029|
+
 `compareSettings` function
 --------------------------
 
@@ -399,269 +221,54 @@ When analysing the measures, one is also interesting into knowing if the paramet
 library("xtable")
 data("dummyMicroPEMChai")
 settings <- dummyMicroPEMChai$control
-print(xtable(settings),  type = "html", include.rownames = FALSE, floating=FALSE)
+controlTable <- data.frame(value = t(settings)[,1])
+controlTable %>% kable()
 ```
 
-    ## Warning in formatC(x = structure(1435948200, tzone = "Asia/Kolkata", class
-    ## = c("POSIXct", : class of 'x' was discarded
+|                                   | value                                                                    |
+|-----------------------------------|:-------------------------------------------------------------------------|
+| downloadDate                      | 2015-07-04                                                               |
+| totalDownloadTime                 | 18                                                                       |
+| deviceSerial                      | MP1411                                                                   |
+| dateTimeHardware                  | 2013-02-15                                                               |
+| dateTimeSoftware                  | 2014-01-24                                                               |
+| version                           | v2.0.5136.37657                                                          |
+| participantID                     | C:/Users/msalmon/Documents/R/win-library/3.2/ammon/extdata/dummyCHAI.csv |
+| filterID                          | CM1411                                                                   |
+| participantWeight                 | NA                                                                       |
+| inletAerosolSize                  | PM2.5                                                                    |
+| laserCyclingVariablesDelay        | 1                                                                        |
+| laserCyclingVariablesSamplingTime | 1                                                                        |
+| laserCyclingVariablesOffTime      | 8                                                                        |
+| SystemTimes                       | No cycling - Always OnNA                                                 |
+| nephelometerSlope                 | 10.000                                                                   |
+| nephelometerOffset                | 0                                                                        |
+| nephelometerLogInterval           | 10                                                                       |
+| temperatureSlope                  | 10.000                                                                   |
+| temperatureOffset                 | 0                                                                        |
+| temperatureLog                    | 30                                                                       |
+| humiditySlope                     | 10.000                                                                   |
+| humidityOffset                    | 0                                                                        |
+| humidityLog                       | 10                                                                       |
+| inletPressureSlope                | 40.950.000                                                               |
+| inletPressureOffset               | 0                                                                        |
+| inletPressureLog                  | 30                                                                       |
+| inletPressureHighTarget           | 1280                                                                     |
+| inletPressureLowTarget            | 768                                                                      |
+| orificePressureSlope              | 40.950.000                                                               |
+| orificePressureOffset             | 0                                                                        |
+| orificePressureLog                | 30                                                                       |
+| orificePressureHighTarget         | 2167                                                                     |
+| orificePressureLowTarget          | 1592                                                                     |
+| flowLog                           | 30                                                                       |
+| flowHighTarget                    | 900                                                                      |
+| flowLowTarget                     | 200                                                                      |
+| flowWhatIsThis                    | 0.5                                                                      |
+| accelerometerLog                  | 5                                                                        |
+| batteryLog                        | 60                                                                       |
+| ventilationSlope                  | NA                                                                       |
+| ventilationOffset                 | NA                                                                       |
 
-    ## Warning in formatC(x = structure(1360866600, tzone = "Asia/Kolkata", class
-    ## = c("POSIXct", : class of 'x' was discarded
-
-    ## Warning in formatC(x = structure(1390501800, tzone = "Asia/Kolkata", class
-    ## = c("POSIXct", : class of 'x' was discarded
-
-<!-- html table generated in R 3.2.3 by xtable 1.8-2 package -->
-<!-- Tue Feb 23 16:08:37 2016 -->
-<table border="1">
-<tr>
-<th>
-downloadDate
-</th>
-<th>
-totalDownloadTime
-</th>
-<th>
-deviceSerial
-</th>
-<th>
-dateTimeHardware
-</th>
-<th>
-dateTimeSoftware
-</th>
-<th>
-version
-</th>
-<th>
-participantID
-</th>
-<th>
-filterID
-</th>
-<th>
-participantWeight
-</th>
-<th>
-inletAerosolSize
-</th>
-<th>
-laserCyclingVariablesDelay
-</th>
-<th>
-laserCyclingVariablesSamplingTime
-</th>
-<th>
-laserCyclingVariablesOffTime
-</th>
-<th>
-SystemTimes
-</th>
-<th>
-nephelometerSlope
-</th>
-<th>
-nephelometerOffset
-</th>
-<th>
-nephelometerLogInterval
-</th>
-<th>
-temperatureSlope
-</th>
-<th>
-temperatureOffset
-</th>
-<th>
-temperatureLog
-</th>
-<th>
-humiditySlope
-</th>
-<th>
-humidityOffset
-</th>
-<th>
-humidityLog
-</th>
-<th>
-inletPressureSlope
-</th>
-<th>
-inletPressureOffset
-</th>
-<th>
-inletPressureLog
-</th>
-<th>
-inletPressureHighTarget
-</th>
-<th>
-inletPressureLowTarget
-</th>
-<th>
-orificePressureSlope
-</th>
-<th>
-orificePressureOffset
-</th>
-<th>
-orificePressureLog
-</th>
-<th>
-orificePressureHighTarget
-</th>
-<th>
-orificePressureLowTarget
-</th>
-<th>
-flowLog
-</th>
-<th>
-flowHighTarget
-</th>
-<th>
-flowLowTarget
-</th>
-<th>
-flowWhatIsThis
-</th>
-<th>
-accelerometerLog
-</th>
-<th>
-batteryLog
-</th>
-<th>
-ventilationSlope
-</th>
-<th>
-ventilationOffset
-</th>
-</tr>
-<tr>
-<td align="right">
-1435948200.00
-</td>
-<td align="right">
-18
-</td>
-<td>
-MP1411
-</td>
-<td align="right">
-1360866600.00
-</td>
-<td align="right">
-1390501800.00
-</td>
-<td>
-v2.0.5136.37657
-</td>
-<td>
-C:/Users/msalmon/Documents/R/win-library/3.2/ammon/extdata/dummyCHAI.csv
-</td>
-<td>
-CM1411
-</td>
-<td>
-</td>
-<td>
-PM2.5
-</td>
-<td align="right">
-1
-</td>
-<td align="right">
-1
-</td>
-<td align="right">
-8
-</td>
-<td>
-No cycling - Always OnNA
-</td>
-<td>
-10.000
-</td>
-<td align="right">
-0
-</td>
-<td align="right">
-10
-</td>
-<td>
-10.000
-</td>
-<td align="right">
-0
-</td>
-<td align="right">
-30
-</td>
-<td>
-10.000
-</td>
-<td align="right">
-0
-</td>
-<td align="right">
-10
-</td>
-<td>
-40.950.000
-</td>
-<td align="right">
-0
-</td>
-<td align="right">
-30
-</td>
-<td align="right">
-1280
-</td>
-<td align="right">
-768
-</td>
-<td>
-40.950.000
-</td>
-<td align="right">
-0
-</td>
-<td align="right">
-30
-</td>
-<td align="right">
-2167
-</td>
-<td align="right">
-1592
-</td>
-<td align="right">
-30
-</td>
-<td align="right">
-900
-</td>
-<td align="right">
-200
-</td>
-<td align="right">
-0.50
-</td>
-<td align="right">
-5
-</td>
-<td align="right">
-60
-</td>
-<td>
-</td>
-<td align="right">
-</td>
-</tr>
-</table>
 Then, in some cases, once one has collected several output files from RTI MicroPEM devices, before using the measures one would like to check that e.g. the nephelometer slope is the same for all measures. The `compareSettings` function answers this need. It takes two arguments as input: the directory in which all (and only) the output files are, and the version of this output files (either "CHAI" or "Columbia"). It outputs a data.frame with all parameters as columns, each file corresponding to a line.
 
 ADD EXAMPLE LATER.
@@ -699,7 +306,7 @@ The `filterTimeDate` function
 
 One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter fields for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
 
-In the code below, we only keep measures from the first 12 hours of measures.
+In the code below, we don't want measures from the first 12 hours of measures.
 
 ``` r
 # load the lubridate package
@@ -707,57 +314,35 @@ library('lubridate')
 # load the dummy MicroPEM object
 data('dummyMicroPEMChai')
 # look at the dimensions of the data.frame
-print(dummyMicroPEMChai$measures)
+dummyMicroPEMChai$measures %>% head() %>% knitr::kable()
 ```
 
-    ## Source: local data frame [17,279 x 16]
-    ## 
-    ##               timeDate nephelometer temperature relativeHumidity battery
-    ##                 (time)        (dbl)       (dbl)            (dbl)   (dbl)
-    ## 1  2015-07-03 08:02:18           NA          NA               NA      NA
-    ## 2  2015-07-03 08:02:32           NA          NA               NA      NA
-    ## 3  2015-07-03 08:05:51           NA          NA               NA      NA
-    ## 4  2015-07-03 08:05:52           NA          NA               NA      NA
-    ## 5  2015-07-03 08:05:55           NA          NA               NA      NA
-    ## 6  2015-07-03 08:06:00           NA          NA               NA     4.3
-    ## 7  2015-07-03 08:06:05           NA          NA               NA      NA
-    ## 8  2015-07-03 08:06:10           51        83.4             56.2     4.3
-    ## 9  2015-07-03 08:06:15           NA          NA               NA      NA
-    ## 10 2015-07-03 08:06:20           51          NA             56.4      NA
-    ## ..                 ...          ...         ...              ...     ...
-    ## Variables not shown: orificePressure (dbl), inletPressure (dbl), flow
-    ##   (dbl), xAxis (dbl), yAxis (dbl), zAxis (dbl), vectorSum (dbl),
-    ##   shutDownReason (fctr), wearingCompliance (lgl),
-    ##   validityWearingComplianceValidation (dbl), originalDateTime (fctr).
+| timeDate            |  nephelometer|  temperature|  relativeHumidity|  battery|  orificePressure|  inletPressure|  flow|  xAxis|  yAxis|  zAxis|  vectorSum| shutDownReason                | wearingCompliance |  validityWearingComplianceValidation| originalDateTime   |
+|:--------------------|-------------:|------------:|-----------------:|--------:|----------------:|--------------:|-----:|------:|------:|------:|----------:|:------------------------------|:------------------|------------------------------------:|:-------------------|
+| 2015-07-03 08:02:18 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|     NA|     NA|     NA|         NA| Manual Stop in Pump Test Menu | NA                |                                    0| 07/03/2015 8:02:18 |
+| 2015-07-03 08:02:32 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|     NA|     NA|     NA|         NA| USB was disconnected          | NA                |                                    0| 07/03/2015 8:02:32 |
+| 2015-07-03 08:05:51 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|     NA|     NA|     NA|         NA| Button 1 pressed              | NA                |                                    0| 07/03/2015 8:05:51 |
+| 2015-07-03 08:05:52 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|     NA|     NA|     NA|         NA| Start button                  | NA                |                                    0| 07/03/2015 8:05:52 |
+| 2015-07-03 08:05:55 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|   0.26|  -0.37|  -1.01|       1.10|                               | NA                |                                    0| 07/03/2015 8:05:55 |
+| 2015-07-03 08:06:00 |            NA|           NA|                NA|      4.3|               NA|             NA|    NA|   1.05|   0.03|  -0.07|       1.06|                               | NA                |                                    0| 07/03/2015 8:06:00 |
 
 ``` r
-# command for only keeping measures from the first twelve hours
+# command for only erasing measures from the first twelve hours
 shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
 untilTime=NULL,
 fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))
 # look at the dimensions of the data.frame
-print(shorterMicroPEM$measures)
+shorterMicroPEM$measures %>% head() %>% knitr::kable()
 ```
 
-    ## Source: local data frame [8,678 x 16]
-    ## 
-    ##               timeDate nephelometer temperature relativeHumidity battery
-    ##                 (time)        (dbl)       (dbl)            (dbl)   (dbl)
-    ## 1  2015-07-03 20:02:20           49          NA             54.3      NA
-    ## 2  2015-07-03 20:02:25           NA          NA               NA      NA
-    ## 3  2015-07-03 20:02:30           49          NA             54.5      NA
-    ## 4  2015-07-03 20:02:35           NA          NA               NA      NA
-    ## 5  2015-07-03 20:02:40           49        85.9             54.7      NA
-    ## 6  2015-07-03 20:02:45           NA          NA               NA      NA
-    ## 7  2015-07-03 20:02:50           49          NA             54.1      NA
-    ## 8  2015-07-03 20:02:55           NA          NA               NA      NA
-    ## 9  2015-07-03 20:03:00           49          NA             53.8      NA
-    ## 10 2015-07-03 20:03:05           NA          NA               NA      NA
-    ## ..                 ...          ...         ...              ...     ...
-    ## Variables not shown: orificePressure (dbl), inletPressure (dbl), flow
-    ##   (dbl), xAxis (dbl), yAxis (dbl), zAxis (dbl), vectorSum (dbl),
-    ##   shutDownReason (fctr), wearingCompliance (lgl),
-    ##   validityWearingComplianceValidation (dbl), originalDateTime (fctr).
+| timeDate            |  nephelometer|  temperature|  relativeHumidity|  battery|  orificePressure|  inletPressure|  flow|  xAxis|  yAxis|  zAxis|  vectorSum| shutDownReason | wearingCompliance |  validityWearingComplianceValidation| originalDateTime    |
+|:--------------------|-------------:|------------:|-----------------:|--------:|----------------:|--------------:|-----:|------:|------:|------:|----------:|:---------------|:------------------|------------------------------------:|:--------------------|
+| 2015-07-03 20:02:20 |            49|           NA|              54.3|       NA|               NA|             NA|    NA|   0.98|   0.10|  -0.10|       0.99|                | NA                |                                    0| 07/03/2015 20:02:20 |
+| 2015-07-03 20:02:25 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|   0.97|   0.09|  -0.13|       0.99|                | NA                |                                    0| 07/03/2015 20:02:25 |
+| 2015-07-03 20:02:30 |            49|           NA|              54.5|       NA|               NA|             NA|    NA|   0.98|   0.10|  -0.12|       0.99|                | NA                |                                    0| 07/03/2015 20:02:30 |
+| 2015-07-03 20:02:35 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|   0.97|   0.17|   0.01|       0.99|                | NA                |                                    0| 07/03/2015 20:02:35 |
+| 2015-07-03 20:02:40 |            49|         85.9|              54.7|       NA|             0.15|           0.12|  0.78|  -0.33|   0.27|  -0.98|       1.07|                | NA                |                                    0| 07/03/2015 20:02:40 |
+| 2015-07-03 20:02:45 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|  -0.26|   0.29|  -1.00|       1.07|                | NA                |                                    0| 07/03/2015 20:02:45 |
 
 The `cleaningMeasures` function
 -------------------------------
