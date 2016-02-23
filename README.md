@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/masalmon/ammon.svg?branch=master)](https://travis-ci.org/masalmon/ammon) [![Build status](https://ci.appveyor.com/api/projects/status/k2g2k9j7p1bb7fpn?svg=true)](https://ci.appveyor.com/project/masalmon/ammon) [![codecov.io](https://codecov.io/github/masalmon/ammon/coverage.svg?branch=master)](https://codecov.io/github/masalmon/ammon?branch=master)
+[![Build Status](https://travis-ci.org/masalmon/ammon.svg?branch=master)](https://travis-ci.org/masalmon/ammon) [![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/ammon) [![codecov.io](https://codecov.io/github/masalmon/ammon/coverage.svg?branch=master)](https://codecov.io/github/masalmon/ammon?branch=master)
 
 Installation
 ============
@@ -13,7 +13,7 @@ Introduction
 
 This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (<https://en.wikipedia.org/wiki/Amun#Greece> ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
 
-The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a S4 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
+The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
 
 From input data to `MicroPEM` objects
 =====================================
@@ -28,16 +28,16 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 -   and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.
 
-Therefore, the `ammon` package offers a S4 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has slots with measures over time and a slot that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the S4 class.
+Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
 
-![Alt text](vignettes/outputRTI.png?raw=true)
+![alt text](outputRTI.png)
 
-We will start by presenting the `control` slot.
+We will start by presenting the `control` field.
 
 `control` Slot
 --------------
 
-This slot is a list that includes 41 variabes:
+This field is a data.frame (dplyr tbl\_df) that includes 41 variables:
 
 -   `downloadDate` which is the date at which the files was downloaded from the device to a PC. It is a `POSIXt`.
 
@@ -124,7 +124,7 @@ This slot is a list that includes 41 variabes:
 Time-varying measures
 ---------------------
 
-Then there are 15 slots that are vectors of the same length:
+This field is a data.frame (dplyr tbl\_df) with these 15 columns:
 
 -   `timeDate` is a `POSIXt` giving the date and time of each measure.
 
@@ -156,9 +156,7 @@ version="CHAI")
 class(MicroPEMExample)
 ```
 
-    ## [1] "MicroPEM"
-    ## attr(,"package")
-    ## [1] "ammon"
+    ## [1] "MicroPEM" "R6"
 
 Visualizing information contained in a `MicroPEM` object
 ========================================================
@@ -166,49 +164,51 @@ Visualizing information contained in a `MicroPEM` object
 Plot method
 -----------
 
-The S4 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` slot. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" R plot with 6 facets, or a list of "rCharts" plots that can be either printed or saved afterwards -- the corresponding values of type are respectively "plain" and "rCharts".
+The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" ggplot2 plot with 6 facets, or its interactive version produced with the ggiraph package -- the corresponding values of type are respectively "plain" and "interactive".
 
-Below we show to examples of uses of the plot method on a `MicroPE` object.
+Below we show to examples of uses of the plot method on a `MicroPEM` object.
 
-This is a "plain" plot. The results is pretty ugly but one would already be able to detect some problems such as outliers in nephelometer values or aberrant values of the flow so it does the job.
+This is a "plain" plot.
 
 ``` r
 data("dummyMicroPEMChai")
 par(mar=c(1,4,2,1))
-plot(dummyMicroPEMChai, type="plain")
+dummyMicroPEMChai$plot()
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
-This is a nicer and interactive representation powered by rCharts but time is not rendered perfectly. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper.
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)<!-- -->
+
+This is a nicer and interactive representation: you can look at what happens if you put your mouse over the time series. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper.
 
 ``` r
-plot_rCharts <- plot(dummyMicroPEMChai, type="rCharts")
-#plot_rCharts[[1]]$print("chart", include_assets = TRUE)
+library("ggiraph")
+p <- dummyMicroPEMChai$plot(type = "interactive")
+ggiraph(code = {print(p)}, width = 10, height = 10)
 ```
 
-`summaryTimeVarying` function
------------------------------
+`summary` method
+----------------
 
-Plotting the `MicroPEM` object is already a good way to notice any problem. Another function aims at providing more compact information about the time-varying measures. It is called `summaryTimeVarying` and outputs a table with summary statistics for each time-varying measures, except timeDate.
+Plotting the `MicroPEM` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
 
-Below is an example of a call to this function.
+Below is an example of use of this method.
 
 ``` r
 library("xtable")
 data("dummyMicroPEMChai")
-results <- summaryTimeVarying(dummyMicroPEMChai)
+results <- dummyMicroPEMChai$summary()
 print(xtable(results),  type = "html", include.rownames = FALSE, floating=FALSE)
 ```
 
-<!-- html table generated in R 3.2.2 by xtable 1.8-0 package -->
-<!-- Mon Jan 18 14:58:06 2016 -->
+<!-- html table generated in R 3.2.3 by xtable 1.8-2 package -->
+<!-- Tue Feb 23 16:05:59 2016 -->
 <table border="1">
 <tr>
 <th>
-Measure
+measure
 </th>
 <th>
-No. of non missing measures
+No. of no missing values
 </th>
 <th>
 Median
@@ -228,7 +228,7 @@ Variance
 </tr>
 <tr>
 <td>
-RH-corrected Nephelometer
+nephelometer
 </td>
 <td align="right">
 8634
@@ -251,7 +251,7 @@ RH-corrected Nephelometer
 </tr>
 <tr>
 <td>
-Temperature
+temperature
 </td>
 <td align="right">
 2878
@@ -274,7 +274,7 @@ Temperature
 </tr>
 <tr>
 <td>
-Relative humidity
+relativeHumidity
 </td>
 <td align="right">
 8634
@@ -297,30 +297,30 @@ Relative humidity
 </tr>
 <tr>
 <td>
-Inlet Pressure
+battery
 </td>
 <td align="right">
-2878
+1464
 </td>
 <td align="right">
-0.11
+4.10
 </td>
 <td align="right">
-0.11
+4.09
 </td>
 <td align="right">
-0.10
+3.90
 </td>
 <td align="right">
-0.13
+4.30
 </td>
 <td align="right">
-0.00
+0.01
 </td>
 </tr>
 <tr>
 <td>
-Orifice Pressure
+orificePressure
 </td>
 <td align="right">
 2878
@@ -343,7 +343,30 @@ Orifice Pressure
 </tr>
 <tr>
 <td>
-Flow
+inletPressure
+</td>
+<td align="right">
+2878
+</td>
+<td align="right">
+0.11
+</td>
+<td align="right">
+0.11
+</td>
+<td align="right">
+0.10
+</td>
+<td align="right">
+0.13
+</td>
+<td align="right">
+0.00
+</td>
+</tr>
+<tr>
+<td>
+flow
 </td>
 <td align="right">
 2878
@@ -364,376 +387,276 @@ Flow
 0.00
 </td>
 </tr>
-<tr>
-<td>
-Battery
-</td>
-<td align="right">
-1464
-</td>
-<td align="right">
-4.10
-</td>
-<td align="right">
-4.09
-</td>
-<td align="right">
-3.90
-</td>
-<td align="right">
-4.30
-</td>
-<td align="right">
-0.01
-</td>
-</tr>
 </table>
-`summarySettings` and `compareSettings` function
-------------------------------------------------
+`compareSettings` function
+--------------------------
 
-When analysing the measures, one is also interesting into knowing if the parameters were set in a consistent way. Two functions off the `ammon` package allow to explore the upper part of an output MicroPEM file, that is, the settings. The first one is called `summarySettings` and simply outputs all elements of the `control` slot in a data table of the R package `dplyr`:
+When analysing the measures, one is also interesting into knowing if the parameters were set in a consistent way. Two functionalities the `ammon` package allow to explore the upper part of an output MicroPEM file, that is, the settings. The first one is not a function, it simply corresponds to looking at the `control` field:
 
 ``` r
 library("xtable")
 data("dummyMicroPEMChai")
-settings <- summarySettings(dummyMicroPEMChai)
+settings <- dummyMicroPEMChai$control
 print(xtable(settings),  type = "html", include.rownames = FALSE, floating=FALSE)
 ```
 
-<!-- html table generated in R 3.2.2 by xtable 1.8-0 package -->
-<!-- Mon Jan 18 14:58:06 2016 -->
+    ## Warning in formatC(x = structure(1435948200, tzone = "Asia/Kolkata", class
+    ## = c("POSIXct", : class of 'x' was discarded
+
+    ## Warning in formatC(x = structure(1360866600, tzone = "Asia/Kolkata", class
+    ## = c("POSIXct", : class of 'x' was discarded
+
+    ## Warning in formatC(x = structure(1390501800, tzone = "Asia/Kolkata", class
+    ## = c("POSIXct", : class of 'x' was discarded
+
+<!-- html table generated in R 3.2.3 by xtable 1.8-2 package -->
+<!-- Tue Feb 23 16:06:00 2016 -->
 <table border="1">
 <tr>
 <th>
-parameterName
+downloadDate
 </th>
 <th>
-parameterValue
+totalDownloadTime
+</th>
+<th>
+deviceSerial
+</th>
+<th>
+dateTimeHardware
+</th>
+<th>
+dateTimeSoftware
+</th>
+<th>
+version
+</th>
+<th>
+participantID
+</th>
+<th>
+filterID
+</th>
+<th>
+participantWeight
+</th>
+<th>
+inletAerosolSize
+</th>
+<th>
+laserCyclingVariablesDelay
+</th>
+<th>
+laserCyclingVariablesSamplingTime
+</th>
+<th>
+laserCyclingVariablesOffTime
+</th>
+<th>
+SystemTimes
+</th>
+<th>
+nephelometerSlope
+</th>
+<th>
+nephelometerOffset
+</th>
+<th>
+nephelometerLogInterval
+</th>
+<th>
+temperatureSlope
+</th>
+<th>
+temperatureOffset
+</th>
+<th>
+temperatureLog
+</th>
+<th>
+humiditySlope
+</th>
+<th>
+humidityOffset
+</th>
+<th>
+humidityLog
+</th>
+<th>
+inletPressureSlope
+</th>
+<th>
+inletPressureOffset
+</th>
+<th>
+inletPressureLog
+</th>
+<th>
+inletPressureHighTarget
+</th>
+<th>
+inletPressureLowTarget
+</th>
+<th>
+orificePressureSlope
+</th>
+<th>
+orificePressureOffset
+</th>
+<th>
+orificePressureLog
+</th>
+<th>
+orificePressureHighTarget
+</th>
+<th>
+orificePressureLowTarget
+</th>
+<th>
+flowLog
+</th>
+<th>
+flowHighTarget
+</th>
+<th>
+flowLowTarget
+</th>
+<th>
+flowWhatIsThis
+</th>
+<th>
+accelerometerLog
+</th>
+<th>
+batteryLog
+</th>
+<th>
+ventilationSlope
+</th>
+<th>
+ventilationOffset
 </th>
 </tr>
 <tr>
-<td>
-downloadDate
+<td align="right">
+1435948200.00
 </td>
-<td>
-2015-07-04
-</td>
-</tr>
-<tr>
-<td>
-totalDownloadTime
-</td>
-<td>
+<td align="right">
 18
-</td>
-</tr>
-<tr>
-<td>
-deviceSerial
 </td>
 <td>
 MP1411
 </td>
-</tr>
-<tr>
-<td>
-dateTimeHardware
+<td align="right">
+1360866600.00
 </td>
-<td>
-2013-02-15
-</td>
-</tr>
-<tr>
-<td>
-dateTimeSoftware
-</td>
-<td>
-2014-01-24
-</td>
-</tr>
-<tr>
-<td>
-version
+<td align="right">
+1390501800.00
 </td>
 <td>
 v2.0.5136.37657
 </td>
-</tr>
-<tr>
-<td>
-participantID
-</td>
 <td>
 C:/Users/msalmon/Documents/R/win-library/3.2/ammon/extdata/dummyCHAI.csv
-</td>
-</tr>
-<tr>
-<td>
-filterID
 </td>
 <td>
 CM1411
 </td>
-</tr>
-<tr>
 <td>
-participantWeight
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-inletAerosolSize
 </td>
 <td>
 PM2.5
 </td>
-</tr>
-<tr>
-<td>
-laserCyclingVariablesDelay
-</td>
-<td>
+<td align="right">
 1
 </td>
-</tr>
-<tr>
-<td>
-laserCyclingVariablesSamplingTime
-</td>
-<td>
+<td align="right">
 1
 </td>
-</tr>
-<tr>
-<td>
-laserCyclingVariablesOffTime
-</td>
-<td>
+<td align="right">
 8
-</td>
-</tr>
-<tr>
-<td>
-SystemTimes
 </td>
 <td>
 No cycling - Always OnNA
 </td>
-</tr>
-<tr>
-<td>
-nephelometerSlope
-</td>
 <td>
 10.000
 </td>
-</tr>
-<tr>
-<td>
-nephelometerOffset
-</td>
-<td>
+<td align="right">
 0
 </td>
-</tr>
-<tr>
-<td>
-nephelometerLogInterval
-</td>
-<td>
+<td align="right">
 10
 </td>
-</tr>
-<tr>
-<td>
-temperatureSlope
-</td>
 <td>
 10.000
 </td>
-</tr>
-<tr>
-<td>
-temperatureOffset
-</td>
-<td>
+<td align="right">
 0
 </td>
-</tr>
-<tr>
-<td>
-temperatureLog
-</td>
-<td>
+<td align="right">
 30
 </td>
-</tr>
-<tr>
-<td>
-humiditySlope
-</td>
 <td>
 10.000
 </td>
-</tr>
-<tr>
-<td>
-humidityOffset
-</td>
-<td>
+<td align="right">
 0
 </td>
-</tr>
-<tr>
-<td>
-humidityLog
-</td>
-<td>
+<td align="right">
 10
-</td>
-</tr>
-<tr>
-<td>
-inletPressureSlope
 </td>
 <td>
 40.950.000
 </td>
-</tr>
-<tr>
-<td>
-inletPressureOffset
-</td>
-<td>
+<td align="right">
 0
 </td>
-</tr>
-<tr>
-<td>
-inletPressureLog
-</td>
-<td>
+<td align="right">
 30
 </td>
-</tr>
-<tr>
-<td>
-inletPressureHighTarget
-</td>
-<td>
+<td align="right">
 1280
 </td>
-</tr>
-<tr>
-<td>
-inletPressureLowTarget
-</td>
-<td>
+<td align="right">
 768
-</td>
-</tr>
-<tr>
-<td>
-orificePressureSlope
 </td>
 <td>
 40.950.000
 </td>
-</tr>
-<tr>
-<td>
-orificePressureOffset
-</td>
-<td>
+<td align="right">
 0
 </td>
-</tr>
-<tr>
-<td>
-orificePressureLog
-</td>
-<td>
+<td align="right">
 30
 </td>
-</tr>
-<tr>
-<td>
-orificePressureHighTarget
-</td>
-<td>
+<td align="right">
 2167
 </td>
-</tr>
-<tr>
-<td>
-orificePressureLowTarget
-</td>
-<td>
+<td align="right">
 1592
 </td>
-</tr>
-<tr>
-<td>
-flowLog
-</td>
-<td>
+<td align="right">
 30
 </td>
-</tr>
-<tr>
-<td>
-flowHighTarget
-</td>
-<td>
+<td align="right">
 900
 </td>
-</tr>
-<tr>
-<td>
-flowLowTarget
-</td>
-<td>
+<td align="right">
 200
 </td>
-</tr>
-<tr>
-<td>
-flowWhatIsThis
+<td align="right">
+0.50
 </td>
-<td>
-0.5
-</td>
-</tr>
-<tr>
-<td>
-accelerometerLog
-</td>
-<td>
+<td align="right">
 5
 </td>
-</tr>
-<tr>
-<td>
-batteryLog
-</td>
-<td>
+<td align="right">
 60
 </td>
-</tr>
-<tr>
-<td>
-ventilationSlope
-</td>
 <td>
 </td>
-</tr>
-<tr>
-<td>
-ventilationOffset
-</td>
-<td>
+<td align="right">
 </td>
 </tr>
 </table>
@@ -758,13 +681,13 @@ This app allows the exploration of a MicroPEM output file with no R experience.
 
 Below we show screenshots of the app.
 
-![alt text](vignettes/shinyTabSummary.png)
+![alt text](shinyTabSummary.png)
 
-![alt text](vignettes/shinyTabAlarm.png)
+![alt text](shinyTabAlarm.png)
 
-![alt text](vignettes/shinyTabPlot.png)
+![alt text](shinyTabPlot.png)
 
-![alt text](vignettes/shinyTabSettings.png)
+![alt text](shinyTabSettings.png)
 
 Modifying a `microPEM` object
 =============================
@@ -772,44 +695,69 @@ Modifying a `microPEM` object
 The `filterTimeDate` function
 -----------------------------
 
-One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter slots for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
+One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter fields for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
 
 In the code below, we only keep measures from the first 12 hours of measures.
 
 ``` r
 # load the lubridate package
-library("lubridate")
+library('lubridate')
 # load the dummy MicroPEM object
-data("dummyMicroPEMChai")
-# print length of two slots
-length(dummyMicroPEMChai@nephelometer)
+data('dummyMicroPEMChai')
+# look at the dimensions of the data.frame
+print(dummyMicroPEMChai$measures)
 ```
 
-    ## [1] 17279
-
-``` r
-length(dummyMicroPEMChai@temperature)
-```
-
-    ## [1] 17279
+    ## Source: local data frame [17,279 x 16]
+    ## 
+    ##               timeDate nephelometer temperature relativeHumidity battery
+    ##                 (time)        (dbl)       (dbl)            (dbl)   (dbl)
+    ## 1  2015-07-03 08:02:18           NA          NA               NA      NA
+    ## 2  2015-07-03 08:02:32           NA          NA               NA      NA
+    ## 3  2015-07-03 08:05:51           NA          NA               NA      NA
+    ## 4  2015-07-03 08:05:52           NA          NA               NA      NA
+    ## 5  2015-07-03 08:05:55           NA          NA               NA      NA
+    ## 6  2015-07-03 08:06:00           NA          NA               NA     4.3
+    ## 7  2015-07-03 08:06:05           NA          NA               NA      NA
+    ## 8  2015-07-03 08:06:10           51        83.4             56.2     4.3
+    ## 9  2015-07-03 08:06:15           NA          NA               NA      NA
+    ## 10 2015-07-03 08:06:20           51          NA             56.4      NA
+    ## ..                 ...          ...         ...              ...     ...
+    ## Variables not shown: orificePressure (dbl), inletPressure (dbl), flow
+    ##   (dbl), xAxis (dbl), yAxis (dbl), zAxis (dbl), vectorSum (dbl),
+    ##   shutDownReason (fctr), wearingCompliance (lgl),
+    ##   validityWearingComplianceValidation (dbl), originalDateTime (fctr).
 
 ``` r
 # command for only keeping measures from the first twelve hours
-shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,untilTime=NULL,
-fromTime=min(dummyMicroPEMChai@timeDate, na.rm=TRUE) + hours(12))
-# print length of two slots
-length(shorterMicroPEM@nephelometer)
+shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
+untilTime=NULL,
+fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))
+# look at the dimensions of the data.frame
+print(shorterMicroPEM$measures)
 ```
 
-    ## [1] 8678
-
-``` r
-length(shorterMicroPEM@temperature)
-```
-
-    ## [1] 8678
+    ## Source: local data frame [8,678 x 16]
+    ## 
+    ##               timeDate nephelometer temperature relativeHumidity battery
+    ##                 (time)        (dbl)       (dbl)            (dbl)   (dbl)
+    ## 1  2015-07-03 20:02:20           49          NA             54.3      NA
+    ## 2  2015-07-03 20:02:25           NA          NA               NA      NA
+    ## 3  2015-07-03 20:02:30           49          NA             54.5      NA
+    ## 4  2015-07-03 20:02:35           NA          NA               NA      NA
+    ## 5  2015-07-03 20:02:40           49        85.9             54.7      NA
+    ## 6  2015-07-03 20:02:45           NA          NA               NA      NA
+    ## 7  2015-07-03 20:02:50           49          NA             54.1      NA
+    ## 8  2015-07-03 20:02:55           NA          NA               NA      NA
+    ## 9  2015-07-03 20:03:00           49          NA             53.8      NA
+    ## 10 2015-07-03 20:03:05           NA          NA               NA      NA
+    ## ..                 ...          ...         ...              ...     ...
+    ## Variables not shown: orificePressure (dbl), inletPressure (dbl), flow
+    ##   (dbl), xAxis (dbl), yAxis (dbl), zAxis (dbl), vectorSum (dbl),
+    ##   shutDownReason (fctr), wearingCompliance (lgl),
+    ##   validityWearingComplianceValidation (dbl), originalDateTime (fctr).
 
 The `cleaningMeasures` function
 -------------------------------
 
-For now, the `cleaningMeasures` function returns a data table of all the time varying measures (nephelometer, temperature, relative humidity, orifice pressure, inlet pressure and flow) where the nephelometer values are set to NA if the relative humidity at the same time is higher than 90% or if the values were negative.
+For now, the `cleaningMeasures` function returns a MicroPEM-object where the nephelometer values are set to NA if the relative humidity at the same time is higher than 90% or if the values were negative. Nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done): if a stable period longer than 3 minutes can be identified for the HEPA period, using the changepoint cpt.mean function, there is a zero value. There can be no zero values, only one (beginning or end) or two. If there is only one zero value, it is substracted from all nephelometer values. If there are two, a linear interpolation is done between the two values and the resulting vector is substracted from the nephelometer values.

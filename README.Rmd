@@ -7,7 +7,7 @@ output:
     variant: markdown_github
 ---
 [![Build Status](https://travis-ci.org/masalmon/ammon.svg?branch=master)](https://travis-ci.org/masalmon/ammon)
-[![Build status](https://ci.appveyor.com/api/projects/status/k2g2k9j7p1bb7fpn?svg=true)](https://ci.appveyor.com/project/masalmon/ammon)
+[![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/ammon)
 [![codecov.io](https://codecov.io/github/masalmon/ammon/coverage.svg?branch=master)](https://codecov.io/github/masalmon/ammon?branch=master)
 
 
@@ -22,7 +22,7 @@ install_github("masalmon/ammon", build_vignettes=TRUE)
 
 This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (https://en.wikipedia.org/wiki/Amun#Greece ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
 
-The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a S4 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
+The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
 
 
 # From input data to `MicroPEM` objects
@@ -37,15 +37,15 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 * and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.
 
-Therefore, the `ammon` package offers a S4 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has slots with measures over time and a slot that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the S4 class.
+Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
 
-![Alt text](vignettes/outputRTI.png?raw=true)
+![alt text](outputRTI.png)
 
-We will start by presenting the `control` slot.
+We will start by presenting the `control` field.
 
 ## `control` Slot
 
-This slot is a list that includes 41 variabes:
+This field is a data.frame (dplyr tbl_df) that includes 41 variables:
 
 * `downloadDate` which is the date at which the files was downloaded from the device to a PC. It is a `POSIXt`.        
 
@@ -132,7 +132,7 @@ This slot is a list that includes 41 variabes:
 
 ## Time-varying measures
 
-Then there are 15 slots that are vectors of the same length:
+This field is a data.frame (dplyr tbl_df) with these 15 columns:
 
 * `timeDate` is a `POSIXt` giving the date and time of each measure.
 
@@ -168,50 +168,51 @@ class(MicroPEMExample)
 
 ## Plot method
 
-The S4 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` slot. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" R plot with 6 facets, or a list of "rCharts" plots that can be either printed or saved afterwards -- the corresponding values of type are respectively "plain" and "rCharts".
+The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" ggplot2 plot with 6 facets, or its interactive version produced with the ggiraph package -- the corresponding values of type are respectively "plain" and "interactive".
 
-Below we show to examples of uses of the plot method on a `MicroPE` object.
+Below we show to examples of uses of the plot method on a `MicroPEM` object.
 
-This is a "plain" plot. The results is pretty ugly but one would already be able to detect some problems such as outliers in nephelometer values or aberrant values of the flow so it does the job.
+This is a "plain" plot. 
 
-```{r, fig.width=7, fig.height=7}
+```{r, fig.width=7, fig.height=7, warning=FALSE}
 data("dummyMicroPEMChai")
 par(mar=c(1,4,2,1))
-plot(dummyMicroPEMChai, type="plain")
+dummyMicroPEMChai$plot()
 ```
 
-This is a nicer and interactive representation powered by rCharts but time is not rendered perfectly. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper.
+This is a nicer and interactive representation: you can look at what happens if you put your mouse over the time series. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper. 
 
 
-```{r,comment = NA, results = "asis", comment = NA, tidy = F, warning=FALSE, message=FALSE}
-
-plot_rCharts <- plot(dummyMicroPEMChai, type="rCharts")
-#plot_rCharts[[1]]$print("chart", include_assets = TRUE)
+```{r,comment = NA, results = "asis", comment = NA, tidy = F, warning=FALSE, message=FALSE, eval = FALSE}
+library("ggiraph")
+p <- dummyMicroPEMChai$plot(type = "interactive")
+ggiraph(code = {print(p)}, width = 10, height = 10)
 
 ```
-## `summaryTimeVarying` function
 
-Plotting the `MicroPEM` object is already a good way to notice any problem. Another function aims at providing more compact information about the time-varying measures. It is called `summaryTimeVarying` and outputs a table with summary statistics for each time-varying measures, except timeDate.
+## `summary` method
 
-Below is an example of a call to this function.
+Plotting the `MicroPEM` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
+
+Below is an example of use of this method.
 
 
 ```{r, results="asis"}
 library("xtable")
 data("dummyMicroPEMChai")
-results <- summaryTimeVarying(dummyMicroPEMChai)
+results <- dummyMicroPEMChai$summary()
 print(xtable(results),  type = "html", include.rownames = FALSE, floating=FALSE)
 
 ```
 
-## `summarySettings` and `compareSettings` function
+## `compareSettings` function
 
-When analysing the measures, one is also interesting into knowing if the parameters were set in a consistent way. Two functions off the `ammon` package allow to explore the upper part of an output MicroPEM file, that is, the settings. The first one is called `summarySettings` and simply outputs all elements of the `control` slot in a data table of the R package `dplyr`:
+When analysing the measures, one is also interesting into knowing if the parameters were set in a consistent way. Two functionalities the `ammon` package allow to explore the upper part of an output MicroPEM file, that is, the settings. The first one is not a function, it simply corresponds to looking at the `control` field:
 
 ```{r, results="asis"}
 library("xtable")
 data("dummyMicroPEMChai")
-settings <- summarySettings(dummyMicroPEMChai)
+settings <- dummyMicroPEMChai$control
 print(xtable(settings),  type = "html", include.rownames = FALSE, floating=FALSE)
 
 ```
@@ -236,38 +237,37 @@ This app allows the exploration of a MicroPEM output file with no R experience.
 
 Below we show screenshots of the app. 
 
-![alt text](vignettes/shinyTabSummary.png)
+![alt text](shinyTabSummary.png)
 
-![alt text](vignettes/shinyTabAlarm.png)
+![alt text](shinyTabAlarm.png)
 
-![alt text](vignettes/shinyTabPlot.png)
+![alt text](shinyTabPlot.png)
 
-![alt text](vignettes/shinyTabSettings.png)
+![alt text](shinyTabSettings.png)
 
 # Modifying a `microPEM` object
 
 ## The `filterTimeDate` function
 
-One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter slots for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
+One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter fields for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
 
 In the code below, we only keep measures from the first 12 hours of measures.
 
 ```{r}
 # load the lubridate package
-library("lubridate")
+library('lubridate')
 # load the dummy MicroPEM object
-data("dummyMicroPEMChai")
-# print length of two slots
-length(dummyMicroPEMChai@nephelometer)
-length(dummyMicroPEMChai@temperature)
+data('dummyMicroPEMChai')
+# look at the dimensions of the data.frame
+print(dummyMicroPEMChai$measures)
 # command for only keeping measures from the first twelve hours
-shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,untilTime=NULL,
-fromTime=min(dummyMicroPEMChai@timeDate, na.rm=TRUE) + hours(12))
-# print length of two slots
-length(shorterMicroPEM@nephelometer)
-length(shorterMicroPEM@temperature)
+shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
+untilTime=NULL,
+fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))
+# look at the dimensions of the data.frame
+print(shorterMicroPEM$measures)
 ```
 
 ## The `cleaningMeasures` function
 
-For now, the `cleaningMeasures` function returns a data table of all the time varying measures (nephelometer, temperature, relative humidity, orifice pressure, inlet pressure and flow) where the nephelometer values are set to NA if the relative humidity at the same time is higher than 90% or if the values were negative.
+For now, the `cleaningMeasures` function returns a MicroPEM-object where the nephelometer values are set to NA if the relative humidity at the same time is higher than 90% or if the values were negative.  Nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done): if a stable period longer than 3 minutes can be identified for the HEPA period, using the changepoint cpt.mean function, there is a zero value. There can be no zero values, only one (beginning or end) or two. If there is only one zero value, it is substracted from all nephelometer values. If there are two, a linear interpolation is done between the two values and the resulting vector is substracted from the nephelometer values.
