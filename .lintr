@@ -1,0 +1,4 @@
+linters:with_defaults(camel_case_linter = NULL,
+              snake_case_linter,
+              object_length_linter(50))
+exclusions: list("inst/shiny-examples/myapp/server.R", "inst/shiny-examples/myapp/ui.R","tests/testthat.R", "tests/testthat/test-cleaningMeasures.R",  "tests/testthat/test-convertOutput.R", "tests/testthat/test-filterTimeDate.R",  "tests/testthat/test-compareSettings.R",  "tests/testthat/test-alarmCHAI.R",  "tests/testthat/test-addCalibrationInfo.R",  "tests/testthat/test-findZeros.R",  "tests/testthat/test-lintr.R","inst/data_management.R")

@@ -1,0 +1,266 @@
+---
+title: "Vignette of the R package `ammon`"
+author: "Maëlle Salmon and other CHAI project members"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+# Introduction
+
+This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (https://en.wikipedia.org/wiki/Amun#Greece ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
+
+The goal of the package functions is to get a time series of PM2.5 measures ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
+
+
+# From input data to `MicroPEM` objects
+
+The MicroPEM device outputs a csv file with all the information about the measures: 
+
+* the measures themselves (relative humidity corrected nephelometer), 
+
+* other measures that can help interpret them or check that no problem occured (temperature, relative humidity, battery, orifice pressure, inlet pressure, flow, accelerometer variables, reasons for shutdown, and variables related to user compliance),
+
+* a reminder of parameters set by the user (calibration parameters, frequency of measures)
+
+* and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.
+
+Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
+
+![alt text](outputRTI.png)
+
+We will start by presenting the `control` field.
+
+## `control` Slot
+
+This field is a data.frame (dplyr tbl_df) that includes 41 variables:
+
+* `downloadDate` which is the date at which the files was downloaded from the device to a PC. It is a `POSIXt`.        
+
+* `totalDownloadTime` gives the total download time, in seconds.
+
+* `deviceSerial` is the serial number of the device, which could be useful for e.g. finding a faulty device based on many output files.
+
+* `dateTimeHardware` indicates the date of release of the device. It is a `POSIXt`.             
+
+* `dateTimeSoftware`  indicates the date of release of the software used on the device. It is a `POSIXt`.           
+
+* `version` indicates the version of the software.                         
+
+* `participantID` indicated the participantID, deduced either from the corresponding cell in the output file, or from the filename.
+
+* `filterID` is the ID number of the filter used for these measures.      
+
+* `participantWeight` is a numeric variable.   
+
+* `inletAerosolSize` is a factor variable, either "PM2.5" or "PM10". Please note that this variable does not provide confirmation that this aerosol size was measured, since it was chosen by hand by the person preparing the device for these measures. One could choose "PM2.5" and put the inlet for PM10, in which case PM10, not PM2.5, would be measured.
+
+* `laserCyclingVariablesDelay`      
+
+* `laserCyclingVariablesSamplingTime`
+
+* `laserCyclingVariablesOffTime`     
+
+* `SystemTimes` indicates whether the device was always on, or whether it was on/off, in which case the length of the on and off periods are given in seconds.                  
+
+* `nephelometerSlope`                
+
+* `nephelometerOffset`             
+
+* `nephelometerLogInterval`   indicates how many seconds there are between measures of PM.     
+
+* `temperatureSlope`                 
+
+* `temperatureOffset`            
+
+* `temperatureLog` indicates how many seconds there are between measures of temperature.              
+
+* `humiditySlope`                    
+
+* `humidityOffset`               
+
+* `humidityLog` indicates how many seconds there are between measures of humidity.                  
+
+* `inletPressureSlope`               
+
+* `inletPressureOffset`             
+
+* `inletPressureLog` indicates how many seconds there are between measures of inlet pressure.                
+
+* `inletPressureHighTarget`          
+
+* `inletPressureLowTarget`          
+
+* `orificePressureSlope`            
+
+* `orificePressureOffset`            
+
+* `orificePressureLog` indicates how many seconds there are between measures of orifice pressure.             
+
+* `orificePressureHighTarget`       
+
+* `orificePressureLowTarget`         
+
+* `flowLog` indicates how many seconds there are between measures of flow.                           
+
+* `flowHighTarget`                   
+
+* `flowLowTarget`                    
+
+* `flowWhatIsThis`                   
+
+* `accelerometerLog`                
+
+* `batteryLog`  indicates how many seconds there are between measures of battery.                      
+
+* `ventilationSlope`                
+
+* `ventilationOffset`            
+
+
+## Time-varying measures
+
+This field is a data.frame (dplyr tbl_df) with these 15 columns:
+
+* `timeDate` is a `POSIXt` giving the date and time of each measure.
+
+* `temperature` is a numeric variable, in centigrade.
+
+* `relativeHumidity` is a proportion.
+
+* `battery`is a numeric variable.
+
+* `orifice pressure` and `inlet pressure` are numeric variables, in inches of water.
+
+* `flow` is a numeric variable, in liters per minute.
+
+* `xAxis`, `yAxis` and `zAxis` are accelerometer measures in three dimensions, with `vectorSum` being their sum.
+
+* `shutDownReason` is a factor variable indicating the reason for shutdown, in case a shutdown happened at this timepint.
+
+* `wearingCompliance` and `validityWearingCompliance` are respectively a logical and a character variables.
+
+## The `convertOutput` function.
+
+The `convertOutput` only takes two arguments as input: the path to the output file, and the version of the output file, either "CHAI" or "Columbia" (version with one blank line after each line with content). The result of a call to this function is an object of the class `MicroPEM`. Below is a example of a call to `convertOutput`.
+
+```{r, warning=FALSE, message=FALSE}
+library("ammon")
+MicroPEMExample <- convertOutput(system.file("extdata", "dummyCHAI.csv", package = "ammon"),
+version="CHAI")
+class(MicroPEMExample)
+
+```
+
+# Visualizing information contained in a `MicroPEM` object
+
+## Plot method
+
+The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" ggplot2 plot with 6 facets, or its interactive version produced with the ggiraph package -- the corresponding values of type are respectively "plain" and "interactive".
+
+Below we show to examples of uses of the plot method on a `MicroPEM` object.
+
+This is a "plain" plot. 
+
+```{r, fig.width=7, fig.height=7, warning=FALSE}
+data("dummyMicroPEMChai")
+par(mar=c(1,4,2,1))
+dummyMicroPEMChai$plot()
+```
+
+This is a nicer and interactive representation: you can look at what happens if you put your mouse over the time series. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper. 
+
+
+```{r,comment = NA, results = "asis", comment = NA, tidy = F, warning=FALSE, message=FALSE}
+library("ggiraph")
+p <- dummyMicroPEMChai$plot(type = "interactive")
+ggiraph(code = {print(p)}, width = 10, height = 10)
+
+```
+
+## `summary` method
+
+Plotting the `MicroPEM` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
+
+Below is an example of use of this method.
+
+
+```{r, results="asis"}
+library("xtable")
+data("dummyMicroPEMChai")
+results <- dummyMicroPEMChai$summary()
+print(xtable(results),  type = "html", include.rownames = FALSE, floating=FALSE)
+
+```
+
+## `compareSettings` function
+
+When analysing the measures, one is also interesting into knowing if the parameters were set in a consistent way. Two functionalities the `ammon` package allow to explore the upper part of an output MicroPEM file, that is, the settings. The first one is not a function, it simply corresponds to looking at the `control` field:
+
+```{r, results="asis"}
+library("xtable")
+data("dummyMicroPEMChai")
+settings <- dummyMicroPEMChai$control
+print(xtable(settings),  type = "html", include.rownames = FALSE, floating=FALSE)
+
+```
+
+Then, in some cases, once one has collected several output files from RTI MicroPEM devices, before using the measures one would like to check that e.g. the nephelometer slope is the same for all measures. The `compareSettings` function answers this need. It takes two arguments as input: the directory in which all (and only) the output files are, and the version of this output files (either "CHAI" or "Columbia"). It outputs a data.frame with all parameters as columns, each file corresponding to a line. 
+
+ADD EXAMPLE LATER.
+
+## Shiny app developped for the CHAI project
+
+In the context of the CHAI project, we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `runShinyApp` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
+
+* One with the output of a call to `summaryTimeVarying`,
+
+* One with the output of a call to the `alarmCHAI` function that performs a few checks specific to the CHAI project,
+
+* One with the output of a call to the plot method,
+
+* One with the output of a call to `summarySettings`.
+
+This app allows the exploration of a MicroPEM output file with no R experience.
+
+Below we show screenshots of the app. 
+
+![alt text](shinyTabSummary.png)
+
+![alt text](shinyTabAlarm.png)
+
+![alt text](shinyTabPlot.png)
+
+![alt text](shinyTabSettings.png)
+
+# Modifying a `microPEM` object
+
+## The `filterTimeDate` function
+
+One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter fields for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
+
+In the code below, we only keep measures from the first 12 hours of measures.
+
+```{r}
+# load the lubridate package
+library('lubridate')
+# load the dummy MicroPEM object
+data('dummyMicroPEMChai')
+# look at the dimensions of the data.frame
+print(dummyMicroPEMChai$measures)
+# command for only keeping measures from the first twelve hours
+shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
+untilTime=NULL,
+fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))
+# look at the dimensions of the data.frame
+print(shorterMicroPEM$measures)
+```
+
+## The `cleaningMeasures` function
+
+For now, the `cleaningMeasures` function returns a MicroPEM-object where the nephelometer values are set to NA if the relative humidity at the same time is higher than 90% or if the values were negative.  Nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done): if a stable period longer than 3 minutes can be identified for the HEPA period, using the changepoint cpt.mean function, there is a zero value. There can be no zero values, only one (beginning or end) or two. If there is only one zero value, it is substracted from all nephelometer values. If there are two, a linear interpolation is done between the two values and the resulting vector is substracted from the nephelometer values.

@@ -1,0 +1,8 @@
+.gitignore
+.travis.yml
+.lintr
+^appveyor\.yml$
+man-roxygen
+^.*\.Rproj$
+^\.Rproj\.user$
+data_management.R
