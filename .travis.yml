@@ -5,6 +5,8 @@ r_github_packages:
   - ramnathv/rCharts
   - jimhester/covr
   - jimhester/lintr
+  - hadley/dplyr
+  - hadley/lubridate
 
 notifications:
     email:
