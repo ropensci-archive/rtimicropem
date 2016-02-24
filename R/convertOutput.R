@@ -67,9 +67,10 @@ convertOutput <- function(path, version = NULL) {
     originalDateTime <- paste(dataPEM$Date, dataPEM$Time, sep = " ")
 
     # convert date and time
-    dataPEM <- transformDate(resTable = dataPEM, "Date",
-                             functionDate = functionDate)
-    dataPEM <- transformTime(resTable = dataPEM, "Time")
+    dataPEM <- mutate_(dataPEM,
+                       Date = interp(~ functionDate(Date)))
+    dataPEM <- mutate_(dataPEM,
+                       Time = interp(~ hms(Time)))
 #       dplyr::mutate(Date = lubridate::force_tz(Date,
 #         "Atlantic/Madeira")) %>%
       # Warning: Time does not have time zone
@@ -312,24 +313,7 @@ convertOutput <- function(path, version = NULL) {
     return(microPEMObject)
 }
 ########################################################################
-# transform a given column in POSIXct
-transformDate <- function(resTable, newColName,
-                          functionDate) {
-  mutateCall <- lazyeval::interp( ~ functionDate(a),
-                                  a = as.name(newColName))
-
-  resTable %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
-                                               newColName))
-}
-
-transformTime <- function(resTable, newColName) {
-  mutateCall <- lazyeval::interp( ~ hms(a),
-                                  a = as.name(newColName))
-
-  resTable %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
-                                               newColName))
-}
-
+# update time
 transformTimeDate <- function(resTable) {
 
   mutateCall <- lazyeval::interp( ~ update(b,
