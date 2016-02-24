@@ -27,7 +27,7 @@ library('lubridate')
 data('dummyMicroPEMChai')
 # look at the dimensions of the data.frame
 print(dummyMicroPEMChai$measures)
-# command for only keeping measures from the first twelve hours
+# command for erasing measures from the first twelve hours
 shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
 untilTime=NULL,
 fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))

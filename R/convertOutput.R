@@ -1,6 +1,7 @@
 #' Uses output file from MicroPEM to create a MicroPEM object.
 #'
-#' @importFrom dplyr tbl_df mutate
+#' @importFrom dplyr tbl_df mutate_
+#' @importFrom lazyeval interp
 #' @importFrom lubridate hms hour minute second force_tz mdy dmy
 #' @param path the path to the file
 #' @param version the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
@@ -66,17 +67,14 @@ convertOutput <- function(path, version = NULL) {
     originalDateTime <- paste(dataPEM$Date, dataPEM$Time, sep = " ")
 
     # convert date and time
-    dataPEM <- dataPEM %>%
-      dplyr::mutate(Date = functionDate(Date)) %>%
+    dataPEM <- transformDate(resTable = dataPEM, "Date",
+                             functionDate = functionDate)
+    dataPEM <- transformTime(resTable = dataPEM, "Time")
 #       dplyr::mutate(Date = lubridate::force_tz(Date,
 #         "Atlantic/Madeira")) %>%
       # Warning: Time does not have time zone
-    dplyr::mutate(Time = lubridate::hms(Time)) %>%
       # create a variable with date and time together
-    dplyr::mutate(dateTime = update(Date, hour = lubridate::hour(Time),
-                                    minute = lubridate::minute(Time),
-                                    second = lubridate::second(Time)))
-
+    dataPEM <- transformTimeDate(resTable = dataPEM)
     timeDate <- dataPEM$dateTime
     nephelometer <- as.numeric(dataPEM$RHCorrectedNephelometer)
     temperature <- dataPEM$Temp
@@ -312,4 +310,35 @@ convertOutput <- function(path, version = NULL) {
                           measures = measures,
                           original = TRUE)
     return(microPEMObject)
+}
+########################################################################
+# transform a given column in POSIXct
+transformDate <- function(resTable, newColName,
+                          functionDate) {
+  mutateCall <- lazyeval::interp( ~ functionDate(a),
+                                  a = as.name(newColName))
+
+  resTable %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
+                                               newColName))
+}
+
+transformTime <- function(resTable, newColName) {
+  mutateCall <- lazyeval::interp( ~ hms(a),
+                                  a = as.name(newColName))
+
+  resTable %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
+                                               newColName))
+}
+
+transformTimeDate <- function(resTable) {
+
+  mutateCall <- lazyeval::interp( ~ update(b,
+                                           hour = lubridate::hour(a),
+                                           minute = lubridate::minute(a),
+                                           second = lubridate::second(a)),
+                                  a = as.name("Time"),
+                                  b = as.name("Date"))
+
+  resTable %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
+                                               "dateTime"))
 }
