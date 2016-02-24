@@ -15,7 +15,7 @@ test_that("convertOutput works for the CHAI version of output", {
 test_that("convertOutput works for the Columbia version of output", {
   skip_on_cran()
   #skip_on_travis()
-  expect_that(MicroPEMExample <- convertOutput(system.file("extdata", "dummyColumbia.csv",
+  expect_that(convertOutput(system.file("extdata", "dummyColumbia.csv",
                                                            package = "ammon"),
                                                version="Columbia1"), is_a("MicroPEM"))
 
