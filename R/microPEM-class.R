@@ -3,7 +3,7 @@
 #' @docType class
 #' @importFrom R6 R6Class
 #' @importFrom tidyr gather
-#' @importFrom dplyr tbl_df filter select "%>%"
+#' @importFrom dplyr tbl_df filter_ select_ "%>%"
 #' @importFrom knitr kable
 #' @import ggplot2
 #' @import ggiraph
@@ -104,29 +104,26 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
   type <-  match.arg(type,
                      c("plain", "interactive"))
 
-  dataPM <- select(self$measures,
-                   timeDate,
-                   nephelometer,
-                   temperature,
-                   relativeHumidity,
-                   orificePressure,
-                   inletPressure,
-                   flow,
-                   battery) %>%
-    filter(!is.na(timeDate))
+  # filter when timeDate not missing
+  dataPM <- dplyr::select_(self$measures,
+                   .dots = list("timeDate",
+                   "nephelometer",
+                   "temperature",
+                   "relativeHumidity",
+                   "orificePressure",
+                   "inletPressure",
+                   "flow",
+                   "battery"))
+
+  filterCriteria <- lazyeval::interp(~(!is.na(timeDate)))
+   dataPM <- dataPM%>%
+     dplyr::filter_(.dots = filterCriteria)
 
    dataLong <- tidyr::gather(dataPM,
                             variable,
                             measurement,
-                            nephelometer:battery) %>%
-    mutate(variable = factor(variable,
-                              levels = c("nephelometer",
-                                         "temperature",
-                                         "relativeHumidity",
-                                         "flow",
-                                         "inletPressure",
-                                         "orificePressure",
-                                         "battery")))
+                            nephelometer:battery)
+   dataLong <- changeVariable(dataLong)
    red <- "#FF3D31"
    yellow <- "#FF9704"
    brown <- "#000200"
@@ -178,14 +175,16 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
 # SUMMARY METHOD
 ##########################################################################
 summaryMicroPEM <- function(self){
-  numMeasures <- select(self$measures,
-                        nephelometer:flow)
+  numMeasures <- dplyr::select_(self$measures,
+                         .dots = ~nephelometer:flow)
 
   listSummary <- lapply(numMeasures, summaryPM)
   tableSummary <- do.call("rbind", listSummary)
-  tableSummary <- dplyr::tbl_df(tableSummary) %>%
-    mutate(measure = rownames(tableSummary)) %>%
-    select(measure, everything())
+  tableSummary <- dplyr::tbl_df(tableSummary)
+  tableSummary <- addMeasure(dat = tableSummary, "measure")
+  tableSummary <-   dplyr::select_(tableSummary,
+                            .dots = list("measure",
+                                         ~everything()))
   return(tableSummary)
 }
 
@@ -216,4 +215,26 @@ printMicroPEM <- function(self){
   cat( "\n", "Settings were:")
   controlTable <- data.frame(value = t(self$control)[,1])
   print(knitr::kable(controlTable))
+}
+
+addMeasure <- function(dat, newColName) {
+  mutateCall <- lazyeval::interp( ~ row.names(a),
+                                  a = dat)
+
+  dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
+                                               newColName))
+}
+changeVariable <- function(dat) {
+  mutateCall <- lazyeval::interp( ~ factor(a$variable,
+                                     levels = c("nephelometer",
+                                                "temperature",
+                                                "relativeHumidity",
+                                                "flow",
+                                                "inletPressure",
+                                                "orificePressure",
+                                                "battery")),
+                                  a = dat)
+
+  dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
+                                          "variable"))
 }
