@@ -46,8 +46,6 @@ convertOutput <- function(path, version = NULL) {
     namesPEM <- gsub(" ", "", namesPEM)
     namesPEM <- sub("-", "", namesPEM)
     names(dataPEM) <- namesPEM
-print(namesPEM)
-print(names(dataPEM))
     # convert month names if they are abbreviated
     dataPEM$Date <- tolower(dataPEM$Date)
     dataPEM$Date <- gsub("jan", "01", dataPEM$Date)
