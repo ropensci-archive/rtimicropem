@@ -26,27 +26,28 @@
 cleaningMeasures <- function(MicroPEMObject,
                              hepaStart = FALSE,
                              hepaEnd = FALSE) {
-
+    # use a clone!
+   MicroPEMObject2 <- MicroPEMObject$clone()
     # If relative humidity is higher than 90%
     # then the corresponding nephelometer values should be ignored
-    toBeErased <- which(!is.na(MicroPEMObject$
+    toBeErased <- which(!is.na(MicroPEMObject2$
                                  measures$relativeHumidity) &
-                          MicroPEMObject$
+                          MicroPEMObject2$
                           measures$relativeHumidity >= 90)
-    MicroPEMObject$measures$nephelometer[toBeErased] <- NA
+    MicroPEMObject2$measures$nephelometer[toBeErased] <- NA
 
     # If relative humidity is negative
     # then the corresponding nephelometer values should be ignored
-    toBeErased <- which(!is.na(MicroPEMObject$
+    toBeErased <- which(!is.na(MicroPEMObject2$
                                  measures$relativeHumidity) &
-                          MicroPEMObject$
+                          MicroPEMObject2$
                           measures$relativeHumidity < 0)
-    MicroPEMObject$measures$nephelometer[toBeErased] <- NA
+    MicroPEMObject2$measures$nephelometer[toBeErased] <- NA
 
     # correct time series using HEPA measures
-    tableHEPA <- findZeros(MicroPEMObject$
+    tableHEPA <- findZeros(MicroPEMObject2$
                              measures$nephelometer,
-                           MicroPEMObject$
+                           MicroPEMObject2$
                              measures$timeDate,
                            hepaStart,
                            hepaEnd)
@@ -69,24 +70,24 @@ cleaningMeasures <- function(MicroPEMObject,
     if (value1 == 0 | value2 == 0){
       correction <- rep(value1 + value2,
                         length = nrow(
-                          MicroPEMObject$measures
+                          MicroPEMObject2$measures
                         ))
     }
     else{
       correction <- seq(from = value1,
                         to = value2,
                         length = nrow(
-                          MicroPEMObject$measures
+                          MicroPEMObject2$measures
                           ))
     }
 
     # now correct the measures
-    MicroPEMObject$measures <- dplyr::mutate(MicroPEMObject$measures,
+    MicroPEMObject2$measures <- dplyr::mutate(MicroPEMObject2$measures,
                                              nephelometer = nephelometer -
                                                correction)
 
     # keep trace of modifications
-    MicroPEMObject$original <- FALSE
+    MicroPEMObject2$original <- FALSE
 
-    return(MicroPEMObject)
+    return(MicroPEMObject2)
 }

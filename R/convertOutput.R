@@ -268,21 +268,6 @@ convertOutput <- function(path, version = NULL) {
     ###########################################
     # CREATE THE OBJECT
     ###########################################
-    if (sum(is.na(xAxis)) == length(xAxis)) {
-        xAxis <- rep(0, length(xAxis))
-    }
-
-    if (sum(is.na(yAxis)) == length(yAxis)) {
-        yAxis <- rep(0, length(yAxis))
-    }
-
-    if (sum(is.na(zAxis)) == length(zAxis)) {
-        zAxis <- rep(0, length(zAxis))
-    }
-
-    if (sum(is.na(vectorSum)) == length(vectorSum)) {
-        vectorSum <- rep(0, length(vectorSum))
-    }
 
     measures <- data.frame(timeDate = timeDate,
                            nephelometer = nephelometer,
