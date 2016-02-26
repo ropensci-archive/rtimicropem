@@ -97,7 +97,6 @@ MicroPEM <- R6::R6Class("MicroPEM",
 # PLOT METHOD
 ##########################################################################
 plotMicroPEM <- function(self, type, logScale, ...){# nolint start
-  # nocov start
   if (is.null(type)){
     type <- "plain"
   }
@@ -169,7 +168,6 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
 
   }
   return(p)
-   # nocov end
 }# nolint end
 ##########################################################################
 # SUMMARY METHOD
@@ -196,7 +194,7 @@ summaryPM <- function(x) {
                       min(x, na.rm = TRUE),
                       max(x, na.rm = TRUE),
                       var(x, na.rm = TRUE))
-  names(sumup) <- c("No. of no missing values",
+  names(sumup) <- c("No. of not missing values",
                     "Median",
                     "Mean",
                     "Minimum",
@@ -208,6 +206,7 @@ summaryPM <- function(x) {
 ##########################################################################
 # PRINT METHOD
 ##########################################################################
+# nocov start
 printMicroPEM <- function(self){
   cat("An object of class MicroPEM (R6 class)")
   cat("A summary of measures is:")
@@ -238,3 +237,4 @@ changeVariable <- function(dat) {
   dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
                                           "variable"))
 }
+# nocov end
