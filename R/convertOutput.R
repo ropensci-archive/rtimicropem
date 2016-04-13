@@ -73,8 +73,10 @@ convertOutput <- function(path, version = NULL) {
 #         "Atlantic/Madeira")) %>%
       # Warning: Time does not have time zone
       # create a variable with date and time together
-    dataPEM <- transformTimeDate(resTable = dataPEM)
-    timeDate <- dataPEM$dateTime
+    timeDate <- update(dataPEM$Date,
+                       hour = lubridate::hour(dataPEM$Time),
+                       minute = lubridate::minute(dataPEM$Time),
+                       second = lubridate::second(dataPEM$Time))
     nephelometer <- as.numeric(dataPEM$RHCorrectedNephelometer)
     temperature <- dataPEM$Temp
     relativeHumidity <- dataPEM$RH
@@ -296,16 +298,3 @@ convertOutput <- function(path, version = NULL) {
     return(microPEMObject)
 }
 ########################################################################
-# update time
-transformTimeDate <- function(resTable) {
-
-  mutateCall <- lazyeval::interp( ~ update(b,
-                                           hour = lubridate::hour(a),
-                                           minute = lubridate::minute(a),
-                                           second = lubridate::second(a)),
-                                  a = as.name("Time"),
-                                  b = as.name("Date"))
-
-  resTable %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
-                                               "dateTime"))
-}

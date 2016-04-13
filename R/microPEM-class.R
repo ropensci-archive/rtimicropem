@@ -58,40 +58,40 @@
 # CLASS DEFINITION
 ##########################################################################
 MicroPEM <- R6::R6Class("MicroPEM",
-                                 public = list(
-                                   control = "tbl_df",
-                                   calibration = "list",
-                                   measures = "tbl_df",
-                                   original = "logical",
-                                   initialize = function(control,
-                                                         calibration,
-                                                         measures,
-                                                         original = TRUE) {
-                                     if(any(is.null(c(control,
-                                                    calibration,
-                                                    measures)))){
-                                       stop("all fields must be known")
-                                     }
-                                     self$control <- control
-                                     self$calibration <- calibration
-                                     self$measures <- measures
-                                     self$original <- original
-                                   },
-                                    plot = function(type = "plain",
-                                                   logScale = FALSE){
-                                     plotMicroPEM(self,
-                                                  type,
-                                                  logScale)
-                                    },
-                                   summary = function(){
-                                     summaryMicroPEM(self)
-                                   },
-                                   print = function(){
-                                     printMicroPEM(self)
-                                   }
+                        public = list(
+                          control = "tbl_df",
+                          calibration = "list",
+                          measures = "tbl_df",
+                          original = "logical",
+                          initialize = function(control,
+                                                calibration,
+                                                measures,
+                                                original = TRUE) {
+                            if(any(is.null(c(control,
+                                             calibration,
+                                             measures)))){
+                              stop("all fields must be known")
+                            }
+                            self$control <- control
+                            self$calibration <- calibration
+                            self$measures <- measures
+                            self$original <- original
+                          },
+                          plot = function(type = "plain",
+                                          logScale = FALSE){
+                            plotMicroPEM(self,
+                                         type,
+                                         logScale)
+                          },
+                          summary = function(){
+                            summaryMicroPEM(self)
+                          },
+                          print = function(){
+                            printMicroPEM(self)
+                          }
 
 
-                                 )
+                        )
 )
 ##########################################################################
 # PLOT METHOD
@@ -105,38 +105,38 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
 
   # filter when timeDate not missing
   dataPM <- dplyr::select_(self$measures,
-                   .dots = list("timeDate",
-                   "nephelometer",
-                   "temperature",
-                   "relativeHumidity",
-                   "orificePressure",
-                   "inletPressure",
-                   "flow",
-                   "battery"))
+                           .dots = list("timeDate",
+                                        "nephelometer",
+                                        "temperature",
+                                        "relativeHumidity",
+                                        "orificePressure",
+                                        "inletPressure",
+                                        "flow",
+                                        "battery"))
 
   filterCriteria <- lazyeval::interp(~(!is.na(timeDate)))
-   dataPM <- dataPM%>%
-     dplyr::filter_(.dots = filterCriteria)
+  dataPM <- dataPM%>%
+    dplyr::filter_(.dots = filterCriteria)
 
-   dataLong <- tidyr::gather(dataPM,
+  dataLong <- tidyr::gather(dataPM,
                             variable,
                             measurement,
                             nephelometer:battery)
-   dataLong <- changeVariable(dataLong)
-   red <- "#FF3D31"
-   yellow <- "#FF9704"
-   brown <- "#000200"
-   lightRed <- "#EE9F8E"
-   blue <- "#70B6C5"
-   green <- "#497866"
+  dataLong <- changeVariable(dataLong)
+  red <- "#FF3D31"
+  yellow <- "#FF9704"
+  brown <- "#000200"
+  lightRed <- "#EE9F8E"
+  blue <- "#70B6C5"
+  green <- "#497866"
 
-   nicePalette <- c(red,
-                    yellow,
-                    blue,
-                    green,
-                    lightRed,
-                    lightRed,
-                    brown)
+  nicePalette <- c(red,
+                   yellow,
+                   blue,
+                   green,
+                   lightRed,
+                   lightRed,
+                   brown)
 
   if (type == "plain"){
 
@@ -154,13 +154,13 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
   if (type == "interactive"){
     p <- ggplot(dataLong) +
       geom_point_interactive(aes(x = timeDate,
-                     y = measurement,
-                     col = variable,
-                     tooltip = paste0(timeDate,
-                                      " - ",
-                                      measurement,
-                                      " - ",
-                                      variable))) +
+                                 y = measurement,
+                                 col = variable,
+                                 tooltip = paste0(timeDate,
+                                                  " - ",
+                                                  measurement,
+                                                  " - ",
+                                                  variable))) +
       facet_grid(variable ~ ., scales = "free_y") +
       theme(panel.margin = unit(2, "lines")) +
       theme_bw() +
@@ -174,15 +174,15 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
 ##########################################################################
 summaryMicroPEM <- function(self){
   numMeasures <- dplyr::select_(self$measures,
-                         .dots = ~nephelometer:flow)
+                                .dots = ~nephelometer:flow)
 
   listSummary <- lapply(numMeasures, summaryPM)
   tableSummary <- do.call("rbind", listSummary)
   tableSummary <- dplyr::tbl_df(tableSummary)
   tableSummary <- addMeasure(dat = tableSummary, "measure")
   tableSummary <-   dplyr::select_(tableSummary,
-                            .dots = list("measure",
-                                         ~everything()))
+                                   .dots = list("measure",
+                                                ~everything()))
   return(tableSummary)
 }
 
@@ -221,17 +221,17 @@ addMeasure <- function(dat, newColName) {
                                   a = dat)
 
   dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
-                                               newColName))
+                                          newColName))
 }
 changeVariable <- function(dat) {
   mutateCall <- lazyeval::interp( ~ factor(a$variable,
-                                     levels = c("nephelometer",
-                                                "temperature",
-                                                "relativeHumidity",
-                                                "flow",
-                                                "inletPressure",
-                                                "orificePressure",
-                                                "battery")),
+                                           levels = c("nephelometer",
+                                                      "temperature",
+                                                      "relativeHumidity",
+                                                      "flow",
+                                                      "inletPressure",
+                                                      "orificePressure",
+                                                      "battery")),
                                   a = dat)
 
   dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
