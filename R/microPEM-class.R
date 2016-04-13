@@ -3,7 +3,7 @@
 #' @docType class
 #' @importFrom R6 R6Class
 #' @importFrom tidyr gather
-#' @importFrom dplyr tbl_df filter_ select_ "%>%"
+#' @importFrom dplyr tbl_df filter_ select_ "%>%" everything
 #' @importFrom knitr kable
 #' @import ggplot2
 #' @import ggiraph
