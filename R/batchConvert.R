@@ -1,0 +1,98 @@
+#' Reading several MicroPEM files and converting the settings and measurement tables to csv.
+#'
+#' @importFrom pathological decompose_path
+#' @importFrom readr read_csv
+#' @param path_to_directory path to the directory with files
+#' @param version the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
+#' See the data in inst/data to see
+#' which one applies.
+#'
+#' The function saves results in the input directory as csv files with a "," as separator.
+#' One file is settings.csv with all settings, the other one is measures.csv
+#' It saves them directly for not loading all of them at the same time in the session.
+#' @return
+#' @export
+#'
+#' @examples
+batchConvert <- function(path_to_directory, version = NULL){
+  # find files to transform
+  list_files <- list.files(path_to_directory,
+                           full.names = TRUE)
+  list_files <- list_files[grepl(".csv",
+                                 list_files) == TRUE]
+
+  if (file.exists("settings.csv") |
+      file.exists("measures.csv")){
+    stop("There are already a settings.csv and/or a measures.csv in your working directory !")# nolint
+  }
+
+  # prepare file with measures
+  readr::write_csv(data.frame("timeDate", "nephelometer",
+                              "temperature", "relativeHumidity",
+                              "battery", "orificePressure",
+                              "inletPressure", "flow",
+                              "xAxis", "yAxis", "zAxis",
+                              "vectorSum", "shutDownReason",
+                              "wearingCompliance",
+                              "validityWearingComplianceValidation",
+                              "originalDateTime",
+                              "filename"),
+                   path = paste0(path_to_directory,
+                                 "/measures.csv"),
+                   append = TRUE)
+
+  # prepare file with settings
+  readr::write_csv(data.frame("downloadDate", "totalDownloadTime",
+                              "deviceSerial", "dateTimeHardware",
+                              "dateTimeSoftware", "version",
+                              "participantID", "filterID",
+                              "participantWeight", "inletAerosolSize",
+                              "laserCyclingVariablesDelay", "laserCyclingVariablesSamplingTime",
+                              "laserCyclingVariablesOffTime", "SystemTimes",
+                              "nephelometerSlope", "nephelometerOffset",
+                              "nephelometerLogInterval", "temperatureSlope",
+                              "temperatureOffset", "temperatureLog",
+                              "humiditySlope", "humidityOffset",
+                              "humidityLog", "inletPressureSlope",
+                              "inletPressureOffset", "inletPressureLog",
+                              "inletPressureHighTarget", "inletPressureLowTarget",
+                              "orificePressureSlope", "orificePressureOffset",
+                              "orificePressureLog", "orificePressureHighTarget",
+                              "orificePressureLowTarget", "flowLog",
+                              "flowHighTarget", "flowLowTarget",
+                              "flowWhatIsThis", "accelerometerLog",
+                              "batteryLog", "ventilationSlope",
+                              "ventilationOffset",
+                              "filename"),
+                   path = paste0(path_to_directory,
+                                 "/settings.csv"),
+                   append = TRUE)
+
+  # loop over files
+  for (file in list_files){
+    converted <- convertOutput(file, version = version)
+    settings <- converted$control
+    settings <- mutate_(settings,
+                        filename = ~ pathological::decompose_path(file)$filename)
+
+    readr::write_csv(settings,
+                       path = paste0(path_to_directory,
+                                     "/settings.csv"),
+                       append = TRUE)
+
+
+    measures <- converted$measures
+    measures <- mutate_(measures,
+                        filename = ~ pathological::decompose_path(file)$filename)
+
+    readr::write_csv(measures,
+                     path = paste0(path_to_directory,
+                                   "/measures.csv"),
+                     append = TRUE)
+
+
+
+  }
+
+
+}
