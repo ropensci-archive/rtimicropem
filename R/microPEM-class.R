@@ -3,7 +3,7 @@
 #' @docType class
 #' @importFrom R6 R6Class
 #' @importFrom tidyr gather
-#' @importFrom dplyr tbl_df filter_ select_ "%>%" everything
+#' @importFrom dplyr tbl_df filter_ select_ "%>%" bind_cols
 #' @importFrom knitr kable
 #' @import ggplot2
 #' @import ggiraph
@@ -179,11 +179,11 @@ summaryMicroPEM <- function(self){
   listSummary <- lapply(numMeasures, summaryPM)
   tableSummary <- do.call("rbind", listSummary)
   tableSummary <- dplyr::tbl_df(tableSummary)
-  tableSummary <- addMeasure(dat = tableSummary, "measure")
-  tableSummary <-   dplyr::select_(tableSummary,
-                                   .dots = list("measure",
-                                                ~everything()))
-  return(tableSummary)
+  measure <- data.frame(measure = row.names(tableSummary))
+  tableSummary <- dplyr::bind_cols(measure,
+                                   tableSummary)
+
+  return(dplyr::tbl_df(tableSummary))
 }
 
 summaryPM <- function(x) {
@@ -216,13 +216,6 @@ printMicroPEM <- function(self){
   print(knitr::kable(controlTable))
 }
 
-addMeasure <- function(dat, newColName) {
-  mutateCall <- lazyeval::interp( ~ row.names(a),
-                                  a = dat)
-
-  dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
-                                          newColName))
-}
 changeVariable <- function(dat) {
   mutateCall <- lazyeval::interp( ~ factor(a$variable,
                                            levels = c("nephelometer",

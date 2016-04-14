@@ -4,7 +4,7 @@ context("summary method")
 #################################################################################################
 test_that("the print method works", {
   data("dummyMicroPEMC1")
-  sumup <-dummyMicroPEMC1$summary()
+  sumup <- dummyMicroPEMC1$summary()
   expect_that(sumup,
               is_a("tbl_df"))
   expect_equal(nrow(sumup), 7)
@@ -16,7 +16,7 @@ test_that("the print method works", {
                                "Minimum",
                                "Maximum",
                                "Variance")))
-  expect_true(all(unlist(lapply(sumup, class)) == c("character",
+  expect_true(all(unlist(lapply(sumup, class)) == c("factor",
                                "integer",
                                "numeric",
                                "numeric",
