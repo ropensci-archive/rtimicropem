@@ -3,7 +3,7 @@
 #' @importFrom pathological decompose_path
 #' @importFrom readr read_csv
 #' @param pathDir path to the directory with files
-#' @param version the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
+#' @param version the versions of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
 #' See the data in inst/data to see
 #' which one applies.
 #'
@@ -21,12 +21,15 @@ batchConvert <- function(pathDir, version = NULL){
   listFiles <- listFiles[grepl(".csv",
                                  listFiles) == TRUE]
 
-  if (file.exists("settings.csv") |
-      file.exists("measures.csv")){
-    stop("There are already a settings.csv and/or a measures.csv in your working directory !")# nolint
+  if (file.exists(paste0(pathDir,
+                         "/settings.csv")) |
+      file.exists(paste0(pathDir,
+                         "/measures.csv"))){
+    stop("There are already a settings.csv and/or a measures.csv in the directory !")# nolint
   }
 
   # prepare file with measures
+
   readr::write_csv(data.frame("timeDate", "nephelometer",
                               "temperature", "relativeHumidity",
                               "battery", "orificePressure",

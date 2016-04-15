@@ -97,7 +97,7 @@ MicroPEM <- R6::R6Class("MicroPEM",
 ##########################################################################
 # PLOT METHOD
 ##########################################################################
-plotMicroPEM <- function(self, type, logScale, ...){# nolint start
+plotMicroPEM <- function(self, type, logScale, ...){# nocov start
   if (is.null(type)){
     type <- "plain"
   }
@@ -169,7 +169,7 @@ plotMicroPEM <- function(self, type, logScale, ...){# nolint start
 
   }
   return(p)
-}# nolint end
+}# nocov end
 ##########################################################################
 # SUMMARY METHOD
 ##########################################################################

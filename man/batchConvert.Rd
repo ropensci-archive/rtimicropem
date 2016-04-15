@@ -9,7 +9,7 @@ batchConvert(pathDir, version = NULL)
 \arguments{
 \item{pathDir}{path to the directory with files}
 
-\item{version}{the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
+\item{version}{the versions of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
 See the data in inst/data to see
 which one applies.
 
