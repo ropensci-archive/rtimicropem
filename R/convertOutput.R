@@ -3,6 +3,7 @@
 #' @importFrom dplyr tbl_df mutate_
 #' @importFrom lazyeval interp
 #' @importFrom lubridate hms hour minute second force_tz mdy dmy
+#' @importFrom pathological decompose_path
 #' @param path the path to the file
 #' @param version the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
 #' See the data in inst/data to see
@@ -115,7 +116,7 @@ convertOutput <- function(path, version = NULL) {
     ###########################################
     participantID <- read.csv(path, skip = 7, header = FALSE, nrow = 1)[1, 2]
     if (is.na(participantID)) {
-        participantID <- path
+        participantID <- pathological::decompose_path(path)$filename
     }
 
 

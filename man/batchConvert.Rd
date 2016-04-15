@@ -4,10 +4,10 @@
 \alias{batchConvert}
 \title{Reading several MicroPEM files and converting the settings and measurement tables to csv.}
 \usage{
-batchConvert(path_to_directory, version = NULL)
+batchConvert(pathDir, version = NULL)
 }
 \arguments{
-\item{path_to_directory}{path to the directory with files}
+\item{pathDir}{path to the directory with files}
 
 \item{version}{the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
 See the data in inst/data to see

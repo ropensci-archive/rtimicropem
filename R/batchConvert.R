@@ -2,7 +2,7 @@
 #'
 #' @importFrom pathological decompose_path
 #' @importFrom readr read_csv
-#' @param path_to_directory path to the directory with files
+#' @param pathDir path to the directory with files
 #' @param version the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
 #' See the data in inst/data to see
 #' which one applies.
@@ -14,12 +14,12 @@
 #' @export
 #'
 #' @examples
-batchConvert <- function(path_to_directory, version = NULL){
+batchConvert <- function(pathDir, version = NULL){
   # find files to transform
-  list_files <- list.files(path_to_directory,
+  listFiles <- list.files(pathDir,
                            full.names = TRUE)
-  list_files <- list_files[grepl(".csv",
-                                 list_files) == TRUE]
+  listFiles <- listFiles[grepl(".csv",
+                                 listFiles) == TRUE]
 
   if (file.exists("settings.csv") |
       file.exists("measures.csv")){
@@ -37,7 +37,7 @@ batchConvert <- function(path_to_directory, version = NULL){
                               "validityWearingComplianceValidation",
                               "originalDateTime",
                               "filename"),
-                   path = paste0(path_to_directory,
+                   path = paste0(pathDir,
                                  "/measures.csv"),
                    append = TRUE)
 
@@ -47,7 +47,8 @@ batchConvert <- function(path_to_directory, version = NULL){
                               "dateTimeSoftware", "version",
                               "participantID", "filterID",
                               "participantWeight", "inletAerosolSize",
-                              "laserCyclingVariablesDelay", "laserCyclingVariablesSamplingTime",
+                              "laserCyclingVariablesDelay",
+                              "laserCyclingVariablesSamplingTime",
                               "laserCyclingVariablesOffTime", "SystemTimes",
                               "nephelometerSlope", "nephelometerOffset",
                               "nephelometerLogInterval", "temperatureSlope",
@@ -55,7 +56,8 @@ batchConvert <- function(path_to_directory, version = NULL){
                               "humiditySlope", "humidityOffset",
                               "humidityLog", "inletPressureSlope",
                               "inletPressureOffset", "inletPressureLog",
-                              "inletPressureHighTarget", "inletPressureLowTarget",
+                              "inletPressureHighTarget",
+                              "inletPressureLowTarget",
                               "orificePressureSlope", "orificePressureOffset",
                               "orificePressureLog", "orificePressureHighTarget",
                               "orificePressureLowTarget", "flowLog",
@@ -64,29 +66,29 @@ batchConvert <- function(path_to_directory, version = NULL){
                               "batteryLog", "ventilationSlope",
                               "ventilationOffset",
                               "filename"),
-                   path = paste0(path_to_directory,
+                   path = paste0(pathDir,
                                  "/settings.csv"),
                    append = TRUE)
 
   # loop over files
-  for (file in list_files){
+  for (file in listFiles){
     converted <- convertOutput(file, version = version)
     settings <- converted$control
     settings <- mutate_(settings,
-                        filename = ~ pathological::decompose_path(file)$filename)
+                        filename = ~ pathological::decompose_path(file)$filename) # nolint
 
     readr::write_csv(settings,
-                       path = paste0(path_to_directory,
+                       path = paste0(pathDir,
                                      "/settings.csv"),
                        append = TRUE)
 
 
     measures <- converted$measures
     measures <- mutate_(measures,
-                        filename = ~ pathological::decompose_path(file)$filename)
+                        filename = ~ pathological::decompose_path(file)$filename) # nolint
 
     readr::write_csv(measures,
-                     path = paste0(path_to_directory,
+                     path = paste0(pathDir,
                                    "/measures.csv"),
                      append = TRUE)
 

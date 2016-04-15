@@ -210,6 +210,7 @@ summaryPM <- function(x) {
 # nocov start
 printMicroPEM <- function(self){
   cat("An object of class MicroPEM (R6 class)")
+  cat("\n")
   cat("A summary of measures is:")
   print(knitr::kable(self$summary()))
   cat( "\n", "Settings were:")
