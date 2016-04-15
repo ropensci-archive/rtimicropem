@@ -18,6 +18,7 @@
 #' # Example with type = "interactive", for RStudio viewer,
 #' # RMardown html documents and Shiny apps.
 #' \dontrun{
+#' library("ggiraph")
 #' p <- dummyMicroPEMChai$plot(type = "interactive")
 #' ggiraph(code = {print(p)}, width = 10, height = 10)}
 #' # Summary method
