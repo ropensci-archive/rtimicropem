@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/masalmon/ammon.svg?branch=master)](https://travis-ci.org/masalmon/ammon) [![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/ammon) [![codecov.io](https://codecov.io/github/masalmon/ammon/coverage.svg?branch=master)](https://codecov.io/github/masalmon/ammon?branch=master)
 
-Please note that this package is undergoing major changes.
+Please note that this package is under development.
 
 Installation
 ============
@@ -15,10 +15,18 @@ Introduction
 
 This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (<https://en.wikipedia.org/wiki/Amun#Greece> ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
 
-The goal of the package functions is to get data.frame with the time series of PM2.5 measures and other accompanying measures such as relative humidity ready for analysis, with a good level of confidence in the measures. For this, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data, and a function for cleaning the time series of PM2.5 based on the values of other variables such as relative humidity. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. This vignette aims at providing an overview of the functionalities of the package.
+The goal of the package functions is to help in two main tasks:
 
-From input data to `MicroPEM` objects
-=====================================
+-   Checking individual MicroPEM output files after, say, one day of data collection.
+
+-   Building a data base based on output files, and clean and transform the data for further analysis.
+
+For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts.
+
+This document aims at providing an overview of the functionalities of the package.
+
+Checking individual files: from input data to `MicroPEM` objects
+================================================================
 
 The MicroPEM device outputs a csv file with all the information about the measures:
 
@@ -130,6 +138,8 @@ This field is a data.frame (dplyr tbl\_df) with these 15 columns:
 
 -   `timeDate` is a `POSIXt` giving the date and time of each measure.
 
+-   `nephelometer` is a numeric variable indicating the RH-corrected PM2.5 concentration in \(\micro g/m^3\)
+
 -   `temperature` is a numeric variable, in centigrade.
 
 -   `relativeHumidity` is a proportion.
@@ -161,10 +171,9 @@ class(MicroPEMExample)
     ## [1] "MicroPEM" "R6"
 
 Visualizing information contained in a `MicroPEM` object
-========================================================
+--------------------------------------------------------
 
-Plot method
------------
+### Plot method
 
 The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `ggiraph` package -- the corresponding values of type are respectively "plain" and "interactive".
 
@@ -178,7 +187,7 @@ par(mar=c(1,4,2,1))
 dummyMicroPEMChai$plot()
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 This is a nicer and interactive representation: you can look at what happens if you put your mouse over the time series. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper.
 
@@ -188,8 +197,7 @@ p <- dummyMicroPEMChai$plot(type = "interactive")
 ggiraph(code = {print(p)}, width = 10, height = 10)
 ```
 
-`summary` method
-----------------
+### `summary` method
 
 Plotting the `MicroPEM` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
 
@@ -202,81 +210,19 @@ results <- dummyMicroPEMChai$summary()
 results %>% knitr::kable()
 ```
 
-| measure          |  No. of no missing values|  Median|        Mean|  Minimum|  Maximum|   Variance|
-|:-----------------|-------------------------:|-------:|-----------:|--------:|--------:|----------:|
-| nephelometer     |                      8634|   49.00|  49.3745657|    45.00|    93.00|  1.6780557|
-| temperature      |                      2878|   84.50|  84.6830438|    82.30|    87.60|  1.7180023|
-| relativeHumidity |                      8634|   54.60|  55.0061733|    46.20|    64.90|  7.6665285|
-| battery          |                      1464|    4.10|   4.0872268|     3.90|     4.30|  0.0078272|
-| orificePressure  |                      2878|    0.15|   0.1505455|     0.14|     0.16|  0.0000072|
-| inletPressure    |                      2878|    0.11|   0.1111015|     0.10|     0.13|  0.0000538|
-| flow             |                      2878|    0.77|   0.7703023|     0.77|     0.78|  0.0000029|
+| measure          |  No. of not missing values|  Median|        Mean|  Minimum|  Maximum|   Variance|
+|:-----------------|--------------------------:|-------:|-----------:|--------:|--------:|----------:|
+| nephelometer     |                       8634|   49.00|  49.3745657|    45.00|    93.00|  1.6780557|
+| temperature      |                       2878|   84.50|  84.6830438|    82.30|    87.60|  1.7180023|
+| relativeHumidity |                       8634|   54.60|  55.0061733|    46.20|    64.90|  7.6665285|
+| battery          |                       1464|    4.10|   4.0872268|     3.90|     4.30|  0.0078272|
+| orificePressure  |                       2878|    0.15|   0.1505455|     0.14|     0.16|  0.0000072|
+| inletPressure    |                       2878|    0.11|   0.1111015|     0.10|     0.13|  0.0000538|
+| flow             |                       2878|    0.77|   0.7703023|     0.77|     0.78|  0.0000029|
 
-`compareSettings` function
---------------------------
+### Shiny app developped for the CHAI project
 
-When analysing the measures, one is also interesting into knowing if the parameters were set in a consistent way. Two functionalities the `ammon` package allow to explore the upper part of an output MicroPEM file, that is, the settings. The first one is not a function, it simply corresponds to looking at the `control` field:
-
-``` r
-library("xtable")
-data("dummyMicroPEMChai")
-settings <- dummyMicroPEMChai$control
-controlTable <- data.frame(value = t(settings)[,1])
-controlTable %>% kable()
-```
-
-|                                   | value                                                                    |
-|-----------------------------------|:-------------------------------------------------------------------------|
-| downloadDate                      | 2015-07-04                                                               |
-| totalDownloadTime                 | 18                                                                       |
-| deviceSerial                      | MP1411                                                                   |
-| dateTimeHardware                  | 2013-02-15                                                               |
-| dateTimeSoftware                  | 2014-01-24                                                               |
-| version                           | v2.0.5136.37657                                                          |
-| participantID                     | C:/Users/msalmon/Documents/R/win-library/3.2/ammon/extdata/dummyCHAI.csv |
-| filterID                          | CM1411                                                                   |
-| participantWeight                 | NA                                                                       |
-| inletAerosolSize                  | PM2.5                                                                    |
-| laserCyclingVariablesDelay        | 1                                                                        |
-| laserCyclingVariablesSamplingTime | 1                                                                        |
-| laserCyclingVariablesOffTime      | 8                                                                        |
-| SystemTimes                       | No cycling - Always OnNA                                                 |
-| nephelometerSlope                 | 10.000                                                                   |
-| nephelometerOffset                | 0                                                                        |
-| nephelometerLogInterval           | 10                                                                       |
-| temperatureSlope                  | 10.000                                                                   |
-| temperatureOffset                 | 0                                                                        |
-| temperatureLog                    | 30                                                                       |
-| humiditySlope                     | 10.000                                                                   |
-| humidityOffset                    | 0                                                                        |
-| humidityLog                       | 10                                                                       |
-| inletPressureSlope                | 40.950.000                                                               |
-| inletPressureOffset               | 0                                                                        |
-| inletPressureLog                  | 30                                                                       |
-| inletPressureHighTarget           | 1280                                                                     |
-| inletPressureLowTarget            | 768                                                                      |
-| orificePressureSlope              | 40.950.000                                                               |
-| orificePressureOffset             | 0                                                                        |
-| orificePressureLog                | 30                                                                       |
-| orificePressureHighTarget         | 2167                                                                     |
-| orificePressureLowTarget          | 1592                                                                     |
-| flowLog                           | 30                                                                       |
-| flowHighTarget                    | 900                                                                      |
-| flowLowTarget                     | 200                                                                      |
-| flowWhatIsThis                    | 0.5                                                                      |
-| accelerometerLog                  | 5                                                                        |
-| batteryLog                        | 60                                                                       |
-| ventilationSlope                  | NA                                                                       |
-| ventilationOffset                 | NA                                                                       |
-
-Then, in some cases, once one has collected several output files from RTI MicroPEM devices, before using the measures one would like to check that e.g. the nephelometer slope is the same for all measures. The `compareSettings` function answers this need. It takes two arguments as input: the directory in which all (and only) the output files are, and the version of this output files (either "CHAI" or "Columbia"). It outputs a data.frame with all parameters as columns, each file corresponding to a line.
-
-ADD EXAMPLE LATER.
-
-Shiny app developped for the CHAI project
------------------------------------------
-
-In the context of the CHAI project, we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `runShinyApp` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
+In the context of the [CHAI project](http://www.chaiproject.org/), we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `runShinyApp` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
 
 -   One with the output of a call to `summaryTimeVarying`,
 
@@ -298,11 +244,7 @@ Below we show screenshots of the app.
 
 ![alt text](vignettes/shinyTabSettings.png)
 
-Modifying a `microPEM` object
-=============================
-
-The `filterTimeDate` function
------------------------------
+### The `filterTimeDate` function
 
 One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter fields for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
 
@@ -311,6 +253,16 @@ In the code below, we don't want measures from the first 12 hours of measures.
 ``` r
 # load the lubridate package
 library('lubridate')
+```
+
+    ## 
+    ## Attaching package: 'lubridate'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     date
+
+``` r
 # load the dummy MicroPEM object
 data('dummyMicroPEMChai')
 # look at the dimensions of the data.frame
@@ -344,7 +296,5 @@ shorterMicroPEM$measures %>% head() %>% knitr::kable()
 | 2015-07-03 20:02:40 |            49|         85.9|              54.7|       NA|             0.15|           0.12|  0.78|  -0.33|   0.27|  -0.98|       1.07|                | NA                |                                    0| 07/03/2015 20:02:40 |
 | 2015-07-03 20:02:45 |            NA|           NA|                NA|       NA|               NA|             NA|    NA|  -0.26|   0.29|  -1.00|       1.07|                | NA                |                                    0| 07/03/2015 20:02:45 |
 
-The `cleaningMeasures` function
--------------------------------
-
-For now, the `cleaningMeasures` function returns a MicroPEM-object where the nephelometer values are set to NA if the relative humidity at the same time is higher than 90% or if the values were negative. Nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done): if a stable period longer than 3 minutes can be identified for the HEPA period, using the changepoint cpt.mean function, there is a zero value. There can be no zero values, only one (beginning or end) or two. If there is only one zero value, it is substracted from all nephelometer values. If there are two, a linear interpolation is done between the two values and the resulting vector is substracted from the nephelometer values.
+From a bunch of output files to data ready for further analysis
+===============================================================

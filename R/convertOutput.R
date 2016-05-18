@@ -269,8 +269,8 @@ convertOutput <- function(path, version = NULL) {
     control <- dplyr::tbl_df(control)
     control <- suppressWarnings(control %>%
       mutate_each_(funs(as.character),
-                   list(quote(-matches("Time")),
-                        quote(-matches("Date")))) %>%
+                   list(quote(- dplyr::matches("Time")),
+                        quote(-dplyr::matches("Date")))) %>%
       mutate_each_(funs(as.numeric),
                    list(quote(11:13),
                         quote(14:41))))
