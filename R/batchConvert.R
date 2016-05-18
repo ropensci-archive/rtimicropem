@@ -1,6 +1,5 @@
 #' Reading several MicroPEM files and converting the settings and measurement tables to csv.
 #'
-#' @importFrom pathological decompose_path
 #' @importFrom readr read_csv
 #' @param pathDir path to the directory with files
 #' @param version the versions of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
@@ -78,7 +77,7 @@ batchConvert <- function(pathDir, version = NULL){
     converted <- convertOutput(file, version = version)
     settings <- converted$control
     settings <- mutate_(settings,
-                        filename = ~ pathological::decompose_path(file)$filename) # nolint
+                        filename = ~ file) # nolint
 
     readr::write_csv(settings,
                        path = paste0(pathDir,
