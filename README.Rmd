@@ -246,25 +246,4 @@ Below we show screenshots of the app.
 
 ![alt text](vignettes/shinyTabSettings.png)
 
-### The `filterTimeDate` function
-
-One could be interested in only a part of the time-varying measures, e.g. the measures from the afternoon. Using the `filterTimeDate`function on a `MicroPEM` object, one can get a `MicroPEM` object with shorter fields for the time-varying variables, based on the values of `fromTime`and `untilTime` that should be `POSIXct`.
-
-In the code below, we don't want measures from the first 12 hours of measures.
-
-```{r}
-# load the lubridate package
-library('lubridate')
-# load the dummy MicroPEM object
-data('dummyMicroPEMChai')
-# look at the dimensions of the data.frame
-dummyMicroPEMChai$measures %>% head() %>% knitr::kable()
-# command for only erasing measures from the first twelve hours
-shorterMicroPEM <- filterTimeDate(MicroPEMObject=dummyMicroPEMChai,
-untilTime=NULL,
-fromTime=min(dummyMicroPEMChai$measures$timeDate, na.rm=TRUE) + hours(12))
-# look at the dimensions of the data.frame
-shorterMicroPEM$measures %>% head() %>% knitr::kable()
-```
-
 # From a bunch of output files to data ready for further analysis
