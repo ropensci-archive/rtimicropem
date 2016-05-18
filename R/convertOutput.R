@@ -1,6 +1,6 @@
 #' Uses output file from MicroPEM to create a MicroPEM object.
 #'
-#' @importFrom dplyr tbl_df mutate_
+#' @importFrom dplyr tbl_df mutate_ mutate_each_ funs
 #' @importFrom lazyeval interp
 #' @importFrom lubridate hms hour minute second force_tz mdy dmy
 #' @importFrom pathological decompose_path
@@ -268,6 +268,13 @@ convertOutput <- function(path, version = NULL) {
                     ventilationSlope = ventilationSlope,
                     ventilationOffset = ventilationOffset)
     control <- dplyr::tbl_df(control)
+    control <- suppressWarnings(control %>%
+      mutate_each_(funs(as.character),
+                   list(quote(-matches("Time")),
+                        quote(-matches("Date")))) %>%
+      mutate_each_(funs(as.numeric),
+                   list(quote(11:13),
+                        quote(14:41))))
     ###########################################
     # CREATE THE OBJECT
     ###########################################
@@ -291,6 +298,9 @@ convertOutput <- function(path, version = NULL) {
                            originalDateTime = originalDateTime)
 
     measures <- dplyr::tbl_df(measures)
+    measures <- measures %>%
+      mutate_(shutDownReason = quote(as.character(shutDownReason))) %>%
+      mutate_(originalDateTime = quote(as.character(originalDateTime)))
 
     microPEMObject <- MicroPEM$new(control = control,
                           calibration = list(NA),
