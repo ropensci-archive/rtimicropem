@@ -14,6 +14,9 @@ environment:
   GITHUB_PAT:
     secure: zuFCb2IKZvA6E+eE5aSCdvaSd2Z60lgMFfJdtKGmqK67DA4l3Uz+VEPkLvrQiNam
 # Adapt as necessary starting from here
+  global:
+    WARNINGS_ARE_ERRORS: 1
+    USE_RTOOLS: true
 
   matrix:
   - R_VERSION: release
