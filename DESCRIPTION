@@ -17,7 +17,7 @@ Suggests:testthat,
     lintr
 Imports: lubridate,
    ggplot2,
-   dplyr,
+   dplyr (>= 0.4.3.9001),
    ggiraph,
    shiny,
     R6,
@@ -25,7 +25,6 @@ Imports: lubridate,
     tidyr,
     knitr,
     lazyeval,
-    pathological,
     readr
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
