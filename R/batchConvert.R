@@ -87,7 +87,7 @@ batchConvert <- function(pathDir, version = NULL){
 
     measures <- converted$measures
     measures <- mutate_(measures,
-                        filename = ~ pathological::decompose_path(file)$filename) # nolint
+                        filename = ~ file) # nolint
 
     readr::write_csv(measures,
                      path = paste0(pathDir,
