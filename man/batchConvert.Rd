@@ -4,7 +4,7 @@
 \alias{batchConvert}
 \title{Reading several MicroPEM files and converting the settings and measurement tables to csv.}
 \usage{
-batchConvert(pathDir, version = NULL)
+batchConvert(pathDir)
 }
 \arguments{
 \item{pathDir}{path to the directory with files

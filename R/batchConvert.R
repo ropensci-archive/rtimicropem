@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-batchConvert <- function(pathDir, version = NULL){
+batchConvert <- function(pathDir){
   # find files to transform
   listFiles <- list.files(pathDir,
                            full.names = TRUE)
