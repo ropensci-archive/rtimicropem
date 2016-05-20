@@ -2,7 +2,7 @@
 % Please edit documentation in R/cleaningMeasures.R
 \name{cleaningMeasures}
 \alias{cleaningMeasures}
-\title{Outputs clean nephelometer measures for analysis.}
+\title{Outputs clean rh_corrected_nephelometer measures for analysis.}
 \usage{
 cleaningMeasures(MicroPEMObject, hepaStart = FALSE, hepaEnd = FALSE)
 }
@@ -17,18 +17,18 @@ cleaningMeasures(MicroPEMObject, hepaStart = FALSE, hepaEnd = FALSE)
 A MicroPEM object.
 }
 \description{
-Outputs clean nephelometer measures for analysis.
+Outputs clean rh_corrected_nephelometer measures for analysis.
 }
 \details{
-Nephelometer values are set to NA if they are negative or
+rh_corrected_nephelometer values are set to NA if they are negative or
 if the RH at the same time is higher than 90\%.
-Nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done):
+rh_corrected_nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done):
 if a stable period longer than 3 minutes can be identified for the HEPA period,
 using the changepoint cpt.mean function, there is a zero value.
 There can be no zero values, only one (beginning or end) or two.
-If there is only one zero value, it is substracted from all nephelometer values.
+If there is only one zero value, it is substracted from all rh_corrected_nephelometer values.
 If there are two, a linear interpolation is done between the two values and the resulting vector
-is substracted from the nephelometer values.
+is substracted from the rh_corrected_nephelometer values.
 }
 \examples{
 data(dummyMicroPEMChai)
