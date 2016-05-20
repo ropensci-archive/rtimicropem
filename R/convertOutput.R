@@ -4,211 +4,173 @@
 #' @importFrom lazyeval interp
 #' @importFrom lubridate hms hour minute second force_tz mdy dmy
 #' @param path the path to the file
-#' @param version the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
-#' See the data in inst/data to see
-#' which one applies.
 #' @return A \code{MicroPEM} object.
 #' @examples
 #' MicroPEMExample <- convertOutput(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
 #'  version='CHAI')
 #' MicroPEMExample$plot()
 #' @export
-convertOutput <- function(path, version = NULL) {
-    if (is.null(version)) {
-        stop("Please provide a value for version.")
-    }
-    version <- match.arg(version, c("CHAI", "Columbia1", "Columbia2"))
-    if (version == "CHAI") {
-        functionDate <- lubridate::mdy
-    }
-    if (version == "Columbia1") {
-        functionDate <- lubridate::dmy
-    }
-    if (version == "Columbia2") {
-        functionDate <- lubridate::mdy
-    }
+convertOutput <- function(path) {
     ###########################################
     # READ THE DATA
     ###########################################
-    dataPEM <- read.csv(path, skip = 28, header = FALSE, fill = TRUE)
-    dataPEM <- dataPEM[dataPEM[, 1] != "Errored Line", ]
-    dataPEM[, 1] <- as.character(dataPEM[, 1])
-    dataPEM[, 2] <- as.character(dataPEM[, 2])
-    dataPEM <- dplyr::tbl_df(dataPEM)
 
-    # isolate names and erase spaces and hyphens
-    if (version == "CHAI") {
-        namesPEM <- read.csv(path, skip = 25, header = FALSE, nrow = 1)
-    } else {
-        namesPEM <- read.csv(path, skip = 24, header = FALSE, nrow = 1)
+    dummy <- readr::read_lines(path)
+    dummy <- dummy[dummy != ""]
+    dummy <- dummy[!is.na(dummy)]
+    dummy <- dummy[gsub(",", "", dummy) != ""]
+    dataPEM <- tbl_df(data.frame(name = dummy[25:length(dummy)]))
+    names_dataPEM <- strsplit(dummy[23], ",")[[1]]
+    goal_length <- length(strsplit(dummy[25], ",")[[1]])
+    if(length(names_dataPEM) == (goal_length - 1)){
+      names_dataPEM <- c(names_dataPEM, "message")
     }
-    namesPEM <- unlist(lapply(as.list(namesPEM), toString))
-    namesPEM <- gsub(" ", "", namesPEM)
-    namesPEM <- sub("-", "", namesPEM)
-    names(dataPEM) <- namesPEM
-    # convert month names if they are abbreviated
-    dataPEM$Date <- tolower(dataPEM$Date)
-    dataPEM$Date <- gsub("jan", "01", dataPEM$Date)
-    dataPEM$Date <- gsub("feb", "02", dataPEM$Date)
-    dataPEM$Date <- gsub("mar", "03", dataPEM$Date)
-    dataPEM$Date <- gsub("apr", "04", dataPEM$Date)
-    dataPEM$Date <- gsub("may", "05", dataPEM$Date)
-    dataPEM$Date <- gsub("jun", "06", dataPEM$Date)
-    dataPEM$Date <- gsub("jul", "07", dataPEM$Date)
-    dataPEM$Date <- gsub("aug", "08", dataPEM$Date)
-    dataPEM$Date <- gsub("sep", "09", dataPEM$Date)
-    dataPEM$Date <- gsub("oct", "10", dataPEM$Date)
-    dataPEM$Date <- gsub("nov", "11", dataPEM$Date)
-    dataPEM$Date <- gsub("dec", "12", dataPEM$Date)
+    names_dataPEM <- tolower(names_dataPEM)
+    names_dataPEM <- gsub(" ", "_", names_dataPEM)
+    names_dataPEM <- gsub("-", "_", names_dataPEM)
+    measures <- dataPEM %>% tidyr::separate(name,
+                                           names_dataPEM,
+                                           sep = ",")
+    measures$date <- transform_date(measures$date)
+    measures$time <- lubridate::hms(measures$time)
+    measures <- measures %>% mutate_(datetime = lazyeval::interp(
+      ~ update(date,
+               hour = hour(time),
+               minute = minute(time),
+               second = second(time))
+    )) %>%
+      select_(.dots = list(quote(-date), quote(-time)))%>%
+      select_(.dots = list(quote(datetime), quote(dplyr::everything())))
 
-    # get original date time
-    originalDateTime <- paste(dataPEM$Date, dataPEM$Time, sep = " ")
+    measures$rh_corrected_nephelometer <- as.numeric(measures$rh_corrected_nephelometer)
+    measures$temp <- as.numeric(measures$temp)
+    measures$rh <- as.numeric(measures$rh)
+    measures$battery <- as.numeric(measures$battery)
+    measures$inlet_press <- as.numeric(measures$inlet_press)
+    names(measures) <- gsub("flow_", "", names(measures))
+    measures$orifice_press <- as.numeric(measures$orifice_press)
 
-    # convert date and time
-    dataPEM <- mutate_(dataPEM,
-                       Date = interp(~ functionDate(Date)))
-    dataPEM <- mutate_(dataPEM,
-                       Time = interp(~ hms(Time)))
-#       dplyr::mutate(Date = lubridate::force_tz(Date,
-#         "Atlantic/Madeira")) %>%
-      # Warning: Time does not have time zone
-      # create a variable with date and time together
-    timeDate <- update(dataPEM$Date,
-                       hour = lubridate::hour(dataPEM$Time),
-                       minute = lubridate::minute(dataPEM$Time),
-                       second = lubridate::second(dataPEM$Time))
-    nephelometer <- as.numeric(dataPEM$RHCorrectedNephelometer)
-    temperature <- dataPEM$Temp
-    relativeHumidity <- dataPEM$RH
-    battery <- dataPEM$Battery
-    inletPressure <- dataPEM$InletPress
-
-    if (version == "CHAI") {
-        orificePressure <- dataPEM$OrificePress
-    } else {
-        orificePressure <- dataPEM$FlowOrificePress
-    }
-
-    flow <- dataPEM$Flow
-
-    xAxis <- dataPEM$Xaxis
-    yAxis <- dataPEM$Yaxis
-    zAxis <- dataPEM$Zaxis
-    vectorSum <- dataPEM$VectorSumComposite
-    if (version == "CHAI") {
-        shutDownReason <- dataPEM$ShutDownReason
-        wearingCompliance <- dataPEM$WearingCompliance
-        validityWearingComplianceValidation <-
-          dataPEM$ValidityWearingCompliancevalidation
-        if (is.na(validityWearingComplianceValidation[1])) {
-            validityWearingComplianceValidation <- rep(0, length(flow))
-        }
-    } else {
-        names(dataPEM)[14] <- "shutDownReason"
-        shutDownReason <- dataPEM$"shutDownReason"
-        wearingCompliance <- rep(NA, length(flow))
-        validityWearingComplianceValidation <- rep(0, length(flow))
-    }
-
+    measures$flow <- as.numeric(measures$flow)
+    measures$x_axis <- as.numeric(measures$x_axis)
+    measures$y_axis <- as.numeric(measures$y_axis)
+    measures$z_axis <- as.numeric(measures$z_axis)
+    measures$vector_sum_composite <- as.numeric(measures$vector_sum_composite)
     ###########################################
     # READ THE TOP OF THE FILE
     ###########################################
-    participantID <- read.csv(path, skip = 7, header = FALSE, nrow = 1)[1, 2]
-    if (is.na(participantID)) {
-        participantID <- path
-    }
 
+    # downloadDate
+    downloadDate <- strsplit(dummy[2], ",")[[1]][2]
+    downloadDate <- transform_date(downloadDate)
 
-    downloadDate <- mdy(read.csv(path, skip = 1,
-                                 header = FALSE,
-                                 nrow = 1)[1, 2],
-                        tz = "Asia/Kolkata")
+    # totalDownloadTime
+    totalDownloadTime <- strsplit(dummy[3], ",")[[1]][2]
+    # deviceSerial
+    deviceSerial <- strsplit(dummy[4], ",")[[1]][2]
+    # dateTimeHardware
+    dateTimeHardware <- strsplit(dummy[5], ",")[[1]][2]
+    dateTimeHardware <- transform_date(dateTimeHardware)
 
-    totalDownloadTime <- read.csv(path, skip = 2,
-                                  header = FALSE,
-                                  nrow = 1)[1, 2]
+    # dateTimeSoftware
+    dateTimeSoftware <- strsplit(dummy[6], ",")[[1]][2]
+    dateTimeSoftware <- transform_date(dateTimeSoftware)
 
-    deviceSerial <- read.csv(path, skip = 4,
-                             header = FALSE,
-                             nrow = 1)[1, 2]
+    # version
+    version <- strsplit(dummy[6], ",")[[1]][3]
 
-    dateTimeHardware <- functionDate(read.csv(path,
-                                              skip = 5,
-                                              header = FALSE,
-                                              nrow = 1)[1, 2],
-                                     tz = "Asia/Kolkata")
+    # participantID
+    participantID <- strsplit(dummy[7], ",")[[1]][2]
 
-    dateTimeSoftware <- functionDate(read.csv(path, skip = 6,
-                                              header = FALSE,
-                                              nrow = 1)[1, 2],
-                                     tz = "Asia/Kolkata")
+    # filterID
+    filterID <- strsplit(dummy[8], ",")[[1]][2]
 
-    version <- read.csv(path, skip = 6, header = FALSE,
-                        nrow = 1)[1, 3]
+    # participantWeight
+    participantWeight <- suppressWarnings(
+      as.numeric(strsplit(dummy[9], ",")[[1]][2]))
 
-    filterID <- toString(read.csv(path, skip = 8,
-                                  header = FALSE,
-                                  nrow = 1)[1, 2])
+    # inletAerosolSize
+    inletAerosolSize <- strsplit(dummy[10], ",")[[1]][2]
 
-    participantWeight <- read.csv(path, skip = 9,
-                                  header = FALSE,
-                                  nrow = 1)[1, 2]
+    # laserCyclingVariablesDelay
+    laser_temp <- strsplit(dummy[11], ",")[[1]]
+    laserCyclingVariablesDelay <- as.numeric(laser_temp[2])
 
-    inletAerosolSize <- read.csv(path, skip = 10,
-                                 header = FALSE,
-                                 nrow = 1)[1, 2]
+    # laserCyclingVariablesSamplingTime
+    laserCyclingVariablesSamplingTime <- as.numeric(laser_temp[3])
 
-    laserCyclingVariablesDelay <- read.csv(path, skip = 11,
-                                           header = FALSE,
-                                           nrow = 1)[1, 2]
+    # laserCyclingVariablesOffTime
+    laserCyclingVariablesOffTime <- as.numeric(laser_temp[4])
 
-    laserCyclingVariablesSamplingTime <- read.csv(path, skip = 11,
-                                                  header = FALSE,
-                                                  nrow = 1)[1, 3]
+    # SystemTimes
+    SystemTimes <- paste(strsplit(dummy[12], ",")[[1]][2],
+                         strsplit(dummy[12], ",")[[1]][3])
 
-    laserCyclingVariablesOffTime <- read.csv(path, skip = 11,
-                                             header = FALSE,
-                                             nrow = 1)[1, 4]
+    # nephelometerSlope
+    nephelometer_temp <- strsplit(dummy[14], ",")[[1]]
+    nephelometerSlope <- as.numeric(nephelometer_temp[2])
+    # nephelometerOffset
+    nephelometerOffset <- as.numeric(nephelometer_temp[3])
+    # nephelometerLogInterval
+    nephelometerLogInterval <- as.numeric(nephelometer_temp[4])
 
-    SystemTimes <- paste0(read.csv(path, skip = 12,
-                                   header = FALSE,
-                                   nrow = 1)[1, 2],
-                          read.csv(path, skip = 12,
-                                   header = FALSE,
-                                   nrow = 1)[1, 3])
+    # temperatureSlope
+    temperature_temp <- strsplit(dummy[15], ",")[[1]]
+    temperatureSlope <- as.numeric(temperature_temp[2])
+    # temperatureOffset
+    temperatureOffset <- as.numeric(temperature_temp[3])
+    # temperatureLog
+    temperatureLog <- as.numeric(temperature_temp[4])
 
-    tempTable <- read.csv(path, skip = 14,
-                          header = FALSE, nrow = 10)
-    tempTable <- cbind(tempTable[, 2:ncol(tempTable)],
-                       rep(NA, nrow(tempTable)))
-    nephelometerSlope <- tempTable[1, 1]
-    nephelometerOffset <- tempTable[1, 2]
-    nephelometerLogInterval <- tempTable[1, 3]
-    temperatureSlope <- tempTable[2, 1]
-    temperatureOffset <- tempTable[2, 2]
-    temperatureLog <- tempTable[2, 3]
-    humiditySlope <- tempTable[3, 1]
-    humidityOffset <- tempTable[3, 2]
-    humidityLog <- tempTable[3, 3]
-    inletPressureSlope <- tempTable[4, 1]
-    inletPressureOffset <- tempTable[4, 2]
-    inletPressureLog <- tempTable[4, 3]
-    inletPressureHighTarget <- tempTable[4, 4]
-    inletPressureLowTarget <- tempTable[4, 5]
-    orificePressureSlope <- tempTable[5, 1]
-    orificePressureOffset <- tempTable[5, 2]
-    orificePressureLog <- tempTable[5, 3]
-    orificePressureHighTarget <- tempTable[5, 4]
-    orificePressureLowTarget <- tempTable[5, 5]
-    flowLog <- tempTable[6, 3]
-    flowHighTarget <- tempTable[6, 4]
-    flowLowTarget <- tempTable[6, 5]
-    flowWhatIsThis <- tempTable[6, 6]
-    accelerometerLog <- tempTable[7, 3]
-    batteryLog <- tempTable[8, 3]
-    ventilationSlope <- tempTable[9, 1]
-    ventilationOffset <- tempTable[9, 2]
+    # humiditySlope
+    humidity_temp <- strsplit(dummy[16], ",")[[1]]
+    humiditySlope <- as.numeric(humidity_temp[2])
+    # humidityOffset
+    humidityOffset <- as.numeric(humidity_temp[3])
+    # humidityLog
+    humidityLog <- as.numeric(humidity_temp[4])
 
+    # inletPressureSlope
+    inletPressure_temp <- strsplit(dummy[17], ",")[[1]]
+    inletPressureSlope <- as.numeric(inletPressure_temp[2])
+    # inletPressureOffset
+    inletPressureOffset <- as.numeric(inletPressure_temp[3])
+    # inletPressureLog
+    inletPressureLog <- as.numeric(inletPressure_temp[4])
+    # inletPressureHighTarget
+    inletPressureHighTarget <- as.numeric(inletPressure_temp[5])
+    # inletPressureLowTarget
+    inletPressureLowTarget <- as.numeric(inletPressure_temp[6])
+
+    # orificePressureSlope
+    orificePressure_temp <- strsplit(dummy[18], ",")[[1]]
+    orificePressureSlope <- as.numeric(orificePressure_temp[2])
+    # orificePressureOffset
+    orificePressureOffset <- as.numeric(orificePressure_temp[3])
+    # orificePressureLog
+    orificePressureLog <- as.numeric(orificePressure_temp[4])
+    # orificePressureHighTarget
+    orificePressureHighTarget <- as.numeric(orificePressure_temp[5])
+    # orificePressureLowTarget
+    orificePressureLowTarget <- as.numeric(orificePressure_temp[6])
+
+    # flowLog
+    flow_temp <- strsplit(dummy[19], ",")[[1]]
+    flowLog <- as.numeric(flow_temp[4])
+    # flowHighTarget
+    flowHighTarget <- as.numeric(flow_temp[5])
+    # flowLowTarget
+    flowLowTarget <- as.numeric(flow_temp[6])
+    # flowWhatIsThis
+    flowWhatIsThis <- as.numeric(flow_temp[7])
+
+    # accelerometerLog
+    accelerometerLog <- as.numeric(strsplit(dummy[20], ",")[[1]][4])
+    # batteryLog
+    batteryLog <- as.numeric(strsplit(dummy[21], ",")[[1]][4])
+    # ventilationSlope
+    ventilationSlope <- suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][2]))
+    # ventilationOffset
+    ventilationOffset <- suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][3]))
     ###########################################
     # control table
     ###########################################
@@ -267,39 +229,10 @@ convertOutput <- function(path, version = NULL) {
                     ventilationSlope = ventilationSlope,
                     ventilationOffset = ventilationOffset)
     control <- dplyr::tbl_df(control)
-    control <- suppressWarnings(control %>%
-      mutate_each_(funs(as.character),
-                   list(quote(- dplyr::matches("Time")),
-                        quote(-dplyr::matches("Date")))) %>%
-      mutate_each_(funs(as.numeric),
-                   list(quote(11:13),
-                        quote(14:41))))
     ###########################################
     # CREATE THE OBJECT
     ###########################################
 
-    measures <- data.frame(timeDate = timeDate,
-                           nephelometer = nephelometer,
-                           temperature = temperature,
-                           relativeHumidity = relativeHumidity,
-                           battery = battery,
-                           orificePressure = orificePressure,
-                           inletPressure = inletPressure,
-                           flow = flow,
-                           xAxis = xAxis,
-                           yAxis = yAxis,
-                           zAxis = zAxis,
-                           vectorSum = vectorSum,
-                           shutDownReason = shutDownReason,
-                           wearingCompliance = wearingCompliance,
-                           validityWearingComplianceValidation =
-                             validityWearingComplianceValidation,
-                           originalDateTime = originalDateTime)
-
-    measures <- dplyr::tbl_df(measures)
-    measures <- measures %>%
-      mutate_(shutDownReason = quote(as.character(shutDownReason))) %>%
-      mutate_(originalDateTime = quote(as.character(originalDateTime)))
 
     microPEMObject <- MicroPEM$new(control = control,
                           calibration = list(NA),
@@ -308,3 +241,19 @@ convertOutput <- function(path, version = NULL) {
     return(microPEMObject)
 }
 ########################################################################
+transform_date <- function(date){
+  date <- tolower(date)
+  date <- gsub("jan", "01", date)
+  date <- gsub("feb", "02", date)
+  date <- gsub("mar", "03", date)
+  date <- gsub("apr", "04", date)
+  date <- gsub("may", "05", date)
+  date <- gsub("jun", "06", date)
+  date <- gsub("jul", "07", date)
+  date <- gsub("aug", "08", date)
+  date <- gsub("sep", "09", date)
+  date <- gsub("oct", "10", date)
+  date <- gsub("nov", "11", date)
+  date <- gsub("dec", "12", date)
+  lubridate::parse_date_time(date, orders = c("mdy", "dmy"))
+}

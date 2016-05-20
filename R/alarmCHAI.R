@@ -26,14 +26,14 @@ alarmCHAI <- function(MicroPEMObject) {
     }
 
     # Not too many measures
-    if (sum(!is.na(MicroPEMObject$measures$nephelometer)) > 10000) {
+    if (sum(!is.na(MicroPEMObject$measures$rh_corrected_nephelometer)) > 10000) {
         Alarm <- c(Alarm, "Maybe two days of measures")
         Action <- c(Action, "Please contact Sreekanth")
     }
 
     # More than 2% negative values
-    if (sum(MicroPEMObject$measures$nephelometer < 0, na.rm = TRUE) >
-        0.02 * length(MicroPEMObject$measures$nephelometer)) {
+    if (sum(MicroPEMObject$measures$rh_corrected_nephelometer < 0, na.rm = TRUE) >
+        0.02 * length(MicroPEMObject$measures$rh_corrected_nephelometer)) {
         Alarm <- c(Alarm, "Too many negative values")
         Action <- c(Action, "Please contact Sreekanth")
     }

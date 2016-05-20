@@ -4,8 +4,7 @@ library("ammon")
 # DATA CHAI
 ####################################################
 dummyMicroPEMChai <- convertOutput(system.file("extdata", "dummyCHAI.csv",
-                                               package = "ammon"),
-                                   version="CHAI")
+                                               package = "ammon"))
 save(dummyMicroPEMChai, file = "data/dummyMicroPEMChai.RData", compress='xz')
 
 
@@ -14,8 +13,7 @@ save(dummyMicroPEMChai, file = "data/dummyMicroPEMChai.RData", compress='xz')
 ####################################################
 dummyMicroPEMC1 <- convertOutput(system.file("extdata",
                                              "dummyColumbia.csv",
-                                             package = "ammon"),
-                                 version="Columbia1")
+                                             package = "ammon"))
 save(dummyMicroPEMC1, file = "data/dummyMicroPEMC1.RData", compress='xz')
 
 
@@ -25,6 +23,5 @@ save(dummyMicroPEMC1, file = "data/dummyMicroPEMC1.RData", compress='xz')
 ####################################################
 dummyMicroPEMC2 <- convertOutput(system.file("extdata",
                                              "dummyColumbia2.csv",
-                                             package = "ammon"),
-                                 version="Columbia2")
+                                             package = "ammon"))
 save(dummyMicroPEMC2, file = "data/dummyMicroPEMC2.RData", compress='xz')

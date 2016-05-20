@@ -17,7 +17,7 @@ Suggests:testthat,
     lintr
 Imports: lubridate,
    ggplot2,
-   dplyr (>= 0.4.3.9001),
+   dplyr (>= 0.4.3),
    ggiraph,
    shiny,
     R6,

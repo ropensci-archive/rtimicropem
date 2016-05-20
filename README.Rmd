@@ -59,123 +59,19 @@ We will start by presenting the `control` field.
 
 ## `control` field
 
-This field is a data.frame (dplyr tbl_df) that includes 41 variables:
-
-* `downloadDate` which is the date at which the files was downloaded from the device to a PC. It is a `POSIXt`.        
-
-* `totalDownloadTime` gives the total download time, in seconds.
-
-* `deviceSerial` is the serial number of the device, which could be useful for e.g. finding a faulty device based on many output files.
-
-* `dateTimeHardware` indicates the date of release of the device. It is a `POSIXt`.             
-
-* `dateTimeSoftware`  indicates the date of release of the software used on the device. It is a `POSIXt`.           
-
-* `version` indicates the version of the software.                         
-
-* `participantID` indicated the participantID, deduced either from the corresponding cell in the output file, or from the filename.
-
-* `filterID` is the ID number of the filter used for these measures.      
-
-* `participantWeight` is a numeric variable.   
-
-* `inletAerosolSize` is a factor variable, either "PM2.5" or "PM10". Please note that this variable does not provide confirmation that this aerosol size was measured, since it was chosen by hand by the person preparing the device for these measures. One could choose "PM2.5" and put the inlet for PM10, in which case PM10, not PM2.5, would be measured.
-
-* `laserCyclingVariablesDelay`      
-
-* `laserCyclingVariablesSamplingTime`
-
-* `laserCyclingVariablesOffTime`     
-
-* `SystemTimes` indicates whether the device was always on, or whether it was on/off, in which case the length of the on and off periods are given in seconds.                  
-
-* `nephelometerSlope`                
-
-* `nephelometerOffset`             
-
-* `nephelometerLogInterval`   indicates how many seconds there are between measures of PM.     
-
-* `temperatureSlope`                 
-
-* `temperatureOffset`            
-
-* `temperatureLog` indicates how many seconds there are between measures of temperature.              
-
-* `humiditySlope`                    
-
-* `humidityOffset`               
-
-* `humidityLog` indicates how many seconds there are between measures of humidity.                  
-
-* `inletPressureSlope`               
-
-* `inletPressureOffset`             
-
-* `inletPressureLog` indicates how many seconds there are between measures of inlet pressure.                
-
-* `inletPressureHighTarget`          
-
-* `inletPressureLowTarget`          
-
-* `orificePressureSlope`            
-
-* `orificePressureOffset`            
-
-* `orificePressureLog` indicates how many seconds there are between measures of orifice pressure.             
-
-* `orificePressureHighTarget`       
-
-* `orificePressureLowTarget`         
-
-* `flowLog` indicates how many seconds there are between measures of flow.                           
-
-* `flowHighTarget`                   
-
-* `flowLowTarget`                    
-
-* `flowWhatIsThis`                   
-
-* `accelerometerLog`                
-
-* `batteryLog`  indicates how many seconds there are between measures of battery.                      
-
-* `ventilationSlope`                
-
-* `ventilationOffset`            
+This field is a data.frame (dplyr tbl_df) that includes 41 variables.
 
 
 ## `measures` field
 
-This field is a data.frame (dplyr tbl_df) with these 15 columns:
-
-* `timeDate` is a `POSIXt` giving the date and time of each measure.
-
-* `nephelometer` is a numeric variable indicating the RH-corrected PM2.5 concentration in $\micro g/m^3$
-
-* `temperature` is a numeric variable, in centigrade.
-
-* `relativeHumidity` is a proportion.
-
-* `battery`is a numeric variable.
-
-* `orifice pressure` and `inlet pressure` are numeric variables, in inches of water.
-
-* `flow` is a numeric variable, in liters per minute.
-
-* `xAxis`, `yAxis` and `zAxis` are accelerometer measures in three dimensions, with `vectorSum` being their sum.
-
-* `shutDownReason` is a factor variable indicating the reason for shutdown, in case a shutdown happened at this timepint.
-
-* `wearingCompliance` and `validityWearingCompliance` are respectively a logical and a character variables.
-
+This field is a data.frame (dplyr tbl_df) with the time-varying variables.
 ## The `convertOutput` function.
 
-The `convertOutput` only takes two arguments as input: the path to the output file, and the version of the output file, either "CHAI" or "Columbia" (version with one blank line after each line with content). The result of a call to this function is an object of the class `MicroPEM`. Below is a example of a call to `convertOutput`.
+The `convertOutput` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `MicroPEM`. Below is a example of a call to `convertOutput`.
 
 ```{r, warning=FALSE, message=FALSE}
 library("ammon")
-MicroPEMExample <- convertOutput(system.file("extdata", "dummyCHAI.csv", package = "ammon"),
-version="CHAI")
+MicroPEMExample <- convertOutput(system.file("extdata", "dummyCHAI.csv", package = "ammon"))
 class(MicroPEMExample)
 
 ```

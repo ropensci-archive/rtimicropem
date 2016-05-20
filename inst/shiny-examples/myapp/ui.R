@@ -24,10 +24,6 @@ shinyUI(fluidPage(
                   '.csv',
                   '.tsv'
                 )),
-      selectInput("version", "Version:",
-                  c("CHAI" = "CHAI",
-                    "Columbia1" = "Columbia1",
-                    "Columbia2" = "Columbia2")),
       actionButton("go", "Go")
     ),
     mainPanel(

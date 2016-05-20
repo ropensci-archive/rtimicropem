@@ -2,7 +2,6 @@
 #'
 #' @importFrom readr read_csv
 #' @param pathDir path to the directory with files
-#' @param version the versions of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
 #' See the data in inst/data to see
 #' which one applies.
 #'
@@ -74,7 +73,7 @@ batchConvert <- function(pathDir, version = NULL){
 
   # loop over files
   for (file in listFiles){
-    converted <- convertOutput(file, version = version)
+    converted <- convertOutput(file)
     settings <- converted$control
     settings <- mutate_(settings,
                         filename = ~ file) # nolint
