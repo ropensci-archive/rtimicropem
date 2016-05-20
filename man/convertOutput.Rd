@@ -4,14 +4,10 @@
 \alias{convertOutput}
 \title{Uses output file from MicroPEM to create a MicroPEM object.}
 \usage{
-convertOutput(path, version = NULL)
+convertOutput(path)
 }
 \arguments{
 \item{path}{the path to the file}
-
-\item{version}{the version of the output file, either 'CHAI', 'Columbia1' or 'Columbia2'.
-See the data in inst/data to see
-which one applies.}
 }
 \value{
 A \code{MicroPEM} object.
