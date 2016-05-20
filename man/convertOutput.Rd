@@ -16,8 +16,7 @@ A \code{MicroPEM} object.
 Uses output file from MicroPEM to create a MicroPEM object.
 }
 \examples{
-MicroPEMExample <- convertOutput(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
- version='CHAI')
+MicroPEMExample <- convertOutput(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'))
 MicroPEMExample$plot()
 }
 
