@@ -19,13 +19,18 @@ environment:
     USE_RTOOLS: true
 
   matrix:
-  - R_VERSION: release
-    R_ARCH: x64
+  - R_VERSION: stable
+
+  - R_VERSION: patched
+
+  - R_VERSION: oldrel
+
+  - R_VERSION: devel
 
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github hadley/dplyr
+  - travis-tool.sh install_github jimhester/covr
 
 test_script:
   - travis-tool.sh run_tests
