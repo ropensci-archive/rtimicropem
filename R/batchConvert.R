@@ -36,7 +36,6 @@ batchConvert <- function(pathDir){
                               "vectorSum", "shutDownReason",
                               "wearingCompliance",
                               "validityWearingComplianceValidation",
-                              "originalDateTime",
                               "filename"),
                    path = paste0(pathDir,
                                  "/measures.csv"),

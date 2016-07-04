@@ -17,6 +17,7 @@ convertOutput <- function(path) {
     dummy <- readr::read_lines(path)
     dummy <- dummy[dummy != ""]
     dummy <- dummy[!is.na(dummy)]
+    dummy <- dummy[!grepl("Errored Line", dummy)]
     dummy <- dummy[gsub(",", "", dummy) != ""]
     dataPEM <- tbl_df(data.frame(name = dummy[25:length(dummy)]))
     names_dataPEM <- strsplit(dummy[23], ",")[[1]]
