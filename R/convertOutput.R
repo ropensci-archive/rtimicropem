@@ -28,9 +28,26 @@ convertOutput <- function(path) {
     names_dataPEM <- tolower(names_dataPEM)
     names_dataPEM <- gsub(" ", "_", names_dataPEM)
     names_dataPEM <- gsub("-", "_", names_dataPEM)
-    measures <- dataPEM %>% tidyr::separate(name,
-                                           names_dataPEM,
-                                           sep = ",")
+    measures <-  suppressWarnings(tidyr::separate(dataPEM,
+                                                  name,
+                                       names_dataPEM,
+                                       sep = ","))
+    # known wrong dates
+    measures$date <- gsub("21/05/105", "5/21/2015", measures$date)
+    measures$date <- gsub("35/01/16", "29/01/2016", measures$date)
+    measures$date <- gsub("2901/01/29", "1/29/2016", measures$date)
+    measures$date <- gsub("0B/02/16", "2/11/2016", measures$date)
+    measures$date <- gsub("106/06/14", "6/14/2015", measures$date)
+    measures$date <- gsub("15/06/106", "6/15/2015", measures$date)
+    measures$date <- gsub("106/06/15", "6/15/2015", measures$date)
+    lala <- transform_date(measures$date)
+    if(any(is.na(lala))){
+      print(path)
+      print(measures$date[is.na(lala)])
+    }
+
+
+    # transform dates
     measures$date <- transform_date(measures$date)
     measures$time <- lubridate::hms(measures$time)
     measures <- measures %>% mutate_(datetime = lazyeval::interp(
