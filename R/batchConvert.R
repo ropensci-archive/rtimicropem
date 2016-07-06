@@ -42,11 +42,11 @@ function_tables <- function(list_micropem, path_output){
   function_bind(list_micropem, name = "control") %>%
     readr::write_csv(path = paste0(path_output,
                                    "/settings.csv"),
-                     append = TRUE)
+                     append = FALSE)
 
   function_bind(list_micropem, name = "measures") %>%
     readr::write_csv(path = paste0(path_output,
                                    "/measures.csv"),
-                     append = TRUE)
+                     append = FALSE)
 
 }
