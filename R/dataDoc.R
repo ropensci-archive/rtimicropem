@@ -8,7 +8,7 @@
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' MicroPEMExample <- convertOutput(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
+#' MicroPEMExample <- convert_output(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
 #' version='CHAI')
 #' MicroPEMExample$plot()
 #' }
@@ -25,7 +25,7 @@ NULL
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' MicroPEMExample <- convertOutput(system.file('extdata', 'dummyColumbia.csv', package = 'ammon'),
+#' MicroPEMExample <- convert_output(system.file('extdata', 'dummyColumbia.csv', package = 'ammon'),
 #' version='Columbia1')
 #' MicroPEMExample$plot()
 #' }
@@ -41,7 +41,7 @@ NULL
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' MicroPEMExample <- convertOutput(system.file('extdata', 'dummyColumbia2.csv', package = 'ammon'),
+#' MicroPEMExample <- convert_output(system.file('extdata', 'dummyColumbia2.csv', package = 'ammon'),
 #' version='Columbia2')
 #' MicroPEMExample$plot()
 #' }

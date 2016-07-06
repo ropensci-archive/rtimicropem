@@ -18,7 +18,7 @@ shinyServer(function(input, output) {
     return(NULL)
 
     else {
-      convertOutput(file()$datapath)
+      convert_output(file()$datapath)
     }
        })
 

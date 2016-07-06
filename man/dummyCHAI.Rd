@@ -10,7 +10,7 @@ A dummy csv MicroPEM output file of version CHAI of the output file.
 }
 \examples{
 \dontrun{
-MicroPEMExample <- convertOutput(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
+MicroPEMExample <- convert_output(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
 version='CHAI')
 MicroPEMExample$plot()
 }

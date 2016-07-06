@@ -10,7 +10,7 @@ A dummy csv MicroPEM output file of version Columbia2 of the output file.
 }
 \examples{
 \dontrun{
-MicroPEMExample <- convertOutput(system.file('extdata', 'dummyColumbia2.csv', package = 'ammon'),
+MicroPEMExample <- convert_output(system.file('extdata', 'dummyColumbia2.csv', package = 'ammon'),
 version='Columbia2')
 MicroPEMExample$plot()
 }

@@ -31,7 +31,7 @@ batch_convert <- function(path_input, path_output = path_input){
                 path_output))# nolint
   }
 
-  lapply(listFiles, convertOutput) %>%
+  lapply(listFiles, convert_output) %>%
     function_tables(path_output)
 
 
