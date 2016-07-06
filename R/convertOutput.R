@@ -40,13 +40,6 @@ convertOutput <- function(path) {
     measures$date <- gsub("106/06/14", "6/14/2015", measures$date)
     measures$date <- gsub("15/06/106", "6/15/2015", measures$date)
     measures$date <- gsub("106/06/15", "6/15/2015", measures$date)
-    lala <- transform_date(measures$date)
-    if(any(is.na(lala))){
-      print(path)
-      print(measures$date[is.na(lala)])
-    }
-
-
     # transform dates
     measures$date <- transform_date(measures$date)
     measures$time <- lubridate::hms(measures$time)
@@ -148,7 +141,7 @@ convertOutput <- function(path) {
 
     # inletPressureSlope
     inletPressure_temp <- strsplit(dummy[17], ",")[[1]]
-    inletPressureSlope <- as.numeric(inletPressure_temp[2])
+    inletPressureSlope <- as.character(inletPressure_temp[2])
     # inletPressureOffset
     inletPressureOffset <- as.numeric(inletPressure_temp[3])
     # inletPressureLog
@@ -160,7 +153,7 @@ convertOutput <- function(path) {
 
     # orificePressureSlope
     orificePressure_temp <- strsplit(dummy[18], ",")[[1]]
-    orificePressureSlope <- as.numeric(orificePressure_temp[2])
+    orificePressureSlope <- as.character(orificePressure_temp[2])
     # orificePressureOffset
     orificePressureOffset <- as.numeric(orificePressure_temp[3])
     # orificePressureLog
@@ -179,7 +172,6 @@ convertOutput <- function(path) {
     flowLowTarget <- as.numeric(flow_temp[6])
     # flowWhatIsThis
     flowWhatIsThis <- as.numeric(flow_temp[7])
-
     # accelerometerLog
     accelerometerLog <- as.numeric(strsplit(dummy[20], ",")[[1]][4])
     # batteryLog
