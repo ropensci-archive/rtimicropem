@@ -13,7 +13,7 @@ install_github("masalmon/ammon", build_vignettes=TRUE)
 Introduction
 ============
 
-This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (<https://en.wikipedia.org/wiki/Amun#Greece> ) because it helps us to Analyse Micropem MONitoring data in a very good, nearly godly, way.
+This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (<https://en.wikipedia.org/wiki/Amun#Greece> ).
 
 The goal of the package functions is to help in two main tasks:
 
