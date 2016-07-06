@@ -9,7 +9,11 @@
 #' The function saves results in the input directory as csv files with a "," as separator.
 #' One file is settings.csv with all settings, the other one is measures.csv
 #' It saves them directly for not loading all of them at the same time in the session.
-#' @return
+#' @return The function does not return anything.
+#' @examples \dontrun{
+#' batchConvert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
+#' system.file('extdata', 'dummyCHAI.csv', package = 'ammon')),
+#' path_output = getwd())}
 #' @export
 #'
 #' @examples

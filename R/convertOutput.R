@@ -3,6 +3,7 @@
 #' @importFrom dplyr tbl_df mutate_ mutate_each_ funs matches
 #' @importFrom lazyeval interp
 #' @importFrom lubridate hms hour minute second force_tz mdy dmy
+#' @importFrom tibble tibble
 #' @param path the path to the file
 #' @return A \code{MicroPEM} object.
 #' @examples
@@ -74,9 +75,9 @@ convertOutput <- function(path) {
     downloadDate <- transform_date(downloadDate)
 
     # totalDownloadTime
-    totalDownloadTime <- strsplit(dummy[3], ",")[[1]][2]
+    totalDownloadTime <- as.numeric(strsplit(dummy[3], ",")[[1]][2])
     # deviceSerial
-    deviceSerial <- strsplit(dummy[4], ",")[[1]][2]
+    deviceSerial <- as.character(strsplit(dummy[4], ",")[[1]][2])
     # dateTimeHardware
     dateTimeHardware <- strsplit(dummy[5], ",")[[1]][2]
     dateTimeHardware <- transform_date(dateTimeHardware)
@@ -86,7 +87,7 @@ convertOutput <- function(path) {
     dateTimeSoftware <- transform_date(dateTimeSoftware)
 
     # version
-    version <- strsplit(dummy[6], ",")[[1]][3]
+    version <- as.character(strsplit(dummy[6], ",")[[1]][3])
 
     # participantID
     participantID <- strsplit(dummy[7], ",")[[1]][2]
@@ -99,7 +100,7 @@ convertOutput <- function(path) {
       as.numeric(strsplit(dummy[9], ",")[[1]][2]))
 
     # inletAerosolSize
-    inletAerosolSize <- strsplit(dummy[10], ",")[[1]][2]
+    inletAerosolSize <- as.character(strsplit(dummy[10], ",")[[1]][2])
 
     # laserCyclingVariablesDelay
     laser_temp <- strsplit(dummy[11], ",")[[1]]
@@ -112,8 +113,8 @@ convertOutput <- function(path) {
     laserCyclingVariablesOffTime <- as.numeric(laser_temp[4])
 
     # SystemTimes
-    SystemTimes <- paste(strsplit(dummy[12], ",")[[1]][2],
-                         strsplit(dummy[12], ",")[[1]][3])
+    SystemTimes <- as.character(paste(strsplit(dummy[12], ",")[[1]][2],
+                         strsplit(dummy[12], ",")[[1]][3]))
 
     # nephelometerSlope
     nephelometer_temp <- strsplit(dummy[14], ",")[[1]]
@@ -183,7 +184,7 @@ convertOutput <- function(path) {
     ###########################################
     # control table
     ###########################################
-    control <- data.frame(downloadDate = downloadDate,
+    control <- tibble::tibble(downloadDate = downloadDate,
                     totalDownloadTime = totalDownloadTime,
                     deviceSerial = deviceSerial,
                     dateTimeHardware = dateTimeHardware,
