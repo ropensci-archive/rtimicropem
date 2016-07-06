@@ -1,7 +1,8 @@
 #' Reading several MicroPEM files and converting the settings and measurement tables to csv.
 #'
 #' @importFrom readr read_csv
-#' @param pathDir path to the directory with files
+#' @param path_input path to the directory with files
+#' @param path_output path where the files should be created, by default equal to \code{path_input}.
 #' See the data in inst/data to see
 #' which one applies.
 #'
@@ -12,89 +13,34 @@
 #' @export
 #'
 #' @examples
-batchConvert <- function(pathDir){
+batchConvert <- function(path_input, path_output = path_input){
   # find files to transform
-  listFiles <- list.files(pathDir,
+  listFiles <- list.files(path_input,
                            full.names = TRUE)
   listFiles <- listFiles[grepl(".csv",
                                  listFiles) == TRUE]
 
-  if (file.exists(paste0(pathDir,
+  if (file.exists(paste0(path_output,
                          "/settings.csv")) |
-      file.exists(paste0(pathDir,
+      file.exists(paste0(path_output,
                          "/measures.csv"))){
-    stop("There are already a settings.csv and/or a measures.csv in the directory !")# nolint
+    stop(paste0("There are already a settings.csv and/or a measures.csv in the directory ",
+                path_output))# nolint
   }
 
-  # prepare file with measures
-
-  readr::write_csv(data.frame("timeDate", "nephelometer",
-                              "temperature", "relativeHumidity",
-                              "battery", "orificePressure",
-                              "inletPressure", "flow",
-                              "xAxis", "yAxis", "zAxis",
-                              "vectorSum", "shutDownReason",
-                              "wearingCompliance",
-                              "validityWearingComplianceValidation",
-                              "filename"),
-                   path = paste0(pathDir,
-                                 "/measures.csv"),
-                   append = TRUE)
-
-  # prepare file with settings
-  readr::write_csv(data.frame("downloadDate", "totalDownloadTime",
-                              "deviceSerial", "dateTimeHardware",
-                              "dateTimeSoftware", "version",
-                              "participantID", "filterID",
-                              "participantWeight", "inletAerosolSize",
-                              "laserCyclingVariablesDelay",
-                              "laserCyclingVariablesSamplingTime",
-                              "laserCyclingVariablesOffTime", "SystemTimes",
-                              "nephelometerSlope", "nephelometerOffset",
-                              "nephelometerLogInterval", "temperatureSlope",
-                              "temperatureOffset", "temperatureLog",
-                              "humiditySlope", "humidityOffset",
-                              "humidityLog", "inletPressureSlope",
-                              "inletPressureOffset", "inletPressureLog",
-                              "inletPressureHighTarget",
-                              "inletPressureLowTarget",
-                              "orificePressureSlope", "orificePressureOffset",
-                              "orificePressureLog", "orificePressureHighTarget",
-                              "orificePressureLowTarget", "flowLog",
-                              "flowHighTarget", "flowLowTarget",
-                              "flowWhatIsThis", "accelerometerLog",
-                              "batteryLog", "ventilationSlope",
-                              "ventilationOffset",
-                              "filename"),
-                   path = paste0(pathDir,
-                                 "/settings.csv"),
-                   append = TRUE)
-
-  # loop over files
-  for (file in listFiles){
-    converted <- convertOutput(file)
-    settings <- converted$control
-    settings <- mutate_(settings,
-                        filename = ~ file) # nolint
+  list_micropem <- lapply(listFiles, convertOutput)
+  settings <- dplyr::bind_rows(lapply(list_micropem, "[[", "control"))
+  measures <- dplyr::bind_rows(lapply(list_micropem, "[[", "measures"))
 
     readr::write_csv(settings,
-                       path = paste0(pathDir,
+                       path = paste0(path_output,
                                      "/settings.csv"),
                        append = TRUE)
 
-
-    measures <- converted$measures
-    measures <- mutate_(measures,
-                        filename = ~ file) # nolint
-
     readr::write_csv(measures,
-                     path = paste0(pathDir,
+                     path = paste0(path_output,
                                    "/measures.csv"),
                      append = TRUE)
-
-
-
-  }
 
 
 }

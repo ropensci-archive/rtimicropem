@@ -4,10 +4,12 @@
 \alias{batchConvert}
 \title{Reading several MicroPEM files and converting the settings and measurement tables to csv.}
 \usage{
-batchConvert(pathDir)
+batchConvert(path_input, path_output = path_input)
 }
 \arguments{
-\item{pathDir}{path to the directory with files
+\item{path_input}{path to the directory with files}
+
+\item{path_output}{path where the files should be created, by default equal to \code{path_input}.
 See the data in inst/data to see
 which one applies.
 
