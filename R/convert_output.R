@@ -247,7 +247,8 @@ convert_output <- function(path) {
     microPEMObject <- MicroPEM$new(control = control,
                           calibration = list(NA),
                           measures = measures,
-                          original = TRUE)
+                          original = TRUE,
+                          filename = path)
     return(microPEMObject)
 }
 ########################################################################

@@ -38,7 +38,7 @@ batch_convert <- function(path_input, path_output = path_input){
 }
 
 function_bind <- function(list_micropem, name){
-  dplyr::bind_rows(lapply(list_micropem, "[[", name))
+  dplyr::bind_rows(lapply(list_micropem, add_name, name = name))
 }
 
 function_tables <- function(list_micropem, path_output){
@@ -53,3 +53,9 @@ function_tables <- function(list_micropem, path_output){
                      append = FALSE)
 
 }
+
+add_name <- function(MP, name){
+  dplyr::bind_cols(MP[[name]], tibble::tibble(filename = rep(MP$filename, nrow(MP[[name]]))))
+}
+
+

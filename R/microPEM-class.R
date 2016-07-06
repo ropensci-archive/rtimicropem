@@ -27,6 +27,7 @@
 #' dummyMicroPEMChai$print()
 #' @field control Data.frame (\code{dplyr "tbl_df"}) with settings of the MicroPEM device and other information such as download time.
 #' @field calibration List of calibration information.
+#' @field filename Filename from which the oject was built.
 #' @field measures Data.frame (\code{dplyr "tbl_df"}) with all time-varying measures, possibly:
 #' \describe{
 #'   \item{datetime}{Time and date of each measurement, as a POSIXt object. Depending on the different logs of the time-varying variables there is not a measure for all variables associated to each timepoint.}
@@ -61,9 +62,11 @@ MicroPEM <- R6::R6Class("MicroPEM",
                           calibration = "list",
                           measures = "tbl_df",
                           original = "logical",
+                          filename = "character",
                           initialize = function(control,
                                                 calibration,
                                                 measures,
+                                                filename,
                                                 original = TRUE) {
                             if(any(is.null(c(control,
                                              calibration,
@@ -74,6 +77,7 @@ MicroPEM <- R6::R6Class("MicroPEM",
                             self$calibration <- calibration
                             self$measures <- measures
                             self$original <- original
+                            self$filename <- filename
                           },
                           plot = function(type = "plain",
                                           logScale = FALSE){
