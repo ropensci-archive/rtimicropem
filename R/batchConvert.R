@@ -28,19 +28,25 @@ batchConvert <- function(path_input, path_output = path_input){
                 path_output))# nolint
   }
 
-  list_micropem <- lapply(listFiles, convertOutput)
-  settings <- dplyr::bind_rows(lapply(list_micropem, "[[", "control"))
-  measures <- dplyr::bind_rows(lapply(list_micropem, "[[", "measures"))
+  lapply(listFiles, convertOutput) %>%
+    function_tables(path_output)
 
-    readr::write_csv(settings,
-                       path = paste0(path_output,
-                                     "/settings.csv"),
-                       append = TRUE)
 
-    readr::write_csv(measures,
-                     path = paste0(path_output,
-                                   "/measures.csv"),
+}
+
+function_bind <- function(list_micropem, name){
+  dplyr::bind_rows(lapply(list_micropem, "[[", name))
+}
+
+function_tables <- function(list_micropem, path_output){
+  function_bind(list_micropem, name = "control") %>%
+    readr::write_csv(path = paste0(path_output,
+                                   "/settings.csv"),
                      append = TRUE)
 
+  function_bind(list_micropem, name = "measures") %>%
+    readr::write_csv(path = paste0(path_output,
+                                   "/measures.csv"),
+                     append = TRUE)
 
 }
