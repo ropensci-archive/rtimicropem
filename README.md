@@ -52,13 +52,13 @@ This field is a data.frame (dplyr tbl\_df) that includes 41 variables.
 `measures` field
 ----------------
 
-This field is a data.frame (dplyr tbl\_df) with the time-varying variables. \#\# The `convertOutput` function.
+This field is a data.frame (dplyr tbl\_df) with the time-varying variables. \#\# The `convert_output` function.
 
-The `convertOutput` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `MicroPEM`. Below is a example of a call to `convertOutput`.
+The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `MicroPEM`. Below is a example of a call to `convert_output`.
 
 ``` r
 library("ammon")
-MicroPEMExample <- convertOutput(system.file("extdata", "dummyCHAI.csv", package = "ammon"))
+MicroPEMExample <- convert_output(system.file("extdata", "dummyCHAI.csv", package = "ammon"))
 class(MicroPEMExample)
 ```
 
@@ -99,11 +99,6 @@ Below is an example of use of this method.
 
 ``` r
 library("xtable")
-```
-
-    ## Warning: package 'xtable' was built under R version 3.2.4
-
-``` r
 data("dummyMicroPEMChai")
 results <- dummyMicroPEMChai$summary()
 results %>% knitr::kable()

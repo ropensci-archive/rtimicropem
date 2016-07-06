@@ -9,15 +9,14 @@
 #' The function saves results in the input directory as csv files with a "," as separator.
 #' One file is settings.csv with all settings, the other one is measures.csv
 #' It saves them directly for not loading all of them at the same time in the session.
-#' @return The function does not return anything.
 #' @examples \dontrun{
-#' batchConvert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
+#' batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
 #' system.file('extdata', 'dummyCHAI.csv', package = 'ammon')),
 #' path_output = getwd())}
+#' @return The function does not return anything.
 #' @export
 #'
-#' @examples
-batchConvert <- function(path_input, path_output = path_input){
+batch_convert <- function(path_input, path_output = path_input){
   # find files to transform
   listFiles <- list.files(path_input,
                            full.names = TRUE)

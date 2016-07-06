@@ -7,10 +7,10 @@
 #' @param path the path to the file
 #' @return A \code{MicroPEM} object.
 #' @examples
-#' MicroPEMExample <- convertOutput(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'))
+#' MicroPEMExample <- convert_output(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'))
 #' MicroPEMExample$plot()
 #' @export
-convertOutput <- function(path) {
+convert_output <- function(path) {
     ###########################################
     # READ THE DATA
     ###########################################
