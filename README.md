@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/masalmon/ammon.svg?branch=master)](https://travis-ci.org/masalmon/ammon) [![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/ammon) [![codecov.io](https://codecov.io/github/masalmon/ammon/coverage.svg?branch=master)](https://codecov.io/github/masalmon/ammon?branch=master)
+[![Build Status](https://travis-ci.org/masalmon/micropem.svg?branch=master)](https://travis-ci.org/masalmon/micropem) [![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/micropem) [![codecov.io](https://codecov.io/github/masalmon/micropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/micropem?branch=master)
 
 Please note that this package is under development.
 
@@ -7,13 +7,13 @@ Installation
 
 ``` r
 library("devtools")
-install_github("masalmon/ammon", build_vignettes=TRUE)
+install_github("masalmon/micropem", build_vignettes=TRUE)
 ```
 
 Introduction
 ============
 
-This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. It is called ammon like Zeus Ammon (<https://en.wikipedia.org/wiki/Amun#Greece> ).
+This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM.
 
 The goal of the package functions is to help in two main tasks:
 
@@ -38,7 +38,7 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 -   and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.
 
-Therefore, the `ammon` package offers a R6 class called `micropem` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `settings`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
+Therefore, the `micropem` package offers a R6 class called `micropem` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `settings`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
 
 ![alt text](vignettes/outputRTI.png)
 
@@ -57,8 +57,8 @@ This field is a data.frame (dplyr tbl\_df) with the time-varying variables. \#\#
 The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output`.
 
 ``` r
-library("ammon")
-micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "ammon"))
+library("micropem")
+micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "micropem"))
 class(micropem_example)
 ```
 
