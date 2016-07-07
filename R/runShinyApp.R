@@ -10,9 +10,9 @@
 run_shiny_app <- function() {
     # nocov start
     appDir <- system.file("shiny-examples",
-                          "myapp", package = "ammon")
+                          "myapp", package = "micropem")
     if (appDir == "") {
-        stop("Could not find example directory. Try re-installing `ammon`.",
+        stop("Could not find example directory. Try re-installing `micropem`.",
              call. = FALSE)
     }
 

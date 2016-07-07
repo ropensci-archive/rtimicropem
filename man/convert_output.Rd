@@ -16,7 +16,7 @@ A \code{micropem} object.
 Uses output file from MicroPEM to create a \code{micropem} object.
 }
 \examples{
-micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'ammon'))
+micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'micropem'))
 micropem_example$plot()
 }
 

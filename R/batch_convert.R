@@ -10,8 +10,8 @@
 #' One file is settings.csv with all settings, the other one is measures.csv
 #' It saves them directly for not loading all of them at the same time in the session.
 #' @examples \dontrun{
-#' batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
-#' system.file('extdata', 'dummyCHAI.csv', package = 'ammon')),
+#' batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'micropem'),
+#' system.file('extdata', 'dummyCHAI.csv', package = 'micropem')),
 #' path_output = getwd())}
 #' @return The function does not return anything.
 #' @export

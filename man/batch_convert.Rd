@@ -25,8 +25,8 @@ Reading several MicroPEM files and converting the settings and measurement table
 }
 \examples{
 \dontrun{
-batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'),
-system.file('extdata', 'dummyCHAI.csv', package = 'ammon')),
+batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'micropem'),
+system.file('extdata', 'dummyCHAI.csv', package = 'micropem')),
 path_output = getwd())}
 }
 
