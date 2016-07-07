@@ -60,8 +60,8 @@ This field is a data.frame (dplyr tbl_df) with the time-varying variables.
 The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output`.
 
 ```{r, warning=FALSE, message=FALSE}
-library("micropem")
-micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "micropem"))
+library("RTImicropem")
+micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "RTImicropem"))
 class(micropem_example)
 
 ```

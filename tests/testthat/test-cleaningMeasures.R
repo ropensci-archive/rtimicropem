@@ -1,4 +1,4 @@
-library("micropem")
+library("RTImicropem")
 library("lubridate")
 #################################################################################################
 context("cleaningMeasures")

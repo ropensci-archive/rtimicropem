@@ -4,7 +4,7 @@ library("micropem")
 # DATA CHAI
 ####################################################
 micropemChai <- convert_output(system.file("extdata", "CHAI.csv",
-                                               package = "micropem"))
+                                               package = "RTImicropem"))
 save(micropemChai, file = "data/micropemChai.RData", compress='xz')
 
 
@@ -13,7 +13,7 @@ save(micropemChai, file = "data/micropemChai.RData", compress='xz')
 ####################################################
 micropemC1 <- convert_output(system.file("extdata",
                                              "Columbia.csv",
-                                             package = "micropem"))
+                                             package = "RTImicropem"))
 save(micropemC1, file = "data/micropemC1.RData", compress='xz')
 
 
@@ -23,5 +23,5 @@ save(micropemC1, file = "data/micropemC1.RData", compress='xz')
 ####################################################
 micropemC2 <- convert_output(system.file("extdata",
                                              "Columbia2.csv",
-                                             package = "micropem"))
+                                             package = "RTImicropem"))
 save(micropemC2, file = "data/micropemC2.RData", compress='xz')

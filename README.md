@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/masalmon/micropem.svg?branch=master)](https://travis-ci.org/masalmon/micropem) [![Build status](https://ci.appveyor.com/api/projects/status/3uncb49ae82jhd85?svg=true)](https://ci.appveyor.com/project/masalmon/micropem) [![codecov.io](https://codecov.io/github/masalmon/micropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/micropem?branch=master)
+[![Build Status](https://travis-ci.org/masalmon/RTImicropem.svg?branch=master)](https://travis-ci.org/masalmon/RTImicropem) [![Build status](https://ci.appveyor.com/api/projects/status/3uncb49ae82jhd85?svg=true)](https://ci.appveyor.com/project/masalmon/micropem) [![codecov.io](https://codecov.io/github/masalmon/RTImicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/RTImicropem?branch=master)
 
 Please note that this package is under development.
 
@@ -7,7 +7,7 @@ Installation
 
 ``` r
 library("devtools")
-install_github("masalmon/micropem", build_vignettes=TRUE)
+install_github("masalmon/RTImicropem", build_vignettes=TRUE)
 ```
 
 Introduction
@@ -57,8 +57,8 @@ This field is a data.frame (dplyr tbl\_df) with the time-varying variables. \#\#
 The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output`.
 
 ``` r
-library("micropem")
-micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "micropem"))
+library("RTImicropem")
+micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "RTImicropem"))
 class(micropem_example)
 ```
 

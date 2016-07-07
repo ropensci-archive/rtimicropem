@@ -1,4 +1,4 @@
-Package: micropem
+Package: RTImicropem
 Type: Package
 Title: Supports the Reproducible Analysis of RTI MicroPEM Output Files
 Version: 1.2

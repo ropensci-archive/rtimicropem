@@ -1,4 +1,4 @@
 library(testthat)
-library(micropem)
+library(RTImicropem)
 
 testthat::test_check("micropem")
