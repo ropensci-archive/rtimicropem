@@ -4,7 +4,7 @@ library("zoo")
 library("lubridate")
 library("xtable")
 library("shinydashboard")
-library("ammon")
+library("RTImicropem")
 library("DT")
 library("ggiraph")
 
@@ -28,7 +28,7 @@ shinyServer(function(input, output) {
       return(NULL)
 
     else {
-      data.frame(value = t(microPEMObject()$settings)[,1])
+      microPEMObject()$settings
 
     }
   }, options = list(pageLength = 41))
