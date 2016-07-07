@@ -7,7 +7,7 @@
 #' @param path the path to the file
 #' @return A \code{micropem} object.
 #' @examples
-#' micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'micropem'))
+#' micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'RTImicropem'))
 #' micropem_example$plot()
 #' @export
 convert_output <- function(path) {

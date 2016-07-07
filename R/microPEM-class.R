@@ -117,13 +117,18 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
                                           "battery"))
 
   filterCriteria <- lazyeval::interp(~(!is.na(datetime)))
-  dataPM <- dataPM%>%
+  dataPM <- dataPM %>%
     dplyr::filter_(.dots = filterCriteria)
 
   dataLong <- tidyr::gather(dataPM,
                             variable,
                             measurement,
                             rh_corrected_nephelometer:battery)
+
+  filterCriteria2 <- lazyeval::interp(~(!is.na(measurement)))
+  dataLong <- dataLong %>%
+    dplyr::filter_(.dots = filterCriteria2)
+
   dataLong <- changeVariable(dataLong)
   red <- "#FF3D31"
   yellow <- "#FF9704"

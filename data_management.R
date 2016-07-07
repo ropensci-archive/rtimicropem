@@ -1,4 +1,4 @@
-library("micropem")
+library("RTImicropem")
 
 ####################################################
 # DATA CHAI
