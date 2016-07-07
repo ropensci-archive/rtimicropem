@@ -7,7 +7,7 @@ output:
     variant: markdown_github
 ---
 [![Build Status](https://travis-ci.org/masalmon/micropem.svg?branch=master)](https://travis-ci.org/masalmon/micropem)
-[![Build status](https://ci.appveyor.com/api/projects/status/6a9mh4llv8uew4xx?svg=true)](https://ci.appveyor.com/project/masalmon/micropem)
+[![Build status](https://ci.appveyor.com/api/projects/status/3uncb49ae82jhd85?svg=true)](https://ci.appveyor.com/project/masalmon/micropem)
 [![codecov.io](https://codecov.io/github/masalmon/micropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/micropem?branch=master)
 
 Please note that this package is under development.
