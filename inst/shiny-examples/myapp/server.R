@@ -28,7 +28,7 @@ shinyServer(function(input, output) {
       return(NULL)
 
     else {
-      data.frame(value = t(microPEMObject()$control)[,1])
+      data.frame(value = t(microPEMObject()$settings)[,1])
 
     }
   }, options = list(pageLength = 41))

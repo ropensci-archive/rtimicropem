@@ -1,14 +1,14 @@
-#' Uses output file from MicroPEM to create a MicroPEM object.
+#' Uses output file from MicroPEM to create a \code{micropem} object.
 #'
 #' @importFrom dplyr tbl_df mutate_ mutate_each_ funs matches
 #' @importFrom lazyeval interp
 #' @importFrom lubridate hms hour minute second force_tz mdy dmy
 #' @importFrom tibble tibble
 #' @param path the path to the file
-#' @return A \code{MicroPEM} object.
+#' @return A \code{micropem} object.
 #' @examples
-#' MicroPEMExample <- convert_output(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'))
-#' MicroPEMExample$plot()
+#' micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'ammon'))
+#' micropem_example$plot()
 #' @export
 convert_output <- function(path) {
     ###########################################
@@ -182,9 +182,9 @@ convert_output <- function(path) {
     # ventilationOffset
     ventilationOffset <- suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][3]))
     ###########################################
-    # control table
+    # settings table
     ###########################################
-    control <- tibble::tibble(downloadDate = downloadDate,
+    settings <- tibble::tibble(downloadDate = downloadDate,
                     totalDownloadTime = totalDownloadTime,
                     deviceSerial = deviceSerial,
                     dateTimeHardware = dateTimeHardware,
@@ -238,18 +238,18 @@ convert_output <- function(path) {
                     batteryLog = batteryLog,
                     ventilationSlope = ventilationSlope,
                     ventilationOffset = ventilationOffset)
-    control <- dplyr::tbl_df(control)
+    settings <- dplyr::tbl_df(settings)
     ###########################################
     # CREATE THE OBJECT
     ###########################################
 
 
-    microPEMObject <- MicroPEM$new(control = control,
+    micropem_object <- micropem$new(settings = settings,
                           calibration = list(NA),
                           measures = measures,
                           original = TRUE,
                           filename = path)
-    return(microPEMObject)
+    return(micropem_object)
 }
 ########################################################################
 transform_date <- function(date){

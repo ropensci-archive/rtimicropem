@@ -12,20 +12,20 @@
 #' @return Object of \code{\link{R6Class}}.
 #' @format \code{\link{R6Class}} object.
 #' @examples
-#' data("dummyMicroPEMChai")
+#' data("micropemChai")
 #' # Plot method, type = "plain" by default.
-#' dummyMicroPEMChai$plot()
+#' micropemChai$plot()
 #' # Example with type = "interactive", for RStudio viewer,
 #' # RMardown html documents and Shiny apps.
 #' \dontrun{
 #' library("ggiraph")
-#' p <- dummyMicroPEMChai$plot(type = "interactive")
+#' p <- micropemChai$plot(type = "interactive")
 #' ggiraph(code = {print(p)}, width = 10, height = 10)}
 #' # Summary method
-#' dummyMicroPEMChai$summary()
+#' micropemChai$summary()
 #' # Print method
-#' dummyMicroPEMChai$print()
-#' @field control Data.frame (\code{dplyr "tbl_df"}) with settings of the MicroPEM device and other information such as download time.
+#' micropemChai$print()
+#' @field settings Data.frame (\code{dplyr "tbl_df"}) with settings of the micropem device and other information such as download time.
 #' @field calibration List of calibration information.
 #' @field filename Filename from which the oject was built.
 #' @field measures Data.frame (\code{dplyr "tbl_df"}) with all time-varying measures, possibly:
@@ -44,36 +44,36 @@
 #'   \item{vector_sum_composite}{vector sum UNIT PLEASE (numeric).}
 #'   \item{message}{Shutdown reason (factor).}
 #'   }
-#' @field original Boolean. Is this an original MicroPEM object (TRUE) or was it e.g. filtered or cleaned (FALSE).
+#' @field original Boolean. Is this an original micropem object (TRUE) or was it e.g. filtered or cleaned (FALSE).
 #' @section Methods:
 #' \describe{
 #'   \item{plot}{Method for getting a quick plot of all time-varying measurements.
 #'   Either \code{type ="plain"} or \code{type ="interactive"}, see examples.
 #'   The method returns a plot of the \code{ggplot}-class.}
 #'   \item{summary}{Method for getting a summary table (\code{dplyr "tbl_df"}) of all time-varying numeric measurements.}
-#'   \item{print}{Method for printing both the summary table of all time-varying numeric measurements and all settings from the \code{control} field.}
+#'   \item{print}{Method for printing both the summary table of all time-varying numeric measurements and all settings from the \code{settings} field.}
 #'   }
 ##########################################################################
 # CLASS DEFINITION
 ##########################################################################
-MicroPEM <- R6::R6Class("MicroPEM",
+micropem <- R6::R6Class("micropem",
                         public = list(
-                          control = "tbl_df",
+                          settings = "tbl_df",
                           calibration = "list",
                           measures = "tbl_df",
                           original = "logical",
                           filename = "character",
-                          initialize = function(control,
+                          initialize = function(settings,
                                                 calibration,
                                                 measures,
                                                 filename,
                                                 original = TRUE) {
-                            if(any(is.null(c(control,
+                            if(any(is.null(c(settings,
                                              calibration,
                                              measures)))){
                               stop("all fields must be known")
                             }
-                            self$control <- control
+                            self$settings <- settings
                             self$calibration <- calibration
                             self$measures <- measures
                             self$original <- original
@@ -81,15 +81,15 @@ MicroPEM <- R6::R6Class("MicroPEM",
                           },
                           plot = function(type = "plain",
                                           logScale = FALSE){
-                            plotMicroPEM(self,
+                            plotmicropem(self,
                                          type,
                                          logScale)
                           },
                           summary = function(){
-                            summaryMicroPEM(self)
+                            summarymicropem(self)
                           },
                           print = function(){
-                            printMicroPEM(self)
+                            printmicropem(self)
                           }
 
 
@@ -98,7 +98,7 @@ MicroPEM <- R6::R6Class("MicroPEM",
 ##########################################################################
 # PLOT METHOD
 ##########################################################################
-plotMicroPEM <- function(self, type, logScale, ...){# nocov start
+plotmicropem <- function(self, type, logScale, ...){# nocov start
   if (is.null(type)){
     type <- "plain"
   }
@@ -174,7 +174,7 @@ plotMicroPEM <- function(self, type, logScale, ...){# nocov start
 ##########################################################################
 # SUMMARY METHOD
 ##########################################################################
-summaryMicroPEM <- function(self){
+summarymicropem <- function(self){
   numMeasures <- dplyr::select_(self$measures,
                                 .dots = ~rh_corrected_nephelometer:flow)
 
@@ -209,14 +209,14 @@ summaryPM <- function(x) {
 # PRINT METHOD
 ##########################################################################
 # nocov start
-printMicroPEM <- function(self){
-  cat("An object of class MicroPEM (R6 class)")
+printmicropem <- function(self){
+  cat("An object of class micropem (R6 class)")
   cat("\n")
   cat("A summary of measures is:")
   print(knitr::kable(self$summary()))
   cat( "\n", "Settings were:")
-  controlTable <- data.frame(value = t(self$control)[,1])
-  print(knitr::kable(controlTable))
+  settingsTable <- data.frame(value = t(self$settings)[,1])
+  print(knitr::kable(settingsTable))
 }
 
 changeVariable <- function(dat) {

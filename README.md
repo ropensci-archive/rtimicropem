@@ -21,11 +21,11 @@ The goal of the package functions is to help in two main tasks:
 
 -   Building a data base based on output files, and clean and transform the data for further analysis.
 
-For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `MicroPEM`, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts.
+For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `micropem`, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts.
 
 This document aims at providing an overview of the functionalities of the package.
 
-Checking individual files: from input data to `MicroPEM` objects
+Checking individual files: from input data to `micropem` objects
 ================================================================
 
 The MicroPEM device outputs a csv file with all the information about the measures:
@@ -38,14 +38,14 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 -   and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.
 
-Therefore, the `ammon` package offers a R6 class called `MicroPEM` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `control`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
+Therefore, the `ammon` package offers a R6 class called `micropem` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `settings`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
 
 ![alt text](vignettes/outputRTI.png)
 
-We will start by presenting the `control` field.
+We will start by presenting the `settings` field.
 
-`control` field
----------------
+`settings` field
+----------------
 
 This field is a data.frame (dplyr tbl\_df) that includes 41 variables.
 
@@ -54,31 +54,36 @@ This field is a data.frame (dplyr tbl\_df) that includes 41 variables.
 
 This field is a data.frame (dplyr tbl\_df) with the time-varying variables. \#\# The `convert_output` function.
 
-The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `MicroPEM`. Below is a example of a call to `convert_output`.
+The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output`.
 
 ``` r
 library("ammon")
-MicroPEMExample <- convert_output(system.file("extdata", "dummyCHAI.csv", package = "ammon"))
-class(MicroPEMExample)
+micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "ammon"))
+class(micropem_example)
 ```
 
-    ## [1] "MicroPEM" "R6"
+    ## [1] "micropem" "R6"
 
-Visualizing information contained in a `MicroPEM` object
+`filename` field
+----------------
+
+This field contains the full filename of the file that was used to generate the `micropem` object.
+
+Visualizing information contained in a `micropem` object
 --------------------------------------------------------
 
 ### Plot method
 
-The R6 `microPEM` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `MicroPEM` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `ggiraph` package -- the corresponding values of type are respectively "plain" and "interactive".
+The R6 `micropem` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `micropem` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `ggiraph` package -- the corresponding values of type are respectively "plain" and "interactive".
 
-Below we show to examples of uses of the plot method on a `MicroPEM` object.
+Below we show to examples of uses of the plot method on a `micropem` object.
 
 This is a "plain" plot.
 
 ``` r
-data("dummyMicroPEMChai")
+data("micropemChai")
 par(mar=c(1,4,2,1))
-dummyMicroPEMChai$plot()
+micropemChai$plot()
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
@@ -87,20 +92,20 @@ This is a nicer and interactive representation: you can look at what happens if 
 
 ``` r
 library("ggiraph")
-p <- dummyMicroPEMChai$plot(type = "interactive")
+p <- micropemChai$plot(type = "interactive")
 ggiraph(code = {print(p)}, width = 10, height = 10)
 ```
 
 ### `summary` method
 
-Plotting the `MicroPEM` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
+Plotting the `micropem` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
 
 Below is an example of use of this method.
 
 ``` r
 library("xtable")
-data("dummyMicroPEMChai")
-results <- dummyMicroPEMChai$summary()
+data("micropemChai")
+results <- micropemChai$summary()
 results %>% knitr::kable()
 ```
 
@@ -116,9 +121,9 @@ results %>% knitr::kable()
 
 ### Shiny app developped for the CHAI project
 
-In the context of the [CHAI project](http://www.chaiproject.org/), we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `runShinyApp` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
+In the context of the [CHAI project](http://www.chaiproject.org/), we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `run_shiny_app` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
 
--   One with the output of a call to `summaryTimeVarying`,
+-   One with the output of a call to the `summary` method of the `micropem` object created,
 
 -   One with the output of a call to the `alarmCHAI` function that performs a few checks specific to the CHAI project,
 
@@ -140,3 +145,5 @@ Below we show screenshots of the app.
 
 From a bunch of output files to data ready for further analysis
 ===============================================================
+
+The \`batch\_convert

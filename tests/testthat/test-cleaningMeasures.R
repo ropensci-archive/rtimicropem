@@ -3,11 +3,11 @@ library("lubridate")
 #################################################################################################
 context("cleaningMeasures")
 #################################################################################################
-test_that("cleaningMeasures outputs a MicroPEM object",{
-  data("dummyMicroPEMChai")
-  cleanDataMicroPEM <- cleaningMeasures(MicroPEMObject=dummyMicroPEMChai)
-  expect_that(cleanDataMicroPEM, is_a("MicroPEM"))
-  cleanDataMicroPEM <- cleaningMeasures(MicroPEMObject=dummyMicroPEMChai,
+test_that("cleaningMeasures outputs a micropem object",{
+  data("micropemChai")
+  cleanDatamicropem <- cleaningMeasures(micropemObject=micropemChai)
+  expect_that(cleanDatamicropem, is_a("micropem"))
+  cleanDatamicropem <- cleaningMeasures(micropemObject=micropemChai,
                                         hepaStart = TRUE, hepaEnd = TRUE)
-  expect_that(cleanDataMicroPEM, is_a("MicroPEM"))
+  expect_that(cleanDatamicropem, is_a("micropem"))
 })

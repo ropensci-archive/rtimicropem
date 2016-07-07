@@ -3,8 +3,8 @@ library("ammon")
 context("summary method")
 #################################################################################################
 test_that("the print method works", {
-  data("dummyMicroPEMC1")
-  sumup <- dummyMicroPEMC1$summary()
+  data("micropemC1")
+  sumup <- micropemC1$summary()
   expect_that(sumup,
               is_a("tbl_df"))
   expect_equal(nrow(sumup), 7)

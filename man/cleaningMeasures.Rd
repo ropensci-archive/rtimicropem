@@ -4,10 +4,10 @@
 \alias{cleaningMeasures}
 \title{Outputs clean rh_corrected_nephelometer measures for analysis.}
 \usage{
-cleaningMeasures(MicroPEMObject, hepaStart = FALSE, hepaEnd = FALSE)
+cleaningMeasures(micropemObject, hepaStart = FALSE, hepaEnd = FALSE)
 }
 \arguments{
-\item{MicroPEMObject}{the MicroPEM object}
+\item{micropemObject}{the MicroPEM object}
 
 \item{hepaStart}{Boolean indicating whether there were measurements with HEPA filters at the beginning.}
 
@@ -31,8 +31,8 @@ If there are two, a linear interpolation is done between the two values and the 
 is substracted from the rh_corrected_nephelometer values.
 }
 \examples{
-data(dummyMicroPEMChai)
-cleanMP <- cleaningMeasures(dummyMicroPEMChai)
+data(micropemChai)
+cleanMP <- cleaningMeasures(micropemChai)
 cleanMP$summary()
 }
 

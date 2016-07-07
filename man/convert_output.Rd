@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_output.R
 \name{convert_output}
 \alias{convert_output}
-\title{Uses output file from MicroPEM to create a MicroPEM object.}
+\title{Uses output file from MicroPEM to create a \code{micropem} object.}
 \usage{
 convert_output(path)
 }
@@ -10,13 +10,13 @@ convert_output(path)
 \item{path}{the path to the file}
 }
 \value{
-A \code{MicroPEM} object.
+A \code{micropem} object.
 }
 \description{
-Uses output file from MicroPEM to create a MicroPEM object.
+Uses output file from MicroPEM to create a \code{micropem} object.
 }
 \examples{
-MicroPEMExample <- convert_output(system.file('extdata', 'dummyCHAI.csv', package = 'ammon'))
-MicroPEMExample$plot()
+micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'ammon'))
+micropem_example$plot()
 }
 

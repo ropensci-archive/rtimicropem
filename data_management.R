@@ -3,25 +3,25 @@ library("ammon")
 ####################################################
 # DATA CHAI
 ####################################################
-dummyMicroPEMChai <- convert_output(system.file("extdata", "dummyCHAI.csv",
+micropemChai <- convert_output(system.file("extdata", "CHAI.csv",
                                                package = "ammon"))
-save(dummyMicroPEMChai, file = "data/dummyMicroPEMChai.RData", compress='xz')
+save(micropemChai, file = "data/micropemChai.RData", compress='xz')
 
 
 ####################################################
 # DATA COLUMBIA 1
 ####################################################
-dummyMicroPEMC1 <- convert_output(system.file("extdata",
-                                             "dummyColumbia.csv",
+micropemC1 <- convert_output(system.file("extdata",
+                                             "Columbia.csv",
                                              package = "ammon"))
-save(dummyMicroPEMC1, file = "data/dummyMicroPEMC1.RData", compress='xz')
+save(micropemC1, file = "data/micropemC1.RData", compress='xz')
 
 
 
 ####################################################
 # DATA COLUMBIA 2
 ####################################################
-dummyMicroPEMC2 <- convert_output(system.file("extdata",
-                                             "dummyColumbia2.csv",
+micropemC2 <- convert_output(system.file("extdata",
+                                             "Columbia2.csv",
                                              package = "ammon"))
-save(dummyMicroPEMC2, file = "data/dummyMicroPEMC2.RData", compress='xz')
+save(micropemC2, file = "data/micropemC2.RData", compress='xz')

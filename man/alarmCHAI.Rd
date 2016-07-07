@@ -2,22 +2,22 @@
 % Please edit documentation in R/alarmCHAI.R
 \name{alarmCHAI}
 \alias{alarmCHAI}
-\title{Generates alarm indicators for a MicroPEMObject.}
+\title{Generates alarm indicators for a micropem object.}
 \usage{
-alarmCHAI(MicroPEMObject)
+alarmCHAI(micropem_object)
 }
 \arguments{
-\item{MicroPEMObject}{the MicroPEM object}
+\item{micropem_object}{the MicroPEM object}
 }
 \value{
 A \code{data table} with a column for the name of the indicator and a column with booleans. If no
 alarm was flagged, the \code{data table} only has one line indicating that all is good.
 }
 \description{
-Generates alarm indicators for a MicroPEMObject.
+Generates alarm indicators for a micropem object.
 }
 \examples{
-data(dummyMicroPEMChai)
-alarmCHAI(dummyMicroPEMChai)
+data(micropemChai)
+alarmCHAI(micropemChai)
 }
 

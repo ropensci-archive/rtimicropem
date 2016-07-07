@@ -4,10 +4,10 @@
 #' @return Nothing, it does something.
 #' @examples
 #' \dontrun{
-#' runShinyApp()
+#' run_shiny_app()
 #' }
 #' @export
-runShinyApp <- function() {
+run_shiny_app <- function() {
     # nocov start
     appDir <- system.file("shiny-examples",
                           "myapp", package = "ammon")

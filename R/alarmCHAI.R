@@ -1,39 +1,39 @@
-#' Generates alarm indicators for a MicroPEMObject.
+#' Generates alarm indicators for a micropem object.
 #'
 #' @importFrom dplyr tbl_df
-#' @param MicroPEMObject the MicroPEM object
+#' @param micropem_object the MicroPEM object
 #' @return A \code{data table} with a column for the name of the indicator and a column with booleans. If no
 #' alarm was flagged, the \code{data table} only has one line indicating that all is good.
 #' @examples
-#' data(dummyMicroPEMChai)
-#' alarmCHAI(dummyMicroPEMChai)
+#' data(micropemChai)
+#' alarmCHAI(micropemChai)
 #' @export
 #'
-alarmCHAI <- function(MicroPEMObject) {
+alarmCHAI <- function(micropem_object) {
     Alarm <- NULL
     Action <- NULL
     # nephelometer slope
-    if (MicroPEMObject$control$nephelometerSlope != 3) {
+    if (micropem_object$settings$nephelometerSlope != 3) {
         Alarm <- c(Alarm, "Nephelometer slope is not 3")
         Action <- c(Action, "Please contact Sreekanth")
     }
 
     # flow should be between 0.45 and 0.55
-    if (any(MicroPEMObject$measures$flow < 0.45, na.rm = TRUE) |
-        any(MicroPEMObject$measures$flow > 0.55, na.rm = TRUE)) {
+    if (any(micropem_object$measures$flow < 0.45, na.rm = TRUE) |
+        any(micropem_object$measures$flow > 0.55, na.rm = TRUE)) {
         Alarm <- c(Alarm, "Flow outside of normal range at least once")
         Action <- c(Action, "Please contact Sreekanth")
     }
 
     # Not too many measures
-    if (sum(!is.na(MicroPEMObject$measures$rh_corrected_nephelometer)) > 10000) {
+    if (sum(!is.na(micropem_object$measures$rh_corrected_nephelometer)) > 10000) {
         Alarm <- c(Alarm, "Maybe two days of measures")
         Action <- c(Action, "Please contact Sreekanth")
     }
 
     # More than 2% negative values
-    if (sum(MicroPEMObject$measures$rh_corrected_nephelometer < 0, na.rm = TRUE) >
-        0.02 * length(MicroPEMObject$measures$rh_corrected_nephelometer)) {
+    if (sum(micropem_object$measures$rh_corrected_nephelometer < 0, na.rm = TRUE) >
+        0.02 * length(micropem_object$measures$rh_corrected_nephelometer)) {
         Alarm <- c(Alarm, "Too many negative values")
         Action <- c(Action, "Please contact Sreekanth")
     }
