@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/masalmon/RTImicropem.svg?branch=master)](https://travis-ci.org/masalmon/RTImicropem) [![Build status](https://ci.appveyor.com/api/projects/status/3uncb49ae82jhd85?svg=true)](https://ci.appveyor.com/project/masalmon/micropem) [![codecov.io](https://codecov.io/github/masalmon/RTImicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/RTImicropem?branch=master)
+[![Build Status](https://travis-ci.org/masalmon/RTImicropem.svg?branch=master)](https://travis-ci.org/masalmon/RTImicropem) [![Build status](https://ci.appveyor.com/api/projects/status/t526nd134obqaokx?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/masalmon/RTImicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/RTImicropem?branch=master)
 
 Please note that this package is under development.
 
@@ -28,7 +28,7 @@ This document aims at providing an overview of the functionalities of the packag
 Checking individual files: from input data to `micropem` objects
 ================================================================
 
-The MicroPEM device outputs a csv file with all the information about the measures:
+The MicroPEM device outputs a csv file with all the information about the measures, depending on the options chosen in RTI MicroPEM software when uploading data, for instance:
 
 -   the measures themselves (relative humidity corrected nephelometer),
 
@@ -146,4 +146,6 @@ Below we show screenshots of the app.
 From a bunch of output files to data ready for further analysis
 ===============================================================
 
-The \`batch\_convert
+The `batch_convert` function allows to convert a set of MicroPEM output files into two csv files, one containing the settings, one containing the measures, in each case with a filename column representing the full filename of the original file.
+
+These csv files can then be used for transformation by device ID for instance, or for analysis by date, or by participant ID of a study if the participant ID is contained in the filename or in the initial MicroPEM output files. The csv file with all the settings of all MicroPEM output files can help checking whether the different monitoring sessions were done in similar conditions.
