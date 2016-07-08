@@ -39,6 +39,7 @@ build_script:
   - travis-tool.sh install_r httpuv
   - travis-tool.sh install_r DBI
   - travis-tool.sh install_r pathological
+  - travis-tool.sh install_r assertthat
 
 
 test_script:
