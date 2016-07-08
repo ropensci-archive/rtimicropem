@@ -41,6 +41,7 @@ build_script:
   - travis-tool.sh install_r pathological
   - travis-tool.sh install_r assertthat
   - travis-tool.sh install_r reshape2
+  - travis-tool.sh install_r highr
 
 
 test_script:
