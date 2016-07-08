@@ -11,7 +11,7 @@ library("RTImicropem")
 options(RCHART_LIB = 'highcharts')
 shinyUI(fluidPage(
 
-  titlePanel("Exploring microPEM output"),
+  titlePanel("Exploring RTI MicroPEM output"),
 
   sidebarLayout(
     sidebarPanel(
@@ -24,6 +24,9 @@ shinyUI(fluidPage(
                   '.csv',
                   '.tsv'
                 )),
+      selectInput('graphtype', 'Plot type (interactive takes a while to load!)',
+                  c("plain", "interactive"),
+                  selected = "plain"),
       actionButton("go", "Go")
     ),
     mainPanel(
@@ -32,21 +35,19 @@ shinyUI(fluidPage(
                  DT::dataTableOutput("Summary")),
         tabPanel("Alarms",
                  DT::dataTableOutput("Alarms")),
-        tabPanel("Plots",
-                 fluidRow(
-
-                   ggiraph::ggiraphOutput("plotPM")
-
-
-                 )),
-
+        tabPanel("Plot",
+                 conditionalPanel(condition = "input.graphtype == 'interactive'",
+                                  ggiraph::ggiraphOutput("plotPM",
+                                                         height = "1000px")),
+                 conditionalPanel(condition = "input.graphtype == 'plain'",
+                                  plotOutput("plotPM2"))),
 
         tabPanel("Settings",
                  DT::dataTableOutput("Settings"))
-      )
     )
   )
-
   )
-)
+
+  ))
+
 

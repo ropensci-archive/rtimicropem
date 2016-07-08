@@ -61,7 +61,7 @@ micropemChai$plot()
 \dontrun{
 library("ggiraph")
 p <- micropemChai$plot(type = "interactive")
-ggiraph(code = {print(p)}, width = 10, height = 10)}
+ggiraph(code = {print(p)}, width = 1, height = 5)}
 # Summary method
 micropemChai$summary()
 # Print method

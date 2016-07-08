@@ -44,21 +44,17 @@ shinyServer(function(input, output) {
       alarmCHAI(microPEMObject())
     })
 
-    gg_plot <- eventReactive(input$go, {
 
-      file <- reactive({input$file1})
-      if (is.null(input$file1))
-        return(NULL)
+    output$plotPM <- ggiraph::renderggiraph({
+                               ggplot <- microPEMObject()$plot(type="interactive")
+                               ggiraph::ggiraph(code = print(ggplot), width_svg = 12, height_svg = 10,
+                                                hover_css = "fill:orange;stroke-width:1px;stroke:wheat;cursor:pointer;")
+                             })
+    output$plotPM2 <- renderPlot({microPEMObject()$plot(type="plain")+
+        theme(legend.position="none")
+                             },
+                             width = 600, height = 600)
 
-      else {
-        microPEMObject()$plot(type="interactive")
-      }
-    })
-
-    output$plotPM <-  renderggiraph({
-      ggiraph(code = print(gg_plot()), width = 12, height = 10,
-              hover_css = "fill:orange;stroke-width:1px;stroke:wheat;cursor:pointer;")
-    })
 
 
 })
