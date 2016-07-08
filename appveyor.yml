@@ -36,6 +36,7 @@ build_script:
   - travis-tool.sh install_r rvg
   - travis-tool.sh install_r gtable
   - travis-tool.sh install_r scales
+  - travis-tool.sh install_r httpuv
 
 
 test_script:
