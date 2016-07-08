@@ -35,6 +35,7 @@ build_script:
   - travis-tool.sh install_r htmlwidgets
   - travis-tool.sh install_r rvg
   - travis-tool.sh install_r gtable
+  - travis-tool.sh install_r scales
 
 
 test_script:
