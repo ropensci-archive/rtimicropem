@@ -33,6 +33,7 @@ build_script:
   - travis-tool.sh install_github jimhester/covr
   - travis-tool.sh install_r htmltools
   - travis-tool.sh install_r htmlwidgets
+  - travis-tool.sh install_r rvg
 
 test_script:
   - travis-tool.sh run_tests
