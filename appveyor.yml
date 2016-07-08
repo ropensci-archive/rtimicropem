@@ -37,6 +37,7 @@ build_script:
   - travis-tool.sh install_r gtable
   - travis-tool.sh install_r scales
   - travis-tool.sh install_r httpuv
+  - travis-tool.sh install_r DBI
 
 
 test_script:

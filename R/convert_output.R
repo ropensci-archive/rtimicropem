@@ -248,7 +248,8 @@ convert_output <- function(path) {
                           calibration = list(NA),
                           measures = measures,
                           original = TRUE,
-                          filename = path)
+                          filename = pathological::replace_extension(path, new_extension = "csv",
+                                                       include_dir = FALSE))
     return(micropem_object)
 }
 ########################################################################
