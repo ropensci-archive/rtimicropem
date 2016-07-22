@@ -56,18 +56,18 @@ Therefore, the `micropem` package offers a R6 class called `micropem` for storin
 
 ![alt text](vignettes/outputRTI.png)
 
-We will start by presenting the `settings` field.
+## Fields
 
-## `settings` field
+### `settings` field
 
 This field is a data.frame (dplyr tbl_df) that includes 41 variables.
 
 
-## `measures` field
+### `measures` field
 
 This field is a data.frame (dplyr tbl_df) with the time-varying variables.
 
-## `filename` field
+### `filename` field
 
 This field contains the full filename of the file that was used to generate the `micropem` object.
 

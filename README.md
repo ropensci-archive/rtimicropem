@@ -1,9 +1,10 @@
 -   [Installation](#installation)
 -   [Introduction](#introduction)
 -   [Checking individual files: from input data to `micropem` objects](#checking-individual-files-from-input-data-to-micropem-objects)
-    -   [`settings` field](#settings-field)
-    -   [`measures` field](#measures-field)
-    -   [`filename` field](#filename-field)
+    -   [Fields](#fields)
+        -   [`settings` field](#settings-field)
+        -   [`measures` field](#measures-field)
+        -   [`filename` field](#filename-field)
     -   [The `convert_output` function.](#the-convert_output-function.)
     -   [Visualizing information contained in a `micropem` object](#visualizing-information-contained-in-a-micropem-object)
         -   [Plot method](#plot-method)
@@ -55,20 +56,18 @@ Therefore, the `micropem` package offers a R6 class called `micropem` for storin
 
 ![alt text](vignettes/outputRTI.png)
 
-We will start by presenting the `settings` field.
+Fields
+------
 
-`settings` field
-----------------
+### `settings` field
 
 This field is a data.frame (dplyr tbl\_df) that includes 41 variables.
 
-`measures` field
-----------------
+### `measures` field
 
 This field is a data.frame (dplyr tbl\_df) with the time-varying variables.
 
-`filename` field
-----------------
+### `filename` field
 
 This field contains the full filename of the file that was used to generate the `micropem` object.
 
