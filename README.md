@@ -13,7 +13,7 @@ install_github("masalmon/RTImicropem", build_vignettes=TRUE)
 Introduction
 ============
 
-This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM.
+This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. [RTI MicroPEM](https://www.rti.org/sites/default/files/brochures/rti_micropem.pdf) are personal monitoring devices (PM2.5 and PM10) developped by [RTI international](https://www.rti.org/).
 
 The goal of the package functions is to help in two main tasks:
 
