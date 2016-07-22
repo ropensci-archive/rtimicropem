@@ -52,7 +52,15 @@ This field is a data.frame (dplyr tbl\_df) that includes 41 variables.
 `measures` field
 ----------------
 
-This field is a data.frame (dplyr tbl\_df) with the time-varying variables. \#\# The `convert_output` function.
+This field is a data.frame (dplyr tbl\_df) with the time-varying variables.
+
+`filename` field
+----------------
+
+This field contains the full filename of the file that was used to generate the `micropem` object.
+
+The `convert_output` function.
+------------------------------
 
 The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output`.
 
@@ -64,10 +72,68 @@ class(micropem_example)
 
     ## [1] "micropem" "R6"
 
-`filename` field
-----------------
+``` r
+print(micropem_example)
+```
 
-This field contains the full filename of the file that was used to generate the `micropem` object.
+    ## An object of class micropem (R6 class)
+    ## A summary of measures is:
+    ## 
+    ## measure                      No. of not missing values   Median         Mean   Minimum   Maximum    Variance
+    ## --------------------------  --------------------------  -------  -----------  --------  --------  ----------
+    ## rh_corrected_nephelometer                         8634    49.00   49.3745657     45.00     93.00   1.6780557
+    ## temp                                              2878    84.50   84.6830438     82.30     87.60   1.7180023
+    ## rh                                                8634    54.60   55.0061733     46.20     64.90   7.6665285
+    ## battery                                           1464     4.10    4.0872268      3.90      4.30   0.0078272
+    ## inlet_press                                       2878     0.11    0.1111015      0.10      0.13   0.0000538
+    ## orifice_press                                     2878     0.15    0.1505455      0.14      0.16   0.0000072
+    ## flow                                              2878     0.77    0.7703023      0.77      0.78   0.0000029
+    ## 
+    ##  Settings were:
+    ## 
+    ##                                     value                  
+    ## ----------------------------------  -----------------------
+    ## downloadDate                        2015-07-04             
+    ## totalDownloadTime                   18                     
+    ## deviceSerial                        MP1411                 
+    ## dateTimeHardware                    2013-02-15             
+    ## dateTimeSoftware                    2014-01-24             
+    ## version                             v2.0.5136.37657        
+    ## participantID                                              
+    ## filterID                            CM1411                 
+    ## participantWeight                   NA                     
+    ## inletAerosolSize                    PM2.5                  
+    ## laserCyclingVariablesDelay          1                      
+    ## laserCyclingVariablesSamplingTime   1                      
+    ## laserCyclingVariablesOffTime        8                      
+    ## SystemTimes                         No cycling - Always On 
+    ## nephelometerSlope                   10                     
+    ## nephelometerOffset                  0                      
+    ## nephelometerLogInterval             10                     
+    ## temperatureSlope                    10                     
+    ## temperatureOffset                   0                      
+    ## temperatureLog                      30                     
+    ## humiditySlope                       10                     
+    ## humidityOffset                      0                      
+    ## humidityLog                         10                     
+    ## inletPressureSlope                  40.950.000             
+    ## inletPressureOffset                 0                      
+    ## inletPressureLog                    30                     
+    ## inletPressureHighTarget             1280                   
+    ## inletPressureLowTarget              768                    
+    ## orificePressureSlope                40.950.000             
+    ## orificePressureOffset               0                      
+    ## orificePressureLog                  30                     
+    ## orificePressureHighTarget           2167                   
+    ## orificePressureLowTarget            1592                   
+    ## flowLog                             30                     
+    ## flowHighTarget                      900                    
+    ## flowLowTarget                       200                    
+    ## flowWhatIsThis                      0.5                    
+    ## accelerometerLog                    5                      
+    ## batteryLog                          60                     
+    ## ventilationSlope                    NA                     
+    ## ventilationOffset                   NA
 
 Visualizing information contained in a `micropem` object
 --------------------------------------------------------
