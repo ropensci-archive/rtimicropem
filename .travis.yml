@@ -1,13 +1,28 @@
 language: r
-os: 
-- linux
-- osx
-r:
-  - oldrel
-  - release
-  - devel
 sudo: false
 cache: packages
+
+matrix:
+  include:
+    - r: release
+      env: DEPS=cran
+      os: linux
+    - r: release
+      env: DEPS=cran
+      os: osx
+    - r: oldrel
+      env: DEPS=cran
+      os: linux
+    - r: oldrel
+      env: DEPS=cran
+      os: osx
+    - r: devel
+      env: DEPS=cran
+      os: linux
+    - r: devel
+      env: DEPS=cran
+      os: osx
+
 
 r_github_packages:
   - jimhester/covr
@@ -20,5 +35,3 @@ notifications:
 after_success:
   - Rscript -e 'library(covr); codecov()'
 
-env:
-- LINTR_COMMENT_BOT=false
