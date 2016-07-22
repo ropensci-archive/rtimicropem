@@ -62,7 +62,7 @@ This field contains the full filename of the file that was used to generate the 
 The `convert_output` function.
 ------------------------------
 
-The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output`.
+The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output` followed by a call to the `print` method.
 
 ``` r
 library("RTImicropem")
@@ -154,7 +154,7 @@ micropemChai$plot()
 
 ![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
-This is a nicer and interactive representation: you can look at what happens if you put your mouse over the time series. It is to be used as visualization tool as well, not as a plot method for putting a nice figure in a paper.
+The code below would produce an interactive representation: the y-value is displayed when mouse is over each point. It is intended to be used as quick visualization tool as well, not as a plot method for putting a nice figure in a paper.
 
 ``` r
 library("ggiraph")
