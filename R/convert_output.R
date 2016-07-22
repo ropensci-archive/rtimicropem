@@ -34,6 +34,17 @@ convert_output <- function(path) {
                                        names_dataPEM,
                                        sep = ","))
     # known wrong dates
+    potential_errors <- c("21/05/105",
+                          "35/01/16",
+                          "2901/01/29",
+                          "0B/02/16",
+                          "106/06/14",
+                          "15/06/106",
+                          "106/06/15")
+    if(any(potential_errors %in% measures$date)){
+      print(potential_errors[which(potential_errors %in% measures$date)])
+      print(path)
+    }
     measures$date <- gsub("21/05/105", "5/21/2015", measures$date)
     measures$date <- gsub("35/01/16", "29/01/2016", measures$date)
     measures$date <- gsub("2901/01/29", "1/29/2016", measures$date)
@@ -171,8 +182,8 @@ convert_output <- function(path) {
     flowHighTarget <- as.numeric(flow_temp[5])
     # flowLowTarget
     flowLowTarget <- as.numeric(flow_temp[6])
-    # flowWhatIsThis
-    flowWhatIsThis <- as.numeric(flow_temp[7])
+    # flowRate
+    flowRate <- as.numeric(flow_temp[7])
     # accelerometerLog
     accelerometerLog <- as.numeric(strsplit(dummy[20], ",")[[1]][4])
     # batteryLog
@@ -233,7 +244,7 @@ convert_output <- function(path) {
                     flowLog = flowLog,
                     flowHighTarget = flowHighTarget,
                     flowLowTarget = flowLowTarget,
-                    flowWhatIsThis = flowWhatIsThis,
+                    flowRate = flowRate,
                     accelerometerLog = accelerometerLog,
                     batteryLog = batteryLog,
                     ventilationSlope = ventilationSlope,
