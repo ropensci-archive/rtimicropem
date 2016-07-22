@@ -4,6 +4,7 @@ author: "Maëlle Salmon and other CHAI project members"
 date: "`r Sys.Date()`"
 output:
   md_document:
+    toc: true
     variant: markdown_github
 ---
 [![Build Status](https://travis-ci.org/masalmon/RTImicropem.svg?branch=master)](https://travis-ci.org/masalmon/RTImicropem)

@@ -1,3 +1,16 @@
+-   [Installation](#installation)
+-   [Introduction](#introduction)
+-   [Checking individual files: from input data to `micropem` objects](#checking-individual-files-from-input-data-to-micropem-objects)
+    -   [`settings` field](#settings-field)
+    -   [`measures` field](#measures-field)
+    -   [`filename` field](#filename-field)
+    -   [The `convert_output` function.](#the-convert_output-function.)
+    -   [Visualizing information contained in a `micropem` object](#visualizing-information-contained-in-a-micropem-object)
+        -   [Plot method](#plot-method)
+        -   [`summary` method](#summary-method)
+        -   [Shiny app developped for the CHAI project](#shiny-app-developped-for-the-chai-project)
+-   [From a bunch of output files to data ready for further analysis](#from-a-bunch-of-output-files-to-data-ready-for-further-analysis)
+
 [![Build Status](https://travis-ci.org/masalmon/RTImicropem.svg?branch=master)](https://travis-ci.org/masalmon/RTImicropem) [![Build status](https://ci.appveyor.com/api/projects/status/t526nd134obqaokx?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/masalmon/RTImicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/RTImicropem?branch=master)
 
 :construction\_worker: Please note that this package is under development. :construction\_worker:
