@@ -41,10 +41,7 @@ convert_output <- function(path) {
                           "106/06/14",
                           "15/06/106",
                           "106/06/15")
-    if(any(potential_errors %in% measures$date)){
-      print(potential_errors[which(potential_errors %in% measures$date)])
-      print(path)
-    }
+
     measures$date <- gsub("21/05/105", "5/21/2015", measures$date)
     measures$date <- gsub("35/01/16", "29/01/2016", measures$date)
     measures$date <- gsub("2901/01/29", "1/29/2016", measures$date)
