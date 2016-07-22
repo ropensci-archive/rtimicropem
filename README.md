@@ -12,7 +12,7 @@
         -   [Shiny app developped for the CHAI project](#shiny-app-developped-for-the-chai-project)
 -   [From a bunch of output files to data ready for further analysis](#from-a-bunch-of-output-files-to-data-ready-for-further-analysis)
 
-[![Build Status](https://travis-ci.org/masalmon/rtimicropem.svg?branch=master)](https://travis-ci.org/masalmon/rtimicropem) [\[Build status\](\[![Build status](https://ci.appveyor.com/api/projects/status/6nt0r1qsblfm07im?svg=true)\](https://ci.appveyor.com/project/masalmon/rtimicropem-4jo57)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/masalmon/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/rtimicropem?branch=master)
+[![Build Status](https://travis-ci.org/masalmon/rtimicropem.svg?branch=master)](https://travis-ci.org/masalmon/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/6nt0r1qsblfm07im?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem-4jo57) [![codecov.io](https://codecov.io/github/masalmon/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/rtimicropem?branch=master)
 
 :construction\_worker: Please note that this package is under development. :construction\_worker: Furthermore, this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
