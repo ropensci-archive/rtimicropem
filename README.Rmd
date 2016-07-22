@@ -8,7 +8,7 @@ output:
     variant: markdown_github
 ---
 [![Build Status](https://travis-ci.org/masalmon/rtimicropem.svg?branch=master)](https://travis-ci.org/masalmon/rtimicropem)
-[![Build status](https://ci.appveyor.com/api/projects/status/t526nd134obqaokx?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem)
+[![Build status]([![Build status](https://ci.appveyor.com/api/projects/status/6nt0r1qsblfm07im?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem-4jo57)](https://ci.appveyor.com/project/masalmon/rtimicropem)
 [![codecov.io](https://codecov.io/github/masalmon/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/rtimicropem?branch=master)
 
 :construction_worker: Please note that this package is under development. :construction_worker: Furthermore, this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
