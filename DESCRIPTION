@@ -1,9 +1,10 @@
-Package: RTImicropem
+Package: rtimicropem
 Type: Package
 Title: Supports the Reproducible Analysis of RTI MicroPEM Output Files
 Version: 1.2
 Date: 2016-02-23
-Author: M. Salmon (CREAL - Center for Research in Environmental Epidemiology, ISGlobal alliance, Barcelona, Spain) and Z. Zhou (Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA)
+Authors@R: c(person("Maëlle", "Salmon", email = "maelle.salmon@yahoo.se", comment = "CREAL - Center for Research in Environmental Epidemiology, ISGlobal alliance, Barcelona, Spain", role = c("aut", "cre")),
+             person("Zheng", "Zhou", comment = "Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA", role = c("aut")))
 Maintainer: M. Salmon <maelle.salmon@yahoo.se>
 Description: Supports the reproducible analysis of RTI MicroPEM output files.
 License: GPL (>= 2)
@@ -30,5 +31,5 @@ Imports: lubridate,
     pathological
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
-URL: http://github.com/masalmon/ammon
-BugReports: http://github.com/masalmon/ammon/issues
+URL: http://github.com/masalmon/rtimicropem
+BugReports: http://github.com/masalmon/rtimicropem/issues

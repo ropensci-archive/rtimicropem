@@ -9,3 +9,5 @@ data_management.R
 ^\.travis\.yml$
 ^README\.md$
 ^README\.Rmd$
+^CONDUCT\.md$
+^README

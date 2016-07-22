@@ -4,7 +4,7 @@ library("zoo")
 library("lubridate")
 library("xtable")
 library("shinydashboard")
-library("RTImicropem")
+library("rtimicropem")
 library("DT")
 library("ggiraph")
 

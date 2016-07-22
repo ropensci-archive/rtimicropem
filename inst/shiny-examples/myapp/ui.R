@@ -7,7 +7,7 @@ library("shinydashboard")
 library("datasets")
 library("DT")
 library("ggiraph")
-library("RTImicropem")
+library("rtimicropem")
 options(RCHART_LIB = 'highcharts')
 shinyUI(fluidPage(
 

@@ -12,16 +12,16 @@
         -   [Shiny app developped for the CHAI project](#shiny-app-developped-for-the-chai-project)
 -   [From a bunch of output files to data ready for further analysis](#from-a-bunch-of-output-files-to-data-ready-for-further-analysis)
 
-[![Build Status](https://travis-ci.org/masalmon/RTImicropem.svg?branch=master)](https://travis-ci.org/masalmon/RTImicropem) [![Build status](https://ci.appveyor.com/api/projects/status/t526nd134obqaokx?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/masalmon/RTImicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/RTImicropem?branch=master)
+[![Build Status](https://travis-ci.org/masalmon/rtimicropem.svg?branch=master)](https://travis-ci.org/masalmon/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/t526nd134obqaokx?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/masalmon/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/rtimicropem?branch=master)
 
-:construction\_worker: Please note that this package is under development. :construction\_worker:
+:construction\_worker: Please note that this package is under development. :construction\_worker: Furthermore, this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Installation
 ============
 
 ``` r
 library("devtools")
-install_github("masalmon/RTImicropem", build_vignettes=TRUE)
+install_github("masalmon/rtimicropem", build_vignettes=TRUE)
 ```
 
 Introduction
@@ -77,8 +77,8 @@ The `convert_output` function.
 The `convert_output` only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class `micropem`. Below is a example of a call to `convert_output` followed by a call to the `print` method.
 
 ``` r
-library("RTImicropem")
-micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "RTImicropem"))
+library("rtimicropem")
+micropem_example <- convert_output(system.file("extdata", "CHAI.csv", package = "rtimicropem"))
 class(micropem_example)
 ```
 
@@ -141,7 +141,7 @@ print(micropem_example)
     ## flowLog                             30                     
     ## flowHighTarget                      900                    
     ## flowLowTarget                       200                    
-    ## flowWhatIsThis                      0.5                    
+    ## flowRate                            0.5                    
     ## accelerometerLog                    5                      
     ## batteryLog                          60                     
     ## ventilationSlope                    NA                     
@@ -164,7 +164,7 @@ par(mar=c(1,4,2,1))
 micropemChai$plot()
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](README/README-fig-unnamed-chunk-5-1.png)
 
 The code below would produce an interactive representation: the y-value is displayed when mouse is over each point. It is intended to be used as quick visualization tool as well, not as a plot method for putting a nice figure in a paper.
 
