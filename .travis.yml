@@ -1,12 +1,20 @@
 
 language: r
-os: 
-- linux
-- osx
-r:
-  - oldrel
-  - release
-  - devel
+
+matrix:
+- os: linux
+  r: oldrel
+- os: linux
+  r: release
+- os: linux
+  r: devel
+- os: osx
+  r: oldrel
+- os: osx
+  r: release
+- os: osx
+  r: devel
+
 sudo: false
 cache: packages
 
