@@ -17,12 +17,6 @@
 #' @export
 #'
 batch_convert <- function(path_input, path_output = path_input){
-  # find files to transform
-  listFiles <- list.files(path_input,
-                           full.names = TRUE)
-  listFiles <- listFiles[grepl(".csv",
-                                 listFiles) == TRUE]
-
   if (file.exists(paste0(path_output,
                          "/settings.csv")) |
       file.exists(paste0(path_output,
@@ -31,14 +25,18 @@ batch_convert <- function(path_input, path_output = path_input){
                 path_output))# nolint
   }
 
-  lapply(listFiles, convert_output) %>%
-    function_tables(path_output)
 
+  dir(path = path_input, full.names = TRUE) %>%
+    purrr::keep(grepl(".csv",  .)) %>%
+    purrr::map(convert_output) %>%
+    function_tables(path_output)
 
 }
 
 function_bind <- function(list_micropem, name){
-  dplyr::bind_rows(lapply(list_micropem, add_name, name = name))
+  list_micropem %>%
+    purrr::map(add_name, name = name) %>%
+    dplyr::bind_rows()
 }
 
 function_tables <- function(list_micropem, path_output){
@@ -55,7 +53,7 @@ function_tables <- function(list_micropem, path_output){
 }
 
 add_name <- function(MP, name){
-  dplyr::bind_cols(MP[[name]], tibble::tibble(filename = rep(MP$filename, nrow(MP[[name]]))))
+  dplyr::mutate_(MP[[name]], filename = ~lazyeval::interp(MP$filename))
 }
 
 

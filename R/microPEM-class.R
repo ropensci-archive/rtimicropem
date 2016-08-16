@@ -180,33 +180,30 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
 # SUMMARY METHOD
 ##########################################################################
 summarymicropem <- function(self){
-  numMeasures <- dplyr::select_(self$measures,
-                                .dots = ~rh_corrected_nephelometer:flow)
-
-  listSummary <- lapply(numMeasures, summaryPM)
-  tableSummary <- do.call("rbind", listSummary)
-  tableSummary <- dplyr::tbl_df(tableSummary)
-  measure <- data.frame(measure = row.names(tableSummary))
-  tableSummary <- dplyr::bind_cols(measure,
-                                   tableSummary)
-
-  return(dplyr::tbl_df(tableSummary))
+  dplyr::select_(self$measures,
+                 .dots = ~rh_corrected_nephelometer:flow) %>%
+    purrr::map(summaryPM) %>%
+    dplyr::bind_rows() %>%
+    dplyr::mutate_(measure = lazyeval::interp(~dplyr::select_(self$measures,
+                                            .dots = ~rh_corrected_nephelometer:flow) %>%
+                     names)) %>%
+    dplyr::select_(.dots = list(quote(measure),
+                                quote(no._of_not_missing_values),
+                                quote(median),
+                                quote(mean),
+                                quote(minimum),
+                                quote(maximum),
+                                quote(variance)))
 }
 
 summaryPM <- function(x) {
+  sumup <- tibble::tibble_(list(no._of_not_missing_values = ~sum(!is.na(x)),
+                                median = ~median(x, na.rm = TRUE),
+                                mean = ~mean(x, na.rm = TRUE),
+                                minimum = ~min(x, na.rm = TRUE),
+                                maximum = ~max(x, na.rm = TRUE),
+                                variance = ~var(x, na.rm = TRUE)))
 
-  sumup <- data.frame(sum(!is.na(x)),
-                      median(x, na.rm = TRUE),
-                      mean(x, na.rm = TRUE),
-                      min(x, na.rm = TRUE),
-                      max(x, na.rm = TRUE),
-                      var(x, na.rm = TRUE))
-  names(sumup) <- c("No. of not missing values",
-                    "Median",
-                    "Mean",
-                    "Minimum",
-                    "Maximum",
-                    "Variance")
   return(sumup)
 }
 
