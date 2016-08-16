@@ -16,7 +16,7 @@ test_that("the print method works", {
                                "minimum",
                                "maximum",
                                "variance")))
-  expect_true(all(unlist(lapply(sumup, class)) == c("factor",
+  expect_true(all(unlist(lapply(sumup, class)) == c("character",
                                "integer",
                                "numeric",
                                "numeric",
