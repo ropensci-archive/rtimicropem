@@ -287,5 +287,34 @@ transform_date <- function(date){
   date <- gsub("1010", "10", date)
   date <- gsub("1111", "11", date)
   date <- gsub("1212", "12", date)
-  lubridate::parse_date_time(date, orders = c("mdy", "dmy"))
-}
+
+  if(length(date) == 1){
+    output <- lubridate::parse_date_time(date, orders = c("dmy", "mdy"), quiet = TRUE)
+  }else{
+    # now find the best format
+    date_try1 <- lubridate::parse_date_time(date, orders = "dmy", quiet = TRUE)
+    date_try2 <- lubridate::parse_date_time(date, orders = "mdy", quiet = TRUE)
+
+    if(!any(is.na(date_try1)) &
+       !any(is.na(date_try2))){
+      diff1 <- as.numeric(sum(diff(date_try1, units = "secs")))
+      diff2 <- as.numeric(sum(diff(date_try2, units = "secs")))
+
+      if(diff1 > diff2){
+        output <- date_try2
+      }else{
+        output <- date_try1
+      }
+    }else{
+      if(any(is.na(date_try1))){
+        output <- date_try2
+      }else{
+        output <- date_try1
+      }
+    }
+
+
+  }
+  return(output)
+  }
+

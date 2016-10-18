@@ -152,9 +152,10 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
                      y = measurement,
                      col = variable)) +
       facet_grid(variable ~ ., scales = "free_y") +
-      theme(panel.spacing = unit(2, "lines")) +
       scale_color_manual(values =  nicePalette) +
       theme_bw() +
+      theme(strip.text.y = element_text(angle = 0),
+            legend.position = "none") +
       xlab("time")
   }
 
@@ -169,8 +170,9 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
                                                   " - ",
                                                   variable))) +
       facet_grid(variable ~ ., scales = "free_y") +
-      theme(panel.spacing = unit(2, "lines")) +
-      theme_bw() +
+      theme_bw()  +
+      theme(strip.text.y = element_text(angle = 0),
+            legend.position = "none") +
       xlab("time")
 
   }
