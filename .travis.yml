@@ -27,6 +27,10 @@ matrix:
 r_packages:
   - covr
 
+r_github_packages:
+  - hadley/scales
+  - hadley/ggplot2
+
 notifications:
     email:
       on_success: change
