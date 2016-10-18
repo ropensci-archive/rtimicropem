@@ -14,9 +14,10 @@
 #' micropem_na$plot()
 #' identify_lags(micropem_na)
 #'
-identify_lags <- function(micropem){
+identify_lags <- function(micropem,
+                          column = "rh_corrected_nephelometer"){
   data_na <- dplyr::filter_(micropem$measures,
-                            lazyeval::interp(~ is.na(rh_corrected_nephelometer)))
+                            lazyeval::interp(~ is.na(micropem$measures[, column])))
 
   dplyr::filter_(data_na,
                 lazyeval::interp(~ difftime(datetime, lag(datetime),

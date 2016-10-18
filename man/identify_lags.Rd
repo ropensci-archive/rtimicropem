@@ -4,7 +4,7 @@
 \alias{identify_lags}
 \title{Identify time gaps in the data collection period}
 \usage{
-identify_lags(micropem)
+identify_lags(micropem, column = "rh_corrected_nephelometer")
 }
 \arguments{
 \item{micropem}{a R6 micropem object}
