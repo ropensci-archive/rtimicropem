@@ -91,7 +91,7 @@ print(micropem_example)
     ## An object of class micropem (R6 class)
     ## A summary of measures is:
     ## 
-    ## measure                      No. of not missing values   Median         Mean   Minimum   Maximum    Variance
+    ## measure                      no._of_not_missing_values   median         mean   minimum   maximum    variance
     ## --------------------------  --------------------------  -------  -----------  --------  --------  ----------
     ## rh_corrected_nephelometer                         8634    49.00   49.3745657     45.00     93.00   1.6780557
     ## temp                                              2878    84.50   84.6830438     82.30     87.60   1.7180023
@@ -105,7 +105,7 @@ print(micropem_example)
     ## 
     ##                                     value                  
     ## ----------------------------------  -----------------------
-    ## downloadDate                        2015-07-04             
+    ## downloadDate                        2015-04-07             
     ## totalDownloadTime                   18                     
     ## deviceSerial                        MP1411                 
     ## dateTimeHardware                    2013-02-15             
@@ -187,15 +187,15 @@ results <- micropemChai$summary()
 results %>% knitr::kable()
 ```
 
-| measure                     |  No. of not missing values|  Median|        Mean|  Minimum|  Maximum|   Variance|
-|:----------------------------|--------------------------:|-------:|-----------:|--------:|--------:|----------:|
-| rh\_corrected\_nephelometer |                       8634|   49.00|  49.3745657|    45.00|    93.00|  1.6780557|
-| temp                        |                       2878|   84.50|  84.6830438|    82.30|    87.60|  1.7180023|
-| rh                          |                       8634|   54.60|  55.0061733|    46.20|    64.90|  7.6665285|
-| battery                     |                       1464|    4.10|   4.0872268|     3.90|     4.30|  0.0078272|
-| inlet\_press                |                       2878|    0.11|   0.1111015|     0.10|     0.13|  0.0000538|
-| orifice\_press              |                       2878|    0.15|   0.1505455|     0.14|     0.16|  0.0000072|
-| flow                        |                       2878|    0.77|   0.7703023|     0.77|     0.78|  0.0000029|
+| measure                     |  no.\_of\_not\_missing\_values|  median|        mean|  minimum|  maximum|   variance|
+|:----------------------------|------------------------------:|-------:|-----------:|--------:|--------:|----------:|
+| rh\_corrected\_nephelometer |                           8634|   49.00|  49.3745657|    45.00|    93.00|  1.6780557|
+| temp                        |                           2878|   84.50|  84.6830438|    82.30|    87.60|  1.7180023|
+| rh                          |                           8634|   54.60|  55.0061733|    46.20|    64.90|  7.6665285|
+| battery                     |                           1464|    4.10|   4.0872268|     3.90|     4.30|  0.0078272|
+| inlet\_press                |                           2878|    0.11|   0.1111015|     0.10|     0.13|  0.0000538|
+| orifice\_press              |                           2878|    0.15|   0.1505455|     0.14|     0.16|  0.0000072|
+| flow                        |                           2878|    0.77|   0.7703023|     0.77|     0.78|  0.0000029|
 
 ### Shiny app developped for the CHAI project
 
