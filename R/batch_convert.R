@@ -25,7 +25,6 @@ batch_convert <- function(path_input, path_output = path_input){
                 path_output))# nolint
   }
 
-
   dir(path = path_input, full.names = TRUE) %>%
     purrr::keep(grepl(".csv",  .)) %>%
     purrr::map(convert_output) %>%
@@ -53,7 +52,7 @@ function_tables <- function(list_micropem, path_output){
 }
 
 add_name <- function(MP, name){
-  dplyr::mutate_(MP[[name]], filename = ~lazyeval::interp(MP$filename))
+  dplyr::mutate_(MP[[name]], filename = ~MP$filename)
 }
 
 
