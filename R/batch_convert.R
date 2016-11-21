@@ -52,7 +52,11 @@ function_tables <- function(list_micropem, path_output){
 }
 
 add_name <- function(MP, name){
-  dplyr::mutate_(MP[[name]], filename = ~MP$filename)
-}
+  df <- dplyr::mutate_(MP[[name]], filename = ~MP$filename)
+  if(name == "measures"){
+    df <- dplyr::mutate_(df, datetime = lazyeval::interp(~ as.character(datetime)))
+  }
 
+  return(df)
+}
 
