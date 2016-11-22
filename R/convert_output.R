@@ -51,8 +51,8 @@ convert_output <- function(path) {
     measures$date <- gsub("106/06/14", "6/14/2015", measures$date)
     measures$date <- gsub("15/06/106", "6/15/2015", measures$date)
     measures$date <- gsub("106/06/15", "6/15/2015", measures$date)
-    measures$date <- gsub("11/0909/15", "9/11/2015", measures$date)
-    measures$date <- gsub("12/0909/15", "9/12/2015", measures$date)
+
+
     # transform dates
     measures$date <- transform_date(measures$date)
     measures$time <- lubridate::hms(measures$time)
