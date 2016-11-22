@@ -15,13 +15,11 @@ transform_date <- function(date){
   date <- gsub("dec", "12", date)
   # day moismois year court -> mois day year long
 
-  if(grepl("\\/....\\/", date)){
-    splitted_date <- stringr::str_split(date[grepl("\\/....\\/", date)], "\\/")
-    day <- unlist(lapply(splitted_date, "[", 1))
-    month <- stringr::str_sub(unlist(lapply(splitted_date, "[", 2)), 1, 2)
-    year <- unlist(lapply(splitted_date, "[", 3))
-    date[grepl("\\/....\\/", date)] <- paste(month, day, paste0("20",year), sep = "/")
-  }
+  splitted_date <- stringr::str_split(date[grepl("\\/....\\/", date)], "\\/")
+  day <- unlist(lapply(splitted_date, "[", 1))
+  month <- stringr::str_sub(unlist(lapply(splitted_date, "[", 2)), 1, 2)
+  year <- unlist(lapply(splitted_date, "[", 3))
+  date[grepl("\\/....\\/", date)] <- paste(month, day, paste0("20",year), sep = "/")
 
   if(length(date) == 1){
     output <- lubridate::parse_date_time(date, orders = c("dmy", "mdy"), quiet = TRUE)
