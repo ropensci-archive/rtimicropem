@@ -182,6 +182,7 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
 # SUMMARY METHOD
 ##########################################################################
 summarymicropem <- function(self){
+
   dplyr::select_(self$measures,
                  .dots = ~rh_corrected_nephelometer:flow) %>%
     purrr::map(summaryPM) %>%
@@ -199,6 +200,9 @@ summarymicropem <- function(self){
 }
 
 summaryPM <- function(x) {
+  if(is(x, "character")){
+    x <- as.numeric(x)
+  }
   sumup <- tibble::tibble_(list(no._of_not_missing_values = ~sum(!is.na(x)),
                                 median = ~median(x, na.rm = TRUE),
                                 mean = ~mean(x, na.rm = TRUE),
