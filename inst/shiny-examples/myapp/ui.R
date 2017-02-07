@@ -1,12 +1,11 @@
 library("shiny")
 library("dplyr")
-library("zoo")
 library("lubridate")
 library("xtable")
 library("shinydashboard")
 library("datasets")
 library("DT")
-library("ggiraph")
+library("rbokeh")
 library("rtimicropem")
 options(RCHART_LIB = 'highcharts')
 shinyUI(fluidPage(
@@ -37,8 +36,7 @@ shinyUI(fluidPage(
                  DT::dataTableOutput("Alarms")),
         tabPanel("Plot",
                  conditionalPanel(condition = "input.graphtype == 'interactive'",
-                                  ggiraph::ggiraphOutput("plotPM",
-                                                         height = "1000px")),
+                                  rbokehOutput("plotPM")),
                  conditionalPanel(condition = "input.graphtype == 'plain'",
                                   plotOutput("plotPM2"))),
 

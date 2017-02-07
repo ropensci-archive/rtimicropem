@@ -189,7 +189,7 @@ micropem_example &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <div id="plot-method" class="section level3">
 <h3 class="hasAnchor">
 <html><body><a href="#plot-method" class="anchor"> </a></body></html>Plot method</h3>
-<p>The R6 <code>micropem</code> class has its own plot method. It allows to draw a plot of all time-varying measures against the <code>timeDate</code> field. It takes two arguments: the <code>micropem</code> object to be plotted, and the type of plots to be produced, either a “plain” <code>ggplot2</code> plot with 6 facets, or its interactive version produced with the <code>ggiraph</code> package – the corresponding values of type are respectively “plain” and “interactive”.</p>
+<p>The R6 <code>micropem</code> class has its own plot method. It allows to draw a plot of all time-varying measures against the <code>timeDate</code> field. It takes two arguments: the <code>micropem</code> object to be plotted, and the type of plots to be produced, either a “plain” <code>ggplot2</code> plot with 6 facets, or its interactive version produced with the <code>rbokeh</code> package – the corresponding values of type are respectively “plain” and “interactive”.</p>
 <p>Below we show to examples of uses of the plot method on a <code>micropem</code> object.</p>
 <p>This is a “plain” plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">"micropemChai"</span>)
@@ -197,9 +197,9 @@ micropem_example &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 micropemChai$<span class="kw">plot</span>()</code></pre></div>
 <p><img src="vignette_ammon_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>The code below would produce an interactive representation: the y-value is displayed when mouse is over each point. It is intended to be used as quick visualization tool as well, not as a plot method for putting a nice figure in a paper.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggiraph"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"rbokeh"</span>)
 p &lt;-<span class="st"> </span>micropemChai$<span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"interactive"</span>)
-<span class="kw">ggiraph</span>(<span class="dt">code =</span> {<span class="kw">print</span>(p)}, <span class="dt">width =</span> <span class="dv">10</span>, <span class="dt">height =</span> <span class="dv">10</span>)</code></pre></div>
+p</code></pre></div>
 </div>
 <div id="summary-method" class="section level3">
 <h3 class="hasAnchor">

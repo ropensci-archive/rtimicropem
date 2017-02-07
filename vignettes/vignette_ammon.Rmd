@@ -76,7 +76,7 @@ print(micropem_example)
 
 ### Plot method
 
-The R6 `micropem` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `micropem` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `ggiraph` package -- the corresponding values of type are respectively "plain" and "interactive".
+The R6 `micropem` class has its own plot method. It allows to draw a plot of all time-varying measures against the `timeDate` field. It takes two arguments: the `micropem` object to be plotted, and the type of plots to be produced, either a "plain" `ggplot2` plot with 6 facets, or its interactive version produced with the `rbokeh` package -- the corresponding values of type are respectively "plain" and "interactive".
 
 Below we show to examples of uses of the plot method on a `micropem` object.
 
@@ -92,9 +92,9 @@ The code below would produce an interactive representation: the y-value is displ
 
 
 ```{r,comment = NA, results = "asis", comment = NA, tidy = F, warning=FALSE, message=FALSE, eval = FALSE}
-library("ggiraph")
+library("rbokeh")
 p <- micropemChai$plot(type = "interactive")
-ggiraph(code = {print(p)}, width = 10, height = 10)
+p
 
 ```
 

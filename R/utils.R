@@ -51,3 +51,13 @@ transform_date <- function(date){
   }
   return(output)
 }
+
+make_plot_one_param <- function(x, donnees){
+  data <- filter_(donnees, lazyeval::interp(~parameter == x))
+
+  rbokeh::figure(width = 700, height = 175)  %>%
+    rbokeh::ly_points(datetime, value, data = data)%>%
+    rbokeh::ly_text(min(data$datetime), quantile(data$value, 0.95), text = x,
+            font_size = "14pt") %>%
+    rbokeh::ly_abline(h = 0)
+}

@@ -6,7 +6,6 @@
 #' @importFrom dplyr tbl_df filter_ select_ "%>%" bind_cols
 #' @importFrom knitr kable
 #' @import ggplot2
-#' @import ggiraph
 #' @export
 #' @keywords data
 #' @return Object of \code{\link{R6Class}}.
@@ -18,9 +17,9 @@
 #' # Example with type = "interactive", for RStudio viewer,
 #' # RMardown html documents and Shiny apps.
 #' \dontrun{
-#' library("ggiraph")
+#' library("rbokeh")
 #' p <- micropemChai$plot(type = "interactive")
-#' ggiraph(code = {print(p)}, width = 1, height = 5)}
+#' p
 #' # Summary method
 #' micropemChai$summary()
 #' # Print method
@@ -160,20 +159,21 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
   }
 
   if (type == "interactive"){
-    p <- ggplot(dataLong) +
-      geom_point_interactive(aes(x = datetime,
-                                 y = measurement,
-                                 col = variable,
-                                 tooltip = paste0(datetime,
-                                                  " - ",
-                                                  measurement,
-                                                  " - ",
-                                                  variable))) +
-      facet_grid(variable ~ ., scales = "free_y") +
-      theme_bw()  +
-      theme(strip.text.y = element_text(angle = 0),
-            legend.position = "none") +
-      xlab("time")
+    df <- self$measures %>%
+      select_(~datetime, ~rh_corrected_nephelometer,
+              ~temp, ~rh,
+              ~inlet_press,
+              ~orifice_press, ~flow,
+              ~x_axis)
+    df <-  df %>%
+      tidyr::gather("parameter", "value", 2:ncol(df))
+
+    df <- filter_(df, ~!is.na(value))
+    params <- unique(df$parameter)
+    plots_list <- unique(df$parameter) %>%
+      purrr::map(make_plot_one_param, donnees = df)
+
+    p <- rbokeh::grid_plot(plots_list, ncol = 1)
 
   }
   return(p)

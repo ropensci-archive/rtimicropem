@@ -133,86 +133,6 @@
   </dl></p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='st'>"micropemChai"</span>)
-<span class='co'># Plot method, type = "plain" by default.</span>
-<span class='no'>micropemChai</span>$<span class='fu'>plot</span>()</div><img src='micropem-2.png' alt='' width='540' height='400' /><div class='input'><span class='co'># Example with type = "interactive", for RStudio viewer,</span>
-<span class='co'># RMardown html documents and Shiny apps.</span>
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># library("ggiraph")</span>
-<span class='co'># p &lt;- micropemChai$plot(type = "interactive")</span>
-<span class='co'># ggiraph(code = {print(p)}, width = 1, height = 5)</span>
-<span class='co'>## ---------------------------------------------</span>
-<span class='co'># Summary method</span>
-<span class='no'>micropemChai</span>$<span class='fu'>summary</span>()</div><div class='output co'>#&gt; # A tibble: 7 × 7
-#&gt;                     measure no._of_not_missing_values median       mean minimum
-#&gt;                       &lt;chr&gt;                     &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 rh_corrected_nephelometer                      8634  49.00 49.3745657   45.00
-#&gt; 2                      temp                      2878  84.50 84.6830438   82.30
-#&gt; 3                        rh                      8634  54.60 55.0061733   46.20
-#&gt; 4                   battery                      1464   4.10  4.0872268    3.90
-#&gt; 5               inlet_press                      2878   0.11  0.1111015    0.10
-#&gt; 6             orifice_press                      2878   0.15  0.1505455    0.14
-#&gt; 7                      flow                      2878   0.77  0.7703023    0.77
-#&gt; # ... with 2 more variables: maximum &lt;dbl&gt;, variance &lt;dbl&gt;</div><div class='input'><span class='co'># Print method</span>
-<span class='no'>micropemChai</span>$<span class='fu'>print</span>()</div><div class='output co'>#&gt; An object of class micropem (R6 class)
-#&gt; A summary of measures is:
-#&gt; 
-#&gt; |measure                   | no._of_not_missing_values| median|       mean| minimum| maximum|  variance|
-#&gt; |:-------------------------|-------------------------:|------:|----------:|-------:|-------:|---------:|
-#&gt; |rh_corrected_nephelometer |                      8634|  49.00| 49.3745657|   45.00|   93.00| 1.6780557|
-#&gt; |temp                      |                      2878|  84.50| 84.6830438|   82.30|   87.60| 1.7180023|
-#&gt; |rh                        |                      8634|  54.60| 55.0061733|   46.20|   64.90| 7.6665285|
-#&gt; |battery                   |                      1464|   4.10|  4.0872268|    3.90|    4.30| 0.0078272|
-#&gt; |inlet_press               |                      2878|   0.11|  0.1111015|    0.10|    0.13| 0.0000538|
-#&gt; |orifice_press             |                      2878|   0.15|  0.1505455|    0.14|    0.16| 0.0000072|
-#&gt; |flow                      |                      2878|   0.77|  0.7703023|    0.77|    0.78| 0.0000029|
-#&gt; 
-#&gt;  Settings were:
-#&gt; 
-#&gt; |                                  |value                  |
-#&gt; |:---------------------------------|:----------------------|
-#&gt; |downloadDate                      |2015-04-07             |
-#&gt; |totalDownloadTime                 |18                     |
-#&gt; |deviceSerial                      |MP1411                 |
-#&gt; |dateTimeHardware                  |2013-02-15             |
-#&gt; |dateTimeSoftware                  |2014-01-24             |
-#&gt; |version                           |v2.0.5136.37657        |
-#&gt; |participantID                     |                       |
-#&gt; |filterID                          |CM1411                 |
-#&gt; |participantWeight                 |NA                     |
-#&gt; |inletAerosolSize                  |PM2.5                  |
-#&gt; |laserCyclingVariablesDelay        |1                      |
-#&gt; |laserCyclingVariablesSamplingTime |1                      |
-#&gt; |laserCyclingVariablesOffTime      |8                      |
-#&gt; |SystemTimes                       |No cycling - Always On |
-#&gt; |nephelometerSlope                 |10                     |
-#&gt; |nephelometerOffset                |0                      |
-#&gt; |nephelometerLogInterval           |10                     |
-#&gt; |temperatureSlope                  |10                     |
-#&gt; |temperatureOffset                 |0                      |
-#&gt; |temperatureLog                    |30                     |
-#&gt; |humiditySlope                     |10                     |
-#&gt; |humidityOffset                    |0                      |
-#&gt; |humidityLog                       |10                     |
-#&gt; |inletPressureSlope                |40.950.000             |
-#&gt; |inletPressureOffset               |0                      |
-#&gt; |inletPressureLog                  |30                     |
-#&gt; |inletPressureHighTarget           |1280                   |
-#&gt; |inletPressureLowTarget            |768                    |
-#&gt; |orificePressureSlope              |40.950.000             |
-#&gt; |orificePressureOffset             |0                      |
-#&gt; |orificePressureLog                |30                     |
-#&gt; |orificePressureHighTarget         |2167                   |
-#&gt; |orificePressureLowTarget          |1592                   |
-#&gt; |flowLog                           |30                     |
-#&gt; |flowHighTarget                    |900                    |
-#&gt; |flowLowTarget                     |200                    |
-#&gt; |flowRate                          |0.5                    |
-#&gt; |accelerometerLog                  |5                      |
-#&gt; |batteryLog                        |60                     |
-#&gt; |ventilationSlope                  |NA                     |
-#&gt; |ventilationOffset                 |NA                     |</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -225,9 +145,7 @@
       <li><a href="#fields">Fields</a></li>
 
       <li><a href="#methods">Methods</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

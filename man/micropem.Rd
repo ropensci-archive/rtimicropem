@@ -52,20 +52,5 @@ An R6 class to represent MicroPEM output information.
   \item{print}{Method for printing both the summary table of all time-varying numeric measurements and all settings from the \code{settings} field.}
   }
 }
-\examples{
-data("micropemChai")
-# Plot method, type = "plain" by default.
-micropemChai$plot()
-# Example with type = "interactive", for RStudio viewer,
-# RMardown html documents and Shiny apps.
-\dontrun{
-library("ggiraph")
-p <- micropemChai$plot(type = "interactive")
-ggiraph(code = {print(p)}, width = 1, height = 5)}
-# Summary method
-micropemChai$summary()
-# Print method
-micropemChai$print()
-}
 \keyword{data}
 

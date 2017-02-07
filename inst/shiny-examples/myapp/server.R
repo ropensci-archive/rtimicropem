@@ -1,12 +1,11 @@
 library("shiny")
 library("dplyr")
-library("zoo")
 library("lubridate")
 library("xtable")
 library("shinydashboard")
 library("rtimicropem")
 library("DT")
-library("ggiraph")
+library("rbokeh")
 
 shinyServer(function(input, output) {
 
@@ -45,12 +44,8 @@ shinyServer(function(input, output) {
     })
 
 
-    output$plotPM <- ggiraph::renderggiraph({
-                               ggplot <- microPEMObject()$plot(type="interactive")+
-                                 theme(legend.position="none")
-                               ggiraph::ggiraph(code = print(ggplot),
-                                                hover_css = "fill:orange;stroke-width:1px;stroke:wheat;cursor:pointer;")
-                             })
+    output$plotPM <- rbokeh::renderRbokeh({microPEMObject()$plot(type="interactive")})
+
     output$plotPM2 <- renderPlot({microPEMObject()$plot(type="plain")+
         theme(legend.position="none")
                              },
