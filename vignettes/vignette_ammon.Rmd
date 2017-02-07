@@ -1,6 +1,6 @@
 ---
 title: "Introduction to `ammon`"
-author: "Maëlle Salmon and other CHAI project members"
+author: "M. Salmon and other CHAI project members"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
