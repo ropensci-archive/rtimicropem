@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Supports the Reproducible Analysis of RTI MicroPEM Output Files • rtimicropem</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -29,18 +29,18 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="articles/index.html">Overview</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="articles/index.html">Articles</a>
-</li>
-<li>
-  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="http://github.com/masalmon/rtimicropem">
+  <a href="https://github.com/masalmon/rtimicropem">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -62,7 +62,8 @@
     
 <div class="contents">
 
-<p>:construction_worker: Please note that this package is under development. :construction_worker: Furthermore, this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
+<p>Please note that this package is under development.</p>
+<p>Furthermore, this project is released with a <a href="https://github.com/masalmon/rtimicropem/blob/master/CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 <div id="installation" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#installation" class="anchor"> </a>Installation</h1></div>
@@ -78,250 +79,7 @@
 <li><p>Checking individual MicroPEM output files after, say, one day of data collection.</p></li>
 <li><p>Building a data base based on output files, and clean and transform the data for further analysis.</p></li>
 </ul>
-<p>For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called <code>micropem</code>, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts.</p>
-<p>This document aims at providing an overview of the functionalities of the package.</p>
-</div>
-<div id="checking-individual-files-from-input-data-to-micropem-objects" class="section level1">
-<h1 class="hasAnchor">
-<a href="#checking-individual-files-from-input-data-to-micropem-objects" class="anchor"> </a>Checking individual files: from input data to <code>micropem</code> objects</h1>
-<p>The MicroPEM device outputs a csv file with all the information about the measures, depending on the options chosen in RTI MicroPEM software when uploading data, for instance:</p>
-<ul>
-<li><p>the measures themselves (relative humidity corrected nephelometer),</p></li>
-<li><p>other measures that can help interpret them or check that no problem occured (temperature, relative humidity, battery, orifice pressure, inlet pressure, flow, accelerometer variables, reasons for shutdown, and variables related to user compliance),</p></li>
-<li><p>a reminder of parameters set by the user (calibration parameters, frequency of measures)</p></li>
-<li><p>and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.</p></li>
-</ul>
-<p>Therefore, the <code>micropem</code> package offers a R6 class called <code>micropem</code> for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called <code>settings</code>. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.</p>
-<div class="figure">
-<img src="vignettes/outputRTI.png" alt="alt text"><p class="caption">alt text</p>
-</div>
-<div id="fields" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fields" class="anchor"> </a>Fields</h2>
-<div id="settings-field" class="section level3">
-<h3 class="hasAnchor">
-<a href="#settings-field" class="anchor"> </a>
-<code>settings</code> field</h3>
-<p>This field is a data.frame (dplyr tbl_df) that includes 41 variables.</p>
-</div>
-<div id="measures-field" class="section level3">
-<h3 class="hasAnchor">
-<a href="#measures-field" class="anchor"> </a>
-<code>measures</code> field</h3>
-<p>This field is a data.frame (dplyr tbl_df) with the time-varying variables.</p>
-</div>
-<div id="filename-field" class="section level3">
-<h3 class="hasAnchor">
-<a href="#filename-field" class="anchor"> </a>
-<code>filename</code> field</h3>
-<p>This field contains the full filename of the file that was used to generate the <code>micropem</code> object.</p>
-</div>
-</div>
-<div id="the-convert_output-function-" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-convert_output-function-" class="anchor"> </a>The <code>convert_output</code> function.</h2>
-<p>The <code>convert_output</code> only takes one arguments as input: the path to the output file. The result of a call to this function is an object of the class <code>micropem</code>. Below is a example of a call to <code>convert_output</code> followed by a call to the <code>print</code> method.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"rtimicropem"</span>)
-micropem_example &lt;-<span class="st"> </span><span class="kw"><a href="reference/convert_output.html">convert_output</a></span>(<span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"CHAI.csv"</span>, <span class="dt">package =</span> <span class="st">"rtimicropem"</span>))
-<span class="kw">class</span>(micropem_example)</code></pre></div>
-<pre><code>## [1] "micropem" "R6"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(micropem_example)</code></pre></div>
-<pre><code>## An object of class micropem (R6 class)
-## A summary of measures is:
-## 
-## measure                      no._of_not_missing_values   median         mean   minimum   maximum    variance
-## --------------------------  --------------------------  -------  -----------  --------  --------  ----------
-## rh_corrected_nephelometer                         8634    49.00   49.3745657     45.00     93.00   1.6780557
-## temp                                              2878    84.50   84.6830438     82.30     87.60   1.7180023
-## rh                                                8634    54.60   55.0061733     46.20     64.90   7.6665285
-## battery                                           1464     4.10    4.0872268      3.90      4.30   0.0078272
-## inlet_press                                       2878     0.11    0.1111015      0.10      0.13   0.0000538
-## orifice_press                                     2878     0.15    0.1505455      0.14      0.16   0.0000072
-## flow                                              2878     0.77    0.7703023      0.77      0.78   0.0000029
-## 
-##  Settings were:
-## 
-##                                     value                  
-## ----------------------------------  -----------------------
-## downloadDate                        2015-04-07             
-## totalDownloadTime                   18                     
-## deviceSerial                        MP1411                 
-## dateTimeHardware                    2013-02-15             
-## dateTimeSoftware                    2014-01-24             
-## version                             v2.0.5136.37657        
-## participantID                                              
-## filterID                            CM1411                 
-## participantWeight                   NA                     
-## inletAerosolSize                    PM2.5                  
-## laserCyclingVariablesDelay          1                      
-## laserCyclingVariablesSamplingTime   1                      
-## laserCyclingVariablesOffTime        8                      
-## SystemTimes                         No cycling - Always On 
-## nephelometerSlope                   10                     
-## nephelometerOffset                  0                      
-## nephelometerLogInterval             10                     
-## temperatureSlope                    10                     
-## temperatureOffset                   0                      
-## temperatureLog                      30                     
-## humiditySlope                       10                     
-## humidityOffset                      0                      
-## humidityLog                         10                     
-## inletPressureSlope                  40.950.000             
-## inletPressureOffset                 0                      
-## inletPressureLog                    30                     
-## inletPressureHighTarget             1280                   
-## inletPressureLowTarget              768                    
-## orificePressureSlope                40.950.000             
-## orificePressureOffset               0                      
-## orificePressureLog                  30                     
-## orificePressureHighTarget           2167                   
-## orificePressureLowTarget            1592                   
-## flowLog                             30                     
-## flowHighTarget                      900                    
-## flowLowTarget                       200                    
-## flowRate                            0.5                    
-## accelerometerLog                    5                      
-## batteryLog                          60                     
-## ventilationSlope                    NA                     
-## ventilationOffset                   NA</code></pre>
-</div>
-<div id="visualizing-information-contained-in-a-micropem-object" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualizing-information-contained-in-a-micropem-object" class="anchor"> </a>Visualizing information contained in a <code>micropem</code> object</h2>
-<div id="plot-method" class="section level3">
-<h3 class="hasAnchor">
-<a href="#plot-method" class="anchor"> </a>Plot method</h3>
-<p>The R6 <code>micropem</code> class has its own plot method. It allows to draw a plot of all time-varying measures against the <code>timeDate</code> field. It takes two arguments: the <code>micropem</code> object to be plotted, and the type of plots to be produced, either a “plain” <code>ggplot2</code> plot with 6 facets, or its interactive version produced with the <code>ggiraph</code> package – the corresponding values of type are respectively “plain” and “interactive”.</p>
-<p>Below we show to examples of uses of the plot method on a <code>micropem</code> object.</p>
-<p>This is a “plain” plot.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">"micropemChai"</span>)
-<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))
-micropemChai$<span class="kw">plot</span>()</code></pre></div>
-<p><img src="README/README-fig-unnamed-chunk-5-1.png" width="672"></p>
-<p>The code below would produce an interactive representation: the y-value is displayed when mouse is over each point. It is intended to be used as quick visualization tool as well, not as a plot method for putting a nice figure in a paper.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggiraph"</span>)
-p &lt;-<span class="st"> </span>micropemChai$<span class="kw">plot</span>(<span class="dt">type =</span> <span class="st">"interactive"</span>)
-<span class="kw">ggiraph</span>(<span class="dt">code =</span> {<span class="kw">print</span>(p)}, <span class="dt">width =</span> <span class="dv">10</span>, <span class="dt">height =</span> <span class="dv">10</span>)</code></pre></div>
-</div>
-<div id="summary-method" class="section level3">
-<h3 class="hasAnchor">
-<a href="#summary-method" class="anchor"> </a>
-<code>summary</code> method</h3>
-<p>Plotting the <code>micropem</code> object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called <code>summary</code> and outputs a table with summary statistics for each time-varying measures, except timeDate.</p>
-<p>Below is an example of use of this method.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"xtable"</span>)
-<span class="kw">data</span>(<span class="st">"micropemChai"</span>)
-results &lt;-<span class="st"> </span>micropemChai$<span class="kw">summary</span>()
-results %&gt;%<span class="st"> </span>knitr::<span class="kw">kable</span>()</code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">measure</th>
-<th align="right">no._of_not_missing_values</th>
-<th align="right">median</th>
-<th align="right">mean</th>
-<th align="right">minimum</th>
-<th align="right">maximum</th>
-<th align="right">variance</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">rh_corrected_nephelometer</td>
-<td align="right">8634</td>
-<td align="right">49.00</td>
-<td align="right">49.3745657</td>
-<td align="right">45.00</td>
-<td align="right">93.00</td>
-<td align="right">1.6780557</td>
-</tr>
-<tr class="even">
-<td align="left">temp</td>
-<td align="right">2878</td>
-<td align="right">84.50</td>
-<td align="right">84.6830438</td>
-<td align="right">82.30</td>
-<td align="right">87.60</td>
-<td align="right">1.7180023</td>
-</tr>
-<tr class="odd">
-<td align="left">rh</td>
-<td align="right">8634</td>
-<td align="right">54.60</td>
-<td align="right">55.0061733</td>
-<td align="right">46.20</td>
-<td align="right">64.90</td>
-<td align="right">7.6665285</td>
-</tr>
-<tr class="even">
-<td align="left">battery</td>
-<td align="right">1464</td>
-<td align="right">4.10</td>
-<td align="right">4.0872268</td>
-<td align="right">3.90</td>
-<td align="right">4.30</td>
-<td align="right">0.0078272</td>
-</tr>
-<tr class="odd">
-<td align="left">inlet_press</td>
-<td align="right">2878</td>
-<td align="right">0.11</td>
-<td align="right">0.1111015</td>
-<td align="right">0.10</td>
-<td align="right">0.13</td>
-<td align="right">0.0000538</td>
-</tr>
-<tr class="even">
-<td align="left">orifice_press</td>
-<td align="right">2878</td>
-<td align="right">0.15</td>
-<td align="right">0.1505455</td>
-<td align="right">0.14</td>
-<td align="right">0.16</td>
-<td align="right">0.0000072</td>
-</tr>
-<tr class="odd">
-<td align="left">flow</td>
-<td align="right">2878</td>
-<td align="right">0.77</td>
-<td align="right">0.7703023</td>
-<td align="right">0.77</td>
-<td align="right">0.78</td>
-<td align="right">0.0000029</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="shiny-app-developped-for-the-chai-project" class="section level3">
-<h3 class="hasAnchor">
-<a href="#shiny-app-developped-for-the-chai-project" class="anchor"> </a>Shiny app developped for the CHAI project</h3>
-<p>In the context of the <a href="http://www.chaiproject.org/">CHAI project</a>, we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function <code>run_shiny_app</code> with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:</p>
-<ul>
-<li><p>One with the output of a call to the <code>summary</code> method of the <code>micropem</code> object created,</p></li>
-<li><p>One with the output of a call to the <code>alarmCHAI</code> function that performs a few checks specific to the CHAI project,</p></li>
-<li><p>One with the output of a call to the plot method,</p></li>
-<li><p>One with the output of a call to <code>summarySettings</code>.</p></li>
-</ul>
-<p>This app allows the exploration of a MicroPEM output file with no R experience.</p>
-<p>Below we show screenshots of the app.</p>
-<div class="figure">
-<img src="vignettes/shinyTabSummary.png" alt="alt text"><p class="caption">alt text</p>
-</div>
-<div class="figure">
-<img src="vignettes/shinyTabAlarm.png" alt="alt text"><p class="caption">alt text</p>
-</div>
-<div class="figure">
-<img src="vignettes/shinyTabPlot.png" alt="alt text"><p class="caption">alt text</p>
-</div>
-<div class="figure">
-<img src="vignettes/shinyTabSettings.png" alt="alt text"><p class="caption">alt text</p>
-</div>
-</div>
-</div>
-</div>
-<div id="from-a-bunch-of-output-files-to-data-ready-for-further-analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#from-a-bunch-of-output-files-to-data-ready-for-further-analysis" class="anchor"> </a>From a bunch of output files to data ready for further analysis</h1>
-<p>The <code>batch_convert</code> function allows to convert a set of MicroPEM output files into two csv files, one containing the settings, one containing the measures, in each case with a filename column representing the full filename of the original file.</p>
-<p>These csv files can then be used for transformation by device ID for instance, or for analysis by date, or by participant ID of a study if the participant ID is contained in the filename or in the initial MicroPEM output files. The csv file with all the settings of all MicroPEM output files can help checking whether the different monitoring sessions were done in similar conditions.</p>
+<p>For more information check out the <a href="http://www.masalmon.eu/rtimicropem">package website</a>, in particular the <a href="http://www.masalmon.eu/rtimicropem/articles/vignette_ammon.html">introductory vignette</a>.</p>
 </div>
 </div>
   </div>

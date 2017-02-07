@@ -1,0 +1,45 @@
+title: rtimicropem
+
+templates:
+  params:
+    bootswatch: cerulean
+
+reference:
+  - title: Convert raw files
+    contents:
+    - micropem
+    - convert_output
+    - batch_convert
+  - title: Explore files
+    contents:
+    - run_shiny_app
+    - micropem
+    - identify_lags
+    - alarmCHAI
+  - title: Example data
+    contents:
+    - micropemC1
+    - micropemC2
+    - micropemChai
+    - Columbia
+    - Columbia2
+    - CHAI
+
+articles:
+  - title: Introduction
+    contents:
+    - vignette_ammon
+
+navbar:
+  title: rtimicropem
+  type: default
+  left:
+  - text: Home
+    href: index.html
+  - text: Overview
+    href: articles/index.html
+  - text: Reference
+    href: reference/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/masalmon/rtimicropem
