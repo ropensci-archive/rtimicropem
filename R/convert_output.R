@@ -9,6 +9,7 @@
 #' @examples
 #' micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'rtimicropem'))
 #' micropem_example$plot()
+#' micropem_example$plot(title = "wow")
 #' @export
 convert_output <- function(path) {
     ###########################################

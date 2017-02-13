@@ -48,7 +48,7 @@
 #' \describe{
 #'   \item{plot}{Method for getting a quick plot of all time-varying measurements.
 #'   Either \code{type ="plain"} or \code{type ="interactive"}, see examples.
-#'   The method returns a plot of the \code{ggplot}-class.}
+#'   The method returns a plot of the \code{ggplot}-class. One can add a title via the \code{title} argument.}
 #'   \item{summary}{Method for getting a summary table (\code{dplyr "tbl_df"}) of all time-varying numeric measurements.}
 #'   \item{print}{Method for printing both the summary table of all time-varying numeric measurements and all settings from the \code{settings} field.}
 #'   }
@@ -79,10 +79,10 @@ micropem <- R6::R6Class("micropem",
                             self$filename <- filename
                           },
                           plot = function(type = "plain",
-                                          logScale = FALSE){
+                                          title = NULL){
                             plotmicropem(self,
                                          type,
-                                         logScale)
+                                         title)
                           },
                           summary = function(){
                             summarymicropem(self)
@@ -97,7 +97,7 @@ micropem <- R6::R6Class("micropem",
 ##########################################################################
 # PLOT METHOD
 ##########################################################################
-plotmicropem <- function(self, type, logScale, ...){# nocov start
+plotmicropem <- function(self, type, title, ...){# nocov start
   if (is.null(type)){
     type <- "plain"
   }
@@ -156,6 +156,9 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
       theme(strip.text.y = element_text(angle = 0),
             legend.position = "none") +
       xlab("time")
+    if(!is.null(title)){
+      p <- p + ggtitle(title)
+    }
   }
 
   if (type == "interactive"){
@@ -171,7 +174,7 @@ plotmicropem <- function(self, type, logScale, ...){# nocov start
     df <- filter_(df, ~!is.na(value))
     params <- unique(df$parameter)
     plots_list <- unique(df$parameter) %>%
-      purrr::map(make_plot_one_param, donnees = df)
+      purrr::map(make_plot_one_param, title = title, donnees = df)
 
     p <- rbokeh::grid_plot(plots_list, ncol = 1)
 

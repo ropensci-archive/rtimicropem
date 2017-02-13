@@ -47,7 +47,7 @@ An R6 class to represent MicroPEM output information.
 \describe{
   \item{plot}{Method for getting a quick plot of all time-varying measurements.
   Either \code{type ="plain"} or \code{type ="interactive"}, see examples.
-  The method returns a plot of the \code{ggplot}-class.}
+  The method returns a plot of the \code{ggplot}-class. One can add a title via the \code{title} argument.}
   \item{summary}{Method for getting a summary table (\code{dplyr "tbl_df"}) of all time-varying numeric measurements.}
   \item{print}{Method for printing both the summary table of all time-varying numeric measurements and all settings from the \code{settings} field.}
   }
