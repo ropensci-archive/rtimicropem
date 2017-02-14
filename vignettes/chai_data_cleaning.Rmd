@@ -1,6 +1,6 @@
 ---
 title: "Cleaning data process of the CHAI project"
-author: "M. Salmon, S. Vakacherla, C. Mila, C. Tonne"
+author: "M. Salmon, S. Vakacherla, C. Mila, J. Marshall, C. Tonne"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Introduction
 
-In the context of personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/), about 250 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from ?? distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we've found in the literature, details about data cleaning were too scarce to allow reproducibility.
+In the context of personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/), about 250 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from ?? distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we've found in the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain which issues we encountered, we present the framework we defined and we give some details about the code we wrote. Our data cannot be made public since it's personal monitoring data. However, we hope this document will make our data cleaning more transparent, and we encourage you to read this document if you're considering using RTI MicroPEMs in the future.
 
 Small overview of problems encountered in MicroPEMs:
 
@@ -34,13 +34,41 @@ Small overview of problems encountered in MicroPEMs:
 
 Files could be entired removed from the analysis if
 
-* the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.
+- the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.
 
-* there were to few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.
+- there were to few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.
 
-* Relative humidity was not logged at all, which happened to one of our files, since relative humidity is used to correct nephelometer vales
+- Relative humidity was not logged at all, which happened to one of our files, since relative humidity is used to correct nephelometer vales
 
-* visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic.
+- visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic. All visual checks were performed by at least two team members.
+
+    - For MP718 we eliminated files where inlet pressure indicated the MicroPEM had been sucking air from inside the device.
+  
+    - For MP724 we eliminated files with an abrupt baseline shift, or where inlet pressure wasn't constantly increasing.
+    
+## Correction/removal of real-time values.
+
+* We only kept values from the measurements session, for which it was important to have written them down because 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes a few measures were produced.
+
+* We detected nephelometer high outliers and removed them thanks to a custom function adapted from `forecast::tsoutlier`. We copy the function later in this vignette.
+
+* Nephelometer values corresponding to negative relative humidity were removed.
+
+* Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn't logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were removed.
+
+* We applied a temperature correction for 3 MicroPEMs where we had noticed the zero changed with increasing temperature. For 2 MicroPEMs we could conduct an experiment where the MicroPEMs had an HEPA filter on so that the measures indicated the device zero (2 other MicroPEMs were used in the same experiment with no zero shift detected). For one MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device and where temperature had varied as data for the temperature correction. The temperature correction consisted in deriving coefficients (zero_t = a + bxtemperature) from the reference datasets and then apply a specific correction to files of each of these three MicroPEMs.
+
+## Identification of negative baseline shifts
+
+We discovered that MicroPEMs could present baseline shifts because of two facts:
+
+* At the end of the study we started using HEPA filters right before and right after sampling because it was advised to us. Before we had relied on the zeroing the day before. It turned out the zero could change between zeroing and sampling and most importantly during sampling, in one direction or another, with no relation to e.g. temperature.
+
+* We had some files with a high proportion of negative nephelometer values.
+
+We decided against using ambient monitoring data to correct personal monitoring since it would have meant too many assumptions. We decided to define negative baseline shifts and then correct them.
+
+The definition of a negative base
 
 # Technical details about R implementation of the data cleaning framework
 

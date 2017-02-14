@@ -2,14 +2,14 @@ Package: rtimicropem
 Type: Package
 Title: Supports the Reproducible Analysis of RTI MicroPEM Output Files
 Version: 1.2
-Date: 2016-02-23
+Date: 2017-02-14
 Authors@R: c(person("Maëlle", "Salmon", email = "maelle.salmon@yahoo.se", role = c("aut", "cre")),
              person("Zheng", "Zhou", comment = "Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA", role = c("aut")),
              person(family = "ERC Grant Agreement number 336167 - the CHAI Project", role = c("fnd")),
              person("Carles", "Milà", role = c("ctb")),
              person("Sreekanth", "Vakacherla", role = c("ctb")),
-             person("Cathryn", "Tonne", role = c("ctb")))
-Maintainer: M. Salmon <maelle.salmon@yahoo.se>
+             person("Cathryn", "Tonne", role = c("ctb")),
+             person("Julian", "Marshall", role = c("ctb")))
 Description: Supports the input and reproducible analysis of RTI MicroPEM output files.
 License: GPL (>= 2)
 LazyData: TRUE
