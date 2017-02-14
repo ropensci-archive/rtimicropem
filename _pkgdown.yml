@@ -29,6 +29,9 @@ articles:
   - title: Introduction
     contents:
     - vignette_ammon
+  - title: Data cleaning processes
+    contents:
+    - chai_data_cleaning
 
 navbar:
   title: rtimicropem

@@ -58,7 +58,7 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Cleaning data process of the CHAI project</h1>
-                        <h4 class="author">M. Salmon, S. Vakacherla, C. Mila, C. Tonne</h4>
+                        <h4 class="author">M. Salmon, S. Vakacherla, C. Mila, J. Marshall, C. Tonne</h4>
             
             <h4 class="date">2017-02-14</h4>
           </div>
@@ -69,7 +69,7 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h1>
-<p>In the context of personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a>, about 250 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from ?? distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we’ve found in the literature, details about data cleaning were too scarce to allow reproducibility.</p>
+<p>In the context of personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a>, about 250 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from ?? distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we’ve found in the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain which issues we encountered, we present the framework we defined and we give some details about the code we wrote. Our data cannot be made public since it’s personal monitoring data. However, we hope this document will make our data cleaning more transparent, and we encourage you to read this document if you’re considering using RTI MicroPEMs in the future.</p>
 <p>Small overview of problems encountered in MicroPEMs:</p>
 <ul>
 <li><p>Temperature sensitivity (zero decreasing with increasing temperature), apparently random baseline shifts.</p></li>
@@ -87,8 +87,39 @@
 <html><body><a href="#removal-of-entire-files-" class="anchor"> </a></body></html>Removal of entire files.</h2>
 <p>Files could be entired removed from the analysis if</p>
 <ul>
-<li>the post-sampling flow rate as measured by an externa</li>
+<li><p>the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.</p></li>
+<li><p>there were to few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.</p></li>
+<li><p>Relative humidity was not logged at all, which happened to one of our files, since relative humidity is used to correct nephelometer vales</p></li>
+<li>
+<p>visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic. All visual checks were performed by at least two team members.</p>
+<ul>
+<li><p>For MP718 we eliminated files where inlet pressure indicated the MicroPEM had been sucking air from inside the device.</p></li>
+<li><p>For MP724 we eliminated files with an abrupt baseline shift, or where inlet pressure wasn’t constantly increasing.</p></li>
 </ul>
+</li>
+</ul>
+</div>
+<div id="correctionremoval-of-real-time-values-" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#correctionremoval-of-real-time-values-" class="anchor"> </a></body></html>Correction/removal of real-time values.</h2>
+<ul>
+<li><p>We only kept values from the measurements session, for which it was important to have written them down because 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes a few measures were produced.</p></li>
+<li><p>We detected nephelometer high outliers and removed them thanks to a custom function adapted from <code>forecast::tsoutlier</code>. We copy the function later in this vignette.</p></li>
+<li><p>Nephelometer values corresponding to negative relative humidity were removed.</p></li>
+<li><p>Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn’t logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were removed.</p></li>
+<li><p>We applied a temperature correction for 3 MicroPEMs where we had noticed the zero changed with increasing temperature. For 2 MicroPEMs we could conduct an experiment where the MicroPEMs had an HEPA filter on so that the measures indicated the device zero (2 other MicroPEMs were used in the same experiment with no zero shift detected). For one MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device and where temperature had varied as data for the temperature correction. The temperature correction consisted in deriving coefficients (zero_t = a + bxtemperature) from the reference datasets and then apply a specific correction to files of each of these three MicroPEMs.</p></li>
+</ul>
+</div>
+<div id="identification-of-negative-baseline-shifts" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#identification-of-negative-baseline-shifts" class="anchor"> </a></body></html>Identification of negative baseline shifts</h2>
+<p>We discovered that MicroPEMs could present baseline shifts because of two facts:</p>
+<ul>
+<li><p>At the end of the study we started using HEPA filters right before and right after sampling because it was advised to us. Before we had relied on the zeroing the day before. It turned out the zero could change between zeroing and sampling and most importantly during sampling, in one direction or another, with no relation to e.g. temperature.</p></li>
+<li><p>We had some files with a high proportion of negative nephelometer values.</p></li>
+</ul>
+<p>We decided against using ambient monitoring data to correct personal monitoring since it would have meant too many assumptions. We decided to define negative baseline shifts and then correct them.</p>
+<p>The definition of a negative base</p>
 </div>
 </div>
 <div id="technical-details-about-r-implementation-of-the-data-cleaning-framework" class="section level1">
@@ -110,6 +141,8 @@
       <li>
 <a href="#definition-of-the-data-cleaning-framework">Definition of the data cleaning framework</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#removal-of-entire-files.">Removal of entire files.</a></li>
+      <li><a href="#correctionremoval-of-real-time-values.">Correction/removal of real-time values.</a></li>
+      <li><a href="#identification-of-negative-baseline-shifts">Identification of negative baseline shifts</a></li>
       </ul>
 </li>
       <li><a href="#technical-details-about-r-implementation-of-the-data-cleaning-framework">Technical details about R implementation of the data cleaning framework</a></li>
