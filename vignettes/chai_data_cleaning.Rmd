@@ -1,0 +1,47 @@
+---
+title: "Cleaning data process of the CHAI project"
+author: "M. Salmon, S. Vakacherla, C. Mila, C. Tonne"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Introduction
+
+In the context of personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/), about 250 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from ?? distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we've found in the literature, details about data cleaning were too scarce to allow reproducibility.
+
+Small overview of problems encountered in MicroPEMs:
+
+* Temperature sensitivity (zero decreasing with increasing temperature), apparently random baseline shifts.
+
+* Negative relative humidity for a few points, leading to aberrant rh-corrected nephelometer values.
+
+* Strange variations of internal parameters such as flow or orifice pressure, indicating the flow was not constant. For one MicroPEM that finally broke, the inlet pressure of some files indicated the device had been sucking air from the device instead of air from the environment.
+
+* The internal flowmeter wasn't always working. Sometimes it wasn't logging at all, sometimes it was logging 0.15 instead of 0.5 so in this case relative variations could be trusted. In any case, the internal flowmeter issues made the use of an external flowmeter pre and post-sampling crucial.
+
+* There were holes in some filters, and the weights of filters in which holes weren't observed were hard to obtain, and sometimes unrealistic (extremely high or small). We hypothesized that some of them might have contained microscopic holes. Therefore, we decided not to use MicroPEM filters for gravimetric correction in our study. Instead, some MicroPEMs were collocated with SKC pumps.
+
+# Definition of the data cleaning framework
+
+## Removal of entire files.
+
+Files could be entired removed from the analysis if
+
+* the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.
+
+* there were to few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.
+
+* Relative humidity was not logged at all, which happened to one of our files, since relative humidity is used to correct nephelometer vales
+
+* visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic.
+
+# Technical details about R implementation of the data cleaning framework
+
+# Conclusion
