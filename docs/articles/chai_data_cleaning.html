@@ -69,7 +69,7 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h1>
-<p>In the context of personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a>, about 250 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from ?? distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we’ve found in the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain which issues we encountered, we present the framework we defined and we give some details about the code we wrote. Our data cannot be made public since it’s personal monitoring data. However, we hope this document will make our data cleaning more transparent, and we encourage you to read this document if you’re considering using RTI MicroPEMs in the future.</p>
+<p>In the context of personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a>, 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we’ve found in the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain which issues we encountered, we present the framework we defined and we give some details about the code we wrote. Our data cannot be made public since it’s personal monitoring data. However, we hope this document will make our data cleaning more transparent, and we encourage you to read this document if you’re considering using RTI MicroPEMs in the future.</p>
 <p>Small overview of problems encountered in MicroPEMs:</p>
 <ul>
 <li><p>Temperature sensitivity (zero decreasing with increasing temperature), apparently random baseline shifts.</p></li>
@@ -98,6 +98,7 @@
 </ul>
 </li>
 </ul>
+<p>The criterion on post-sampling flow rate led to the exclusion of 5 files from the analysis, the other criteria led in total to the exclusin of 28 files. Therefore our final table contains data from 228 files.</p>
 </div>
 <div id="correctionremoval-of-real-time-values-" class="section level2">
 <h2 class="hasAnchor">
@@ -107,7 +108,14 @@
 <li><p>We detected nephelometer high outliers and removed them thanks to a custom function adapted from <code>forecast::tsoutlier</code>. We copy the function later in this vignette.</p></li>
 <li><p>Nephelometer values corresponding to negative relative humidity were removed.</p></li>
 <li><p>Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn’t logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were removed.</p></li>
-<li><p>We applied a temperature correction for 3 MicroPEMs where we had noticed the zero changed with increasing temperature. For 2 MicroPEMs we could conduct an experiment where the MicroPEMs had an HEPA filter on so that the measures indicated the device zero (2 other MicroPEMs were used in the same experiment with no zero shift detected). For one MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device and where temperature had varied as data for the temperature correction. The temperature correction consisted in deriving coefficients (zero_t = a + bxtemperature) from the reference datasets and then apply a specific correction to files of each of these three MicroPEMs.</p></li>
+<li>
+<p>We applied a temperature correction for 3 MicroPEMs where we had noticed the zero changed with increasing temperature. For 2 MicroPEMs we could conduct an experiment where the MicroPEMs had an HEPA filter on so that the measures indicated the device zero (2 other MicroPEMs were used in the same experiment with no zero shift detected). For one MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device and where temperature had varied as data for the temperature correction. The temperature correction consisted in deriving coefficients (zero_t = a + bxtemperature) from the reference datasets and then apply a specific correction to files of each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.</p>
+<ul>
+<li><p>MicroPEM 718 temperature sensitivity from 36ÂºC. a=27.573813, b=-1.074154</p></li>
+<li><p>MicroPEM 724 temperature sensitivity from 35ÂºC. a=67.411151, b=-1.996988</p></li>
+<li><p>MicroPEM 813 temperature sensitivity from 36ÂºC. a=33.6162432, b=-0.9616226</p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div id="identification-of-negative-baseline-shifts" class="section level2">
@@ -119,7 +127,19 @@
 <li><p>We had some files with a high proportion of negative nephelometer values.</p></li>
 </ul>
 <p>We decided against using ambient monitoring data to correct personal monitoring since it would have meant too many assumptions. We decided to define negative baseline shifts and then correct them.</p>
-<p>The definition of a negative base</p>
+<p>The definition of a negative baseline shift was a file whose mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files.</p>
+<p>The correction applied to files with negative baseline shift was to add the opposite of the minimum to all values so that the minimum might be zero.</p>
+</div>
+<div id="gravimetric-correction" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#gravimetric-correction" class="anchor"> </a></body></html>Gravimetric correction</h2>
+<p>For calculating coefficients for gravimetic correction we used 53 MicroPEM files which 1) had been colocated with SKC pumps and 2) had no detected negative baseline shift. We made a linear regression of SKC gravimetric mean concentration vs. nephelometer mean concentration (with all previous corrections) and used the resulting coefficients to correct all MicroPEM files. The obtained correction was corrected = 21.3996 + 0.4658 x nephelometer. We did not have enough files from colocation to have a specific device / season correction.</p>
+<p>Note that in our final table we kept</p>
+<ul>
+<li><p>the “RH corrected nephelometer” values as provided by MicroPEMs.</p></li>
+<li><p>the values having received all corrections except the one for negative baseline shifts.</p></li>
+<li><p>the values having received all corrections.</p></li>
+</ul>
 </div>
 </div>
 <div id="technical-details-about-r-implementation-of-the-data-cleaning-framework" class="section level1">
@@ -143,6 +163,7 @@
 <li><a href="#removal-of-entire-files.">Removal of entire files.</a></li>
       <li><a href="#correctionremoval-of-real-time-values.">Correction/removal of real-time values.</a></li>
       <li><a href="#identification-of-negative-baseline-shifts">Identification of negative baseline shifts</a></li>
+      <li><a href="#gravimetric-correction">Gravimetric correction</a></li>
       </ul>
 </li>
       <li><a href="#technical-details-about-r-implementation-of-the-data-cleaning-framework">Technical details about R implementation of the data cleaning framework</a></li>
