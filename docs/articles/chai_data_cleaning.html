@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cleaning data process of the CHAI project • rtimicropem</title>
+<title>MicroPEM data Cleaning process developed through the CHAI project • rtimicropem</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -57,10 +57,10 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Cleaning data process of the CHAI project</h1>
+      <h1>MicroPEM data Cleaning process developed through the CHAI project</h1>
                         <h4 class="author">M. Salmon, S. Vakacherla, C. Mila, J. Marshall, C. Tonne</h4>
             
-            <h4 class="date">2017-02-14</h4>
+            <h4 class="date">2017-02-16</h4>
           </div>
 
     
@@ -69,14 +69,14 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h1>
-<p>In the context of personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a>, 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we’ve found in the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain which issues we encountered, we present the framework we defined and we give some details about the code we wrote. Our data cannot be made public since it’s personal monitoring data. However, we hope this document will make our data cleaning more transparent, and we encourage you to read this document if you’re considering using RTI MicroPEMs in the future.</p>
-<p>Small overview of problems encountered in MicroPEMs:</p>
+<p>Continuous personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a> resulted in 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours. Data were collected using 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we developed this framework.In the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain the issues we encountered, we present the framework we used for data cleaning, and provide some details about our code.</p>
+<p>Brief overview of issues encountered in MicroPEM data:</p>
 <ul>
 <li><p>Temperature sensitivity (zero decreasing with increasing temperature), apparently random baseline shifts.</p></li>
 <li><p>Negative relative humidity for a few points, leading to aberrant rh-corrected nephelometer values.</p></li>
 <li><p>Strange variations of internal parameters such as flow or orifice pressure, indicating the flow was not constant. For one MicroPEM that finally broke, the inlet pressure of some files indicated the device had been sucking air from the device instead of air from the environment.</p></li>
-<li><p>The internal flowmeter wasn’t always working. Sometimes it wasn’t logging at all, sometimes it was logging 0.15 instead of 0.5 so in this case relative variations could be trusted. In any case, the internal flowmeter issues made the use of an external flowmeter pre and post-sampling crucial.</p></li>
-<li><p>There were holes in some filters, and the weights of filters in which holes weren’t observed were hard to obtain, and sometimes unrealistic (extremely high or small). We hypothesized that some of them might have contained microscopic holes. Therefore, we decided not to use MicroPEM filters for gravimetric correction in our study. Instead, some MicroPEMs were collocated with SKC pumps.</p></li>
+<li><p>The internal flowmeter was not always reliable. Sometimes it wasn’t logging at all, sometimes it was logging 0.15 instead of 0.5. Because of the unreliable performance form the internal flowmeter, data from an external flowmeter pre and post-sampling is very valuable.</p></li>
+<li><p>There were holes in some filters for gravimetric measurements. Fitlers weights were also very variable sometimes unrealistic (extremely high or small). We hypothesized that some filters might have contained small holes not visible to the eye. Therefore, we did not use MicroPEM filters for gravimetric correction in our study. Instead, we used colocated gravimetric measurements using an SKC pump fitted with BGI cyclone.</p></li>
 </ul>
 </div>
 <div id="definition-of-the-data-cleaning-framework" class="section level1">
@@ -85,7 +85,7 @@
 <div id="removal-of-entire-files-" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#removal-of-entire-files-" class="anchor"> </a></body></html>Removal of entire files.</h2>
-<p>Files could be entired removed from the analysis if</p>
+<p>Files were removed from the analysis if</p>
 <ul>
 <li><p>the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.</p></li>
 <li><p>there were to few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.</p></li>
@@ -93,23 +93,23 @@
 <li>
 <p>visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic. All visual checks were performed by at least two team members.</p>
 <ul>
-<li><p>For MP718 we eliminated files where inlet pressure indicated the MicroPEM had been sucking air from inside the device.</p></li>
+<li><p>For MP718 we eliminated files where inlet pressure was so low that it indicated the MicroPEM had been sucking air from inside the device.</p></li>
 <li><p>For MP724 we eliminated files with an abrupt baseline shift, or where inlet pressure wasn’t constantly increasing.</p></li>
 </ul>
 </li>
 </ul>
 <p>The criterion on post-sampling flow rate led to the exclusion of 5 files from the analysis, the other criteria led in total to the exclusin of 28 files. Therefore our final table contains data from 228 files.</p>
 </div>
-<div id="correctionremoval-of-real-time-values-" class="section level2">
+<div id="correctionremoval-of-individual-data-points-in-time-series-" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#correctionremoval-of-real-time-values-" class="anchor"> </a></body></html>Correction/removal of real-time values.</h2>
+<html><body><a href="#correctionremoval-of-individual-data-points-in-time-series-" class="anchor"> </a></body></html>Correction/removal of individual data points in time series.</h2>
 <ul>
-<li><p>We only kept values from the measurements session, for which it was important to have written them down because 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes a few measures were produced.</p></li>
+<li><p>Only values consistent with the start and stop time of monitoring as recorded on an external log sheet were retained: 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes by mistake the MicroPEM was turned on again and a few measures were produced.</p></li>
 <li><p>We detected nephelometer high outliers and removed them thanks to a custom function adapted from <code>forecast::tsoutlier</code>. We copy the function later in this vignette.</p></li>
-<li><p>Nephelometer values corresponding to negative relative humidity were removed.</p></li>
-<li><p>Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn’t logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were removed.</p></li>
+<li><p>Nephelometer values corresponding to negative relative humidity were set to missing.</p></li>
+<li><p>Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn’t logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were set to missing.</p></li>
 <li>
-<p>We applied a temperature correction for 3 MicroPEMs where we had noticed the zero changed with increasing temperature. For 2 MicroPEMs we could conduct an experiment where the MicroPEMs had an HEPA filter on so that the measures indicated the device zero (2 other MicroPEMs were used in the same experiment with no zero shift detected). For one MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device and where temperature had varied as data for the temperature correction. The temperature correction consisted in deriving coefficients (zero_t = a + bxtemperature) from the reference datasets and then apply a specific correction to files of each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.</p>
+<p>We applied a temperature correction for 3 MicroPEMs where we had noticed a zero drift with increasing temperature. 4 MicroPEMs ran with a HEPA filter attached to zero the device: 2 were found to be temperature sensitive. For the MicroPEM that was already sent back to RTI because it was broken, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device (which we know because inlet pressure was so low) over a range of temperatures to develop the temperature correction. A device-specific temperature correction was derived (zero_t = a + bxtemperature) from the reference datasets and then applied to all files from each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.</p>
 <ul>
 <li><p>MicroPEM 718 temperature sensitivity from 36ÂºC. a=27.573813, b=-1.074154</p></li>
 <li><p>MicroPEM 724 temperature sensitivity from 35ÂºC. a=67.411151, b=-1.996988</p></li>
@@ -121,14 +121,12 @@
 <div id="identification-of-negative-baseline-shifts" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#identification-of-negative-baseline-shifts" class="anchor"> </a></body></html>Identification of negative baseline shifts</h2>
-<p>We discovered that MicroPEMs could present baseline shifts because of two facts:</p>
+<p>We identified baseline shifts based on the following:</p>
 <ul>
-<li><p>At the end of the study we started using HEPA filters right before and right after sampling because it was advised to us. Before we had relied on the zeroing the day before. It turned out the zero could change between zeroing and sampling and most importantly during sampling, in one direction or another, with no relation to e.g. temperature.</p></li>
-<li><p>We had some files with a high proportion of negative nephelometer values.</p></li>
+<li><p>Changes in values measured with a HEPA filter attached to inleft immeidately pre and post sampling in the field. We observed changes in zero over time (e.g. if zeroed a few hours before sampling) and during sampling. Zero drift could be positive or negative, with no relation to other parameters e.g. temperature.</p></li>
+<li><p>Files with a high proportion of negative nephelometer values. We identified files with a negative baseline shift as those where the mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files.</p></li>
 </ul>
-<p>We decided against using ambient monitoring data to correct personal monitoring since it would have meant too many assumptions. We decided to define negative baseline shifts and then correct them.</p>
-<p>The definition of a negative baseline shift was a file whose mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files.</p>
-<p>The correction applied to files with negative baseline shift was to add the opposite of the minimum to all values so that the minimum might be zero.</p>
+<p>Files identified as having negative baseline shift were corrected as follows: add the opposite of the minimum to all values so that the minimum is zero.</p>
 </div>
 <div id="gravimetric-correction" class="section level2">
 <h2 class="hasAnchor">
@@ -145,6 +143,8 @@
 <div id="technical-details-about-r-implementation-of-the-data-cleaning-framework" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#technical-details-about-r-implementation-of-the-data-cleaning-framework" class="anchor"> </a></body></html>Technical details about R implementation of the data cleaning framework</h1>
+<p>The first step of the data cleaning was to transform all MicroPEM files into two <code>data.frames</code> using <code>rtimicropem::batch_convert()</code>. Since in our study the filename was informative (it contained participant ID, date, etc.) we parsed the filenames. The table with settings was joined with information from the logsheet such as pre and post-sampling flow rate.</p>
+<p>Then we created a <code>sqlite</code> database with the measurements, in which the filename was an index.</p>
 </div>
 <div id="conclusion" class="section level1">
 <h1 class="hasAnchor">
@@ -161,7 +161,7 @@
       <li>
 <a href="#definition-of-the-data-cleaning-framework">Definition of the data cleaning framework</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#removal-of-entire-files.">Removal of entire files.</a></li>
-      <li><a href="#correctionremoval-of-real-time-values.">Correction/removal of real-time values.</a></li>
+      <li><a href="#correctionremoval-of-individual-data-points-in-time-series.">Correction/removal of individual data points in time series.</a></li>
       <li><a href="#identification-of-negative-baseline-shifts">Identification of negative baseline shifts</a></li>
       <li><a href="#gravimetric-correction">Gravimetric correction</a></li>
       </ul>
