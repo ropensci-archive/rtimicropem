@@ -1,5 +1,5 @@
 ---
-title: "Cleaning data process of the CHAI project"
+title: "MicroPEM data Cleaning process developed through the CHAI project"
 author: "M. Salmon, S. Vakacherla, C. Mila, J. Marshall, C. Tonne"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -14,9 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Introduction
 
-In the context of personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/), 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours were generated. They came from 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we came up with this framework and make it open for transparency. In many papers we've found in the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain which issues we encountered, we present the framework we defined and we give some details about the code we wrote. Our data cannot be made public since it's personal monitoring data. However, we hope this document will make our data cleaning more transparent, and we encourage you to read this document if you're considering using RTI MicroPEMs in the future.
+Continuous personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/) resulted in 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours. Data were collected using 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we developed this framework.In the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain the issues we encountered, we present the framework we used for data cleaning, and provide some details about our code. 
 
-Small overview of problems encountered in MicroPEMs:
+Brief overview of issues encountered in MicroPEM data:
 
 * Temperature sensitivity (zero decreasing with increasing temperature), apparently random baseline shifts.
 
@@ -24,15 +24,15 @@ Small overview of problems encountered in MicroPEMs:
 
 * Strange variations of internal parameters such as flow or orifice pressure, indicating the flow was not constant. For one MicroPEM that finally broke, the inlet pressure of some files indicated the device had been sucking air from the device instead of air from the environment.
 
-* The internal flowmeter wasn't always working. Sometimes it wasn't logging at all, sometimes it was logging 0.15 instead of 0.5 so in this case relative variations could be trusted. In any case, the internal flowmeter issues made the use of an external flowmeter pre and post-sampling crucial.
+* The internal flowmeter was not always reliable. Sometimes it wasn't logging at all, sometimes it was logging 0.15 instead of 0.5. Because of the unreliable performance form the internal flowmeter, data from an external flowmeter pre and post-sampling is very valuable.
 
-* There were holes in some filters, and the weights of filters in which holes weren't observed were hard to obtain, and sometimes unrealistic (extremely high or small). We hypothesized that some of them might have contained microscopic holes. Therefore, we decided not to use MicroPEM filters for gravimetric correction in our study. Instead, some MicroPEMs were collocated with SKC pumps.
+* There were holes in some filters for gravimetric measurements. Fitlers weights were also very variable sometimes unrealistic (extremely high or small). We hypothesized that some filters might have contained small holes not visible to the eye. Therefore, we did not use MicroPEM filters for gravimetric correction in our study. Instead, we used colocated gravimetric measurements using an SKC pump fitted with BGI cyclone.
 
 # Definition of the data cleaning framework
 
 ## Removal of entire files.
 
-Files could be entired removed from the analysis if
+Files were removed from the analysis if
 
 - the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.
 
@@ -42,23 +42,23 @@ Files could be entired removed from the analysis if
 
 - visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic. All visual checks were performed by at least two team members.
 
-    - For MP718 we eliminated files where inlet pressure indicated the MicroPEM had been sucking air from inside the device.
+    - For MP718 we eliminated files where inlet pressure  [I would say what the inlet pressure was actually doing, not what your interpretation is....]indicated the MicroPEM had been sucking air from inside the device.
   
     - For MP724 we eliminated files with an abrupt baseline shift, or where inlet pressure wasn't constantly increasing.
     
 The criterion on post-sampling flow rate led to the exclusion of 5 files from the analysis, the other criteria led in total to the exclusin of 28 files. Therefore our final table contains data from 228 files.
     
-## Correction/removal of real-time values.
+## Correction/removal of individual data points in time series.
 
-* We only kept values from the measurements session, for which it was important to have written them down because 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes a few measures were produced.
+* Only values consistent with the start and stop time of monitoring as recorded on an external log sheet were retained: 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes a few measures were produced [what does this mean? is it needed?].
 
 * We detected nephelometer high outliers and removed them thanks to a custom function adapted from `forecast::tsoutlier`. We copy the function later in this vignette.
 
-* Nephelometer values corresponding to negative relative humidity were removed.
+* Nephelometer values corresponding to negative relative humidity were set to missing.
 
-* Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn't logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were removed.
+* Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn't logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were set to missing.
 
-* We applied a temperature correction for 3 MicroPEMs where we had noticed the zero changed with increasing temperature. For 2 MicroPEMs we could conduct an experiment where the MicroPEMs had an HEPA filter on so that the measures indicated the device zero (2 other MicroPEMs were used in the same experiment with no zero shift detected). For one MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device and where temperature had varied as data for the temperature correction. The temperature correction consisted in deriving coefficients (zero_t = a + bxtemperature) from the reference datasets and then apply a specific correction to files of each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.
+* We applied a temperature correction for 3 MicroPEMs where we had noticed a zero drift with increasing temperature.  4 MicroPEMs ran with a HEPA filter attached to zero the device: 2 were found to be temperature sensitive. For a third MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device [describe how did you know this] over a range of temperatures to develop the temperature correction [was this the one that got sent back before the experiments?it?s not clear why this one is treated differently from the other 4]. A device-specific temperature correction was derived (zero_t = a + bxtemperature) from the reference datasets and then applied to all files from each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.
 
     * MicroPEM 718 temperature sensitivity from 36ºC. a=27.573813, b=-1.074154
     
@@ -68,17 +68,13 @@ The criterion on post-sampling flow rate led to the exclusion of 5 files from th
 
 ## Identification of negative baseline shifts
 
-We discovered that MicroPEMs could present baseline shifts because of two facts:
+We identified baseline shifts based on the following:
 
-* At the end of the study we started using HEPA filters right before and right after sampling because it was advised to us. Before we had relied on the zeroing the day before. It turned out the zero could change between zeroing and sampling and most importantly during sampling, in one direction or another, with no relation to e.g. temperature.
+* Changes in values measured with a HEPA filter attached to inleft immeidately pre and post sampling in the field. We observed changes in zero over time (e.g. if zeroed a few hours before sampling) and during sampling. Zero drift could be positive or negative, with no relation to other parameters e.g. temperature.
 
-* We had some files with a high proportion of negative nephelometer values.
-
-We decided against using ambient monitoring data to correct personal monitoring since it would have meant too many assumptions. We decided to define negative baseline shifts and then correct them.
-
-The definition of a negative baseline shift was a file whose mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files.
-
-The correction applied to files with negative baseline shift was to add the opposite of the minimum to all values so that the minimum might be zero.
+* Files with a high proportion of negative nephelometer values. We identified files with a negative baseline shift as those where the mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files. 
+ 
+Files identified as having negative baseline shift were corrected as follows: add the opposite of the minimum to all values so that the minimum is zero.
 
 ## Gravimetric correction
 
