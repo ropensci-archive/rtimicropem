@@ -2,7 +2,6 @@ library("shiny")
 library("dplyr")
 library("lubridate")
 library("xtable")
-library("shinydashboard")
 library("datasets")
 library("DT")
 library("rbokeh")
@@ -35,7 +34,8 @@ shinyUI(fluidPage(
         tabPanel("Alarms",
                  DT::dataTableOutput("Alarms")),
         tabPanel("Plot",
-                 conditionalPanel(condition = "input.graphtype == 'interactive'",
+                 conditionalPanel(condition =
+                                    "input.graphtype == 'interactive'",
                                   rbokehOutput("plotPM")),
                  conditionalPanel(condition = "input.graphtype == 'plain'",
                                   plotOutput("plotPM2"))),

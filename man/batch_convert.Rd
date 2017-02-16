@@ -29,4 +29,3 @@ batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = '
 system.file('extdata', 'dummyCHAI.csv', package = 'micropem')),
 path_output = getwd())}
 }
-

@@ -42,6 +42,7 @@ An R6 class to represent MicroPEM output information.
 
 \item{\code{original}}{Boolean. Is this an original micropem object (TRUE) or was it e.g. filtered or cleaned (FALSE).}
 }}
+
 \section{Methods}{
 
 \describe{
@@ -52,5 +53,5 @@ An R6 class to represent MicroPEM output information.
   \item{print}{Method for printing both the summary table of all time-varying numeric measurements and all settings from the \code{settings} field.}
   }
 }
-\keyword{data}
 
+\keyword{data}

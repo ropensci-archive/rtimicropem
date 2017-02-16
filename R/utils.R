@@ -19,10 +19,13 @@ transform_date <- function(date){
   day <- unlist(lapply(splitted_date, "[", 1))
   month <- stringr::str_sub(unlist(lapply(splitted_date, "[", 2)), 1, 2)
   year <- unlist(lapply(splitted_date, "[", 3))
-  date[grepl("\\/....\\/", date)] <- paste(month, day, paste0("20",year), sep = "/")
+  date[grepl("\\/....\\/", date)] <-
+    paste(month, day, paste0("20",year), sep = "/")
 
   if(length(date) == 1){
-    output <- lubridate::parse_date_time(date, orders = c("dmy", "mdy"), quiet = TRUE)
+    output <-
+      lubridate::parse_date_time(date, orders = c("dmy", "mdy"),
+                                 quiet = TRUE)
   }else{
     # now find the best format if several dates
     # which is the one giving the smallest time span

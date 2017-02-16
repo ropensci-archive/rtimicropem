@@ -20,4 +20,3 @@ micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 
 micropem_example$plot()
 micropem_example$plot(title = "wow")
 }
-

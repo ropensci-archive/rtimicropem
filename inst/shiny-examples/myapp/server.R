@@ -2,7 +2,6 @@ library("shiny")
 library("dplyr")
 library("lubridate")
 library("xtable")
-library("shinydashboard")
 library("rtimicropem")
 library("DT")
 library("rbokeh")
@@ -44,7 +43,8 @@ shinyServer(function(input, output) {
     })
 
 
-    output$plotPM <- rbokeh::renderRbokeh({microPEMObject()$plot(type="interactive")})
+    output$plotPM <- rbokeh::renderRbokeh({microPEMObject()$
+        plot(type="interactive")})
 
     output$plotPM2 <- renderPlot({microPEMObject()$plot(type="plain")+
         theme(legend.position="none")

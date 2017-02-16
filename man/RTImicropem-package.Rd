@@ -9,4 +9,29 @@
 micropem allows you to read and analyse data from MicroPEM output files
 in a reproducible way.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{http://github.com/masalmon/rtimicropem}
+  \item Report bugs at \url{http://github.com/masalmon/rtimicropem/issues}
+}
 
+}
+\author{
+\strong{Maintainer}: Maëlle Salmon \email{maelle.salmon@yahoo.se}
+
+Authors:
+\itemize{
+  \item Zheng Zhou (Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA)
+}
+
+Other contributors:
+\itemize{
+  \item  ERC Grant Agreement number 336167 - the CHAI Project [funder]
+  \item Carles Milà [contributor]
+  \item Sreekanth Vakacherla [contributor]
+  \item Cathryn Tonne [contributor]
+  \item Julian Marshall [contributor]
+}
+
+}

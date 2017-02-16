@@ -16,4 +16,3 @@ micropemExample$plot()
 }
 }
 \keyword{data}
-

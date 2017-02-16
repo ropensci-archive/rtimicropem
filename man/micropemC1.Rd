@@ -13,4 +13,3 @@ data("micropemC1")
 micropemC1$plot()
 }
 \keyword{data}
-

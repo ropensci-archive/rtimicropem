@@ -26,4 +26,3 @@ micropem_na$plot()
 identify_lags(micropem_na)
 
 }
-

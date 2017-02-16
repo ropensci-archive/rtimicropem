@@ -66,7 +66,8 @@ convert_output <- function(path) {
       select_(.dots = list(quote(-date), quote(-time)))%>%
       select_(.dots = list(quote(datetime), quote(dplyr::everything())))
 
-    measures$rh_corrected_nephelometer <- as.numeric(measures$rh_corrected_nephelometer)
+    measures$rh_corrected_nephelometer <-
+      as.numeric(measures$rh_corrected_nephelometer)
     measures$temp <- as.numeric(measures$temp)
     measures$rh <- as.numeric(measures$rh)
     measures$battery <- as.numeric(measures$battery)
@@ -191,9 +192,11 @@ convert_output <- function(path) {
     # batteryLog
     batteryLog <- as.numeric(strsplit(dummy[21], ",")[[1]][4])
     # ventilationSlope
-    ventilationSlope <- suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][2]))
+    ventilationSlope <-
+      suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][2]))
     # ventilationOffset
-    ventilationOffset <- suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][3]))
+    ventilationOffset <-
+      suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][3]))
     ###########################################
     # settings table
     ###########################################
@@ -261,8 +264,9 @@ convert_output <- function(path) {
                           calibration = list(NA),
                           measures = measures,
                           original = TRUE,
-                          filename = pathological::replace_extension(path, new_extension = "csv",
-                                                       include_dir = FALSE))
+                          filename = pathological::replace_extension(
+                            path, new_extension = "csv",
+                            include_dir = FALSE))
     return(micropem_object)
 }
 ########################################################################

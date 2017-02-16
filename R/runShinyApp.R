@@ -1,6 +1,5 @@
 #' Run a built-in Shiny App.
 #'
-#' @import shiny
 #' @return Nothing, it does something.
 #' @examples
 #' \dontrun{
@@ -8,6 +7,17 @@
 #' }
 #' @export
 run_shiny_app <- function() {
+  if (!requireNamespace("shiny", quietly = TRUE)) {
+    message("run_shiny_app needs the shiny package, \n
+              Install it via install.packages('shiny')")
+    return(NULL)
+  }
+
+  if (!requireNamespace("xtable", quietly = TRUE)) {
+    message("run_shiny_app needs the xtable package, \n
+              Install it via install.packages('xtable')")
+    return(NULL)
+  }
     # nocov start
     appDir <- system.file("shiny-examples",
                           "myapp", package = "rtimicropem")

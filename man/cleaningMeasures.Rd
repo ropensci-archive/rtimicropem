@@ -35,4 +35,3 @@ data(micropemChai)
 cleanMP <- cleaningMeasures(micropemChai)
 cleanMP$summary()
 }
-

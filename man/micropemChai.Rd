@@ -13,4 +13,3 @@ data("micropemChai")
 micropemChai$plot()
 }
 \keyword{data}
-

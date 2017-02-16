@@ -21,7 +21,8 @@ batch_convert <- function(path_input, path_output = path_input){
                          "/settings.csv")) |
       file.exists(paste0(path_output,
                          "/measures.csv"))){
-    stop(paste0("There are already a settings.csv and/or a measures.csv in the directory ",
+    stop(paste0("There are already a settings.csv and/or a measures.csv
+                in the directory ",
                 path_output))# nolint
   }
 

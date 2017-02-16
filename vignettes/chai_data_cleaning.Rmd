@@ -94,4 +94,8 @@ Note that in our final table we kept
 
 # Technical details about R implementation of the data cleaning framework
 
+The first step of the data cleaning was to transform all MicroPEM files into two `data.frames` using `rtimicropem::batch_convert()`. Since in our study the filename was informative (it contained participant ID, date, etc.) we parsed the filenames. The table with settings was joined with information from the logsheet such as pre and post-sampling flow rate.
+
+Then we created a `sqlite` database with the measurements, in which the filename was an index.
+
 # Conclusion

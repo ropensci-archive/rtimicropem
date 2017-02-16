@@ -17,4 +17,3 @@ Run a built-in Shiny App.
 run_shiny_app()
 }
 }
-

@@ -36,7 +36,8 @@ test_that("we get the right error messages",{
   micropemChai2 <- micropemChai$clone()
   micropemChai2$settings$nephelometerSlope <- 3
   micropemChai2$measures$flow <- rep(0.5, length(micropemChai2$measures$flow))
-  micropemChai2$measures$rh_corrected_nephelometer <- rep(-1, length(micropemChai2$measures$rh_corrected_nephelometer))
+  micropemChai2$measures$rh_corrected_nephelometer <-
+    rep(-1, length(micropemChai2$measures$rh_corrected_nephelometer))
   expect_equal(as.character(alarmCHAI(micropemChai2)$Alarm[2]),
                "Too many negative values")
 })

@@ -20,4 +20,3 @@ Generates alarm indicators for a micropem object.
 data(micropemChai)
 alarmCHAI(micropemChai)
 }
-

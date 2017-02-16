@@ -83,7 +83,8 @@ cleaningMeasures <- function(micropemObject,
 
     # now correct the measures
     micropemObject2$measures <- dplyr::mutate(micropemObject2$measures,
-                                             rh_corrected_nephelometer = rh_corrected_nephelometer -
+                                             rh_corrected_nephelometer =
+                                               rh_corrected_nephelometer -
                                                correction)
 
     # keep trace of modifications
