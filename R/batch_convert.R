@@ -1,6 +1,5 @@
 #' Reading several MicroPEM files and converting the settings and measurement tables to csv.
 #'
-#' @importFrom readr read_csv
 #' @param path_input path to the directory with files
 #' @param path_output path where the files should be created, by default equal to \code{path_input}.
 #' See the data in inst/data to see

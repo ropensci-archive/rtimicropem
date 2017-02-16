@@ -1,8 +1,5 @@
 #' Outputs clean rh_corrected_nephelometer measures for analysis.
 #'
-#' @importFrom dplyr tbl_df mutate
-#' @importFrom changepoint cpt.mean
-#' @importFrom lubridate ymd_hms
 #' @param micropemObject the MicroPEM object
 #' @param hepaStart Boolean indicating whether there were measurements with HEPA filters at the beginning.
 #' @param hepaEnd Boolean indicating whether there were measurements with HEPA filters at the end.
@@ -82,10 +79,10 @@ cleaningMeasures <- function(micropemObject,
     }
 
     # now correct the measures
-    micropemObject2$measures <- dplyr::mutate(micropemObject2$measures,
+    micropemObject2$measures <- dplyr::mutate_(micropemObject2$measures,
                                              rh_corrected_nephelometer =
-                                               rh_corrected_nephelometer -
-                                               correction)
+                                               ~(rh_corrected_nephelometer -
+                                               correction))
 
     # keep trace of modifications
     micropemObject2$original <- FALSE

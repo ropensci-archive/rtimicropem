@@ -1,10 +1,7 @@
 #' An R6 class to represent MicroPEM output information.
 #'
 #' @docType class
-#' @importFrom R6 R6Class
-#' @importFrom tidyr gather
-#' @importFrom dplyr tbl_df filter_ select_ "%>%" bind_cols
-#' @importFrom knitr kable
+#' @importFrom dplyr "%>%"
 #' @import ggplot2
 #' @export
 #' @keywords data
@@ -119,10 +116,10 @@ plotmicropem <- function(self, type, title, ...){# nocov start
   dataPM <- dataPM %>%
     dplyr::filter_(.dots = filterCriteria)
 
-  dataLong <- tidyr::gather(dataPM,
-                            variable,
-                            measurement,
-                            rh_corrected_nephelometer:battery)
+  .dots <- names(dataPM)[which(names(dataPM) == "rh_corrected_nephelometer"):
+                           which(names(dataPM) == "battery")]
+  dataLong <- tidyr::gather_(dataPM, "variable", "measurement",
+                            .dots)
 
   filterCriteria2 <- lazyeval::interp(~(!is.na(measurement)))
   dataLong <- dataLong %>%
@@ -163,15 +160,16 @@ plotmicropem <- function(self, type, title, ...){# nocov start
 
   if (type == "interactive"){
     df <- self$measures %>%
-      select_(~datetime, ~rh_corrected_nephelometer,
+      dplyr::select_(~datetime, ~rh_corrected_nephelometer,
               ~temp, ~rh,
               ~inlet_press,
               ~orifice_press, ~flow,
               ~x_axis)
+    .dots <- names(df)[2:ncol(df)]
     df <-  df %>%
-      tidyr::gather("parameter", "value", 2:ncol(df))
+      tidyr::gather_("parameter", "value", .dots)
 
-    df <- filter_(df, ~!is.na(value))
+    df <- dplyr::filter_(df, ~!is.na(value))
     params <- unique(df$parameter)
     plots_list <- unique(df$parameter) %>%
       purrr::map(make_plot_one_param, title = title, donnees = df)

@@ -1,6 +1,5 @@
 #' Generates alarm indicators for a micropem object.
 #'
-#' @importFrom dplyr tbl_df
 #' @param micropem_object the MicroPEM object
 #' @return A \code{data table} with a column for the name of the indicator and a column with booleans. If no
 #' alarm was flagged, the \code{data table} only has one line indicating that all is good.

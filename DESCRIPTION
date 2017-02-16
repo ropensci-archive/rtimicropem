@@ -16,7 +16,6 @@ RoxygenNote: 6.0.1
 Suggests: testthat,
     rmarkdown,
     xtable,
-    knitr,
     shiny
 Imports: lubridate,
    ggplot2,
@@ -30,7 +29,8 @@ Imports: lubridate,
     readr,
     pathological,
     purrr,
-    stringr
+    stringr,
+    knitr
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
 URL: http://github.com/masalmon/rtimicropem

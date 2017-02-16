@@ -1,9 +1,5 @@
 #' Uses output file from MicroPEM to create a \code{micropem} object.
 #'
-#' @importFrom dplyr tbl_df mutate_ mutate_each_ funs matches
-#' @importFrom lazyeval interp
-#' @importFrom lubridate hms hour minute second force_tz mdy dmy
-#' @importFrom tibble tibble
 #' @param path the path to the file
 #' @return A \code{micropem} object.
 #' @examples
@@ -21,7 +17,7 @@ convert_output <- function(path) {
     dummy <- dummy[!is.na(dummy)]
     dummy <- dummy[!grepl("Errored Line", dummy)]
     dummy <- dummy[gsub(",", "", dummy) != ""]
-    dataPEM <- tbl_df(data.frame(name = dummy[25:length(dummy)]))
+    dataPEM <- tibble::tibble_(list(name = ~dummy[25:length(dummy)]))
     names_dataPEM <- strsplit(dummy[23], ",")[[1]]
     goal_length <- length(strsplit(dummy[25], ",")[[1]])
     if(length(names_dataPEM) == (goal_length - 1)){
@@ -57,14 +53,14 @@ convert_output <- function(path) {
     # transform dates
     measures$date <- transform_date(measures$date)
     measures$time <- lubridate::hms(measures$time)
-    measures <- measures %>% mutate_(datetime = lazyeval::interp(
+    measures <- measures %>% dplyr::mutate_(datetime = lazyeval::interp(
       ~ update(date,
-               hour = hour(time),
-               minute = minute(time),
-               second = second(time))
+               hour = lubridate::hour(time),
+               minute = lubridate::minute(time),
+               second = lubridate::second(time))
     )) %>%
-      select_(.dots = list(quote(-date), quote(-time)))%>%
-      select_(.dots = list(quote(datetime), quote(dplyr::everything())))
+      dplyr::select_(.dots = list(quote(-date), quote(-time)))%>%
+      dplyr::select_(.dots = list(quote(datetime), quote(dplyr::everything())))
 
     measures$rh_corrected_nephelometer <-
       as.numeric(measures$rh_corrected_nephelometer)
@@ -254,7 +250,7 @@ convert_output <- function(path) {
                     batteryLog = batteryLog,
                     ventilationSlope = ventilationSlope,
                     ventilationOffset = ventilationOffset)
-    settings <- dplyr::tbl_df(settings)
+    settings <- tibble::as_tibble(settings)
     ###########################################
     # CREATE THE OBJECT
     ###########################################
