@@ -42,7 +42,7 @@ Files were removed from the analysis if
 
 - visual checks, for our MicroPEMs MP724 (which presented many negative values) and MP718 (which was later sent back to RTI because of malfunctions), defined the file as problematic. All visual checks were performed by at least two team members.
 
-    - For MP718 we eliminated files where inlet pressure  [I would say what the inlet pressure was actually doing, not what your interpretation is....]indicated the MicroPEM had been sucking air from inside the device.
+    - For MP718 we eliminated files where inlet pressure was so low that it indicated the MicroPEM had been sucking air from inside the device.
   
     - For MP724 we eliminated files with an abrupt baseline shift, or where inlet pressure wasn't constantly increasing.
     
@@ -50,7 +50,7 @@ The criterion on post-sampling flow rate led to the exclusion of 5 files from th
     
 ## Correction/removal of individual data points in time series.
 
-* Only values consistent with the start and stop time of monitoring as recorded on an external log sheet were retained: 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes a few measures were produced [what does this mean? is it needed?].
+* Only values consistent with the start and stop time of monitoring as recorded on an external log sheet were retained: 1) in some cases there were measurements from a previous session in the file 2) when downloading data later on the same day sometimes by mistake the MicroPEM was turned on again and a few measures were produced.
 
 * We detected nephelometer high outliers and removed them thanks to a custom function adapted from `forecast::tsoutlier`. We copy the function later in this vignette.
 
@@ -58,7 +58,7 @@ The criterion on post-sampling flow rate led to the exclusion of 5 files from th
 
 * Nephelometer values corresponding to a internal flow or orifice pressure (orifice pressure is indicative of internal flow which is useful in cases where internal flow wasn't logged properly) outside of the range between 0.9xmedian in the file and 1.1xmedian in the file were set to missing.
 
-* We applied a temperature correction for 3 MicroPEMs where we had noticed a zero drift with increasing temperature.  4 MicroPEMs ran with a HEPA filter attached to zero the device: 2 were found to be temperature sensitive. For a third MicroPEM, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device [describe how did you know this] over a range of temperatures to develop the temperature correction [was this the one that got sent back before the experiments?it?s not clear why this one is treated differently from the other 4]. A device-specific temperature correction was derived (zero_t = a + bxtemperature) from the reference datasets and then applied to all files from each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.
+* We applied a temperature correction for 3 MicroPEMs where we had noticed a zero drift with increasing temperature.  4 MicroPEMs ran with a HEPA filter attached to zero the device: 2 were found to be temperature sensitive. For the MicroPEM that was already sent back to RTI because it was broken, MP718, we used a file where the MicroPEM had been sucking air from the inside of the device (which we know because inlet pressure was so low) over a range of temperatures to develop the temperature correction. A device-specific temperature correction was derived (zero_t = a + bxtemperature) from the reference datasets and then applied to all files from each of these three MicroPEMs. For information here are the coefficients we get for the three MicroPEMs.
 
     * MicroPEM 718 temperature sensitivity from 36ºC. a=27.573813, b=-1.074154
     
