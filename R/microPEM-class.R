@@ -30,14 +30,14 @@
 #'   \item{rh_corrected_nephelometer}{Measures of nephelometer in microgram/meter cube (numeric).}
 #'   \item{temp}{Measures of temperature in centigrade (numeric).}
 #'   \item{rh}{Measures of relative humidity that are a proportion and as such do not have an unit (numeric).}
-#'   \item{battery}{Measures of battery  UNIT PLEASE (numeric).}
+#'   \item{battery}{Measures of battery  in Volt (numeric).}
 #'   \item{orifice_press}{Measures of orifice pressure in inches of water (numeric).}
 #'   \item{inlet_press}{Measures of inlet pressure in inches of water (numeric).}
 #'   \item{flow}{Measures of flow in liters per minute (numeric).}
-#'   \item{x_axis}{x-axis accelerometer UNIT PLEASE (numeric).}
-#'   \item{y_axis}{y-axis accelerometer UNIT PLEASE (numeric).}
-#'   \item{z_axis}{z-axis accelerometer UNIT PLEASE (numeric).}
-#'   \item{vector_sum_composite}{vector sum UNIT PLEASE (numeric).}
+#'   \item{x_axis}{x-axis accelerometer in m/s2 (numeric).}
+#'   \item{y_axis}{y-axis accelerometer in m/s2 (numeric).}
+#'   \item{z_axis}{z-axis accelerometer in m/s2 (numeric).}
+#'   \item{vector_sum_composite}{vector sum m/s2 (numeric).}
 #'   \item{message}{Shutdown reason (factor).}
 #'   }
 #' @field original Boolean. Is this an original micropem object (TRUE) or was it e.g. filtered or cleaned (FALSE).
