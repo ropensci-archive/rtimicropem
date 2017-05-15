@@ -130,13 +130,13 @@ This app allows the exploration of a MicroPEM output file with no R experience.
 
 Below we show screenshots of the app. 
 
-![alt text](shinyTabSummary.png)
+![](shinyTabSummary.png)
 
-![alt text](shinyTabAlarm.png)
+![](shinyTabAlarm.png)
 
-![alt text](shinyTabPlot.png)
+![](shinyTabPlot.png)
 
-![alt text](shinyTabSettings.png)
+![](shinyTabSettings.png)
 
 # From a bunch of output files to data ready for further analysis
 
