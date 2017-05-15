@@ -95,3 +95,5 @@ The first step of the data cleaning was to transform all MicroPEM files into two
 Then we created a `sqlite` database with the measurements, in which the filename was an index.
 
 # Conclusion
+
+We hope that this vignette provided an useful insight into MicroPEM data cleaning. It probably does not cover all possible MicroPEM issues, and each project will not experience all issues. If you have any question or want to start a discussion please [open a Github issue](https://github.com/maelle/rtimicropem/issues/new) or contact the maintainer of the package via maelle dot salmon at yahoo dot se.
