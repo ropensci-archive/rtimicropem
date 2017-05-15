@@ -149,8 +149,8 @@ plotmicropem <- function(self, type, title, ...){# nocov start
                      col = variable)) +
       facet_grid(variable ~ ., scales = "free_y") +
       scale_color_manual(values =  nicePalette) +
-      theme_bw() +
-      theme(strip.text.y = element_text(angle = 0),
+      ggplot2::theme_bw() +
+      ggplot2::theme(strip.text.y = element_text(angle = 0),
             legend.position = "none") +
       xlab("time")
     if(!is.null(title)){

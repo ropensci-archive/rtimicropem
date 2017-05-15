@@ -6,6 +6,7 @@ library("datasets")
 library("DT")
 library("rbokeh")
 library("rtimicropem")
+library("ggplot2")
 options(RCHART_LIB = 'highcharts')
 shinyUI(fluidPage(
 

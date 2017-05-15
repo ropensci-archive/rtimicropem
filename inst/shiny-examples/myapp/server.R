@@ -5,6 +5,7 @@ library("xtable")
 library("rtimicropem")
 library("DT")
 library("rbokeh")
+library("ggplot2")
 
 shinyServer(function(input, output) {
 
@@ -47,7 +48,7 @@ shinyServer(function(input, output) {
         plot(type="interactive")})
 
     output$plotPM2 <- renderPlot({microPEMObject()$plot(type="plain")+
-        theme(legend.position="none")
+        ggplot2::theme(legend.position="none")
                              },
                              width = 600, height = 600)
 
