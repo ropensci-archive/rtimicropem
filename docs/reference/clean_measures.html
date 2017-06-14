@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Identify time gaps in the data collection period — identify_lags â€¢ rtimicropem</title>
+<title>Outputs clean rh_corrected_nephelometer measures for analysis. — clean_measures â€¢ rtimicropem</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,51 +77,56 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Identify time gaps in the data collection period</h1>
+    <h1>Outputs clean rh_corrected_nephelometer measures for analysis.</h1>
     </div>
 
     
-    <p>Identify time gaps in the data collection period</p>
+    <p>Outputs clean rh_corrected_nephelometer measures for analysis.</p>
     
 
-    <pre><span class='fu'>identify_lags</span>(<span class='no'>micropem</span>, <span class='kw'>column</span> <span class='kw'>=</span> <span class='st'>"rh_corrected_nephelometer"</span>)</pre>
+    <pre><span class='fu'>clean_measures</span>(<span class='no'>micropem_object</span>, <span class='kw'>hepa_start</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hepa_end</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>micropem</dt>
-      <dd>a R6 micropem object</dd>
-      <dt>column</dt>
-      <dd>by default &quot;rh_corrected_nephelometer&quot;,
-but could be &quot;nephelometer&quot;, the column in which to look for gaps.</dd>
+      <dt>micropem_object</dt>
+      <dd>the MicroPEM object</dd>
+      <dt>hepa_start</dt>
+      <dd>Boolean indicating whether there were measurements with HEPA filters at the beginning.</dd>
+      <dt>hepa_end</dt>
+      <dd>Boolean indicating whether there were measurements with HEPA filters at the end.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame with all the rows of measures where the nephelometer measures is
-missing with a time to previous missing values smaller than the nephelometer log.</p>
+    <p>A MicroPEM object.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>rh_corrected_nephelometer values are set to NA if they are negative or
+if the RH at the same time is higher than 90%.
+rh_corrected_nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done):
+if a stable period longer than 3 minutes can be identified for the HEPA period,
+using the changepoint cpt.mean function, there is a zero value.
+There can be no zero values, only one (beginning or end) or two.
+If there is only one zero value, it is substracted from all rh_corrected_nephelometer values.
+If there are two, a linear interpolation is done between the two values and the resulting vector
+is substracted from the rh_corrected_nephelometer values.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>micropem_na</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert_output.html'>convert_output</a></span>(<span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"file_with_na.csv"</span>,
-                                          <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rtimicropem"</span>))
-<span class='no'>micropem_na</span>$<span class='fu'>plot</span>()</div><img src='identify_lags-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>identify_lags</span>(<span class='no'>micropem_na</span>)</div><div class='output co'>#&gt; # A tibble: 103 x 15
-#&gt;               datetime rh_corrected_nephelometer  temp    rh battery
-#&gt;                 &lt;dttm&gt;                     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-#&gt;  1 2015-07-03 08:05:52                        NA    NA    NA      NA
-#&gt;  2 2015-07-03 08:05:55                        NA    NA    NA      NA
-#&gt;  3 2015-07-03 08:06:00                        NA    NA    NA     4.3
-#&gt;  4 2015-07-03 08:06:05                        NA    NA    NA      NA
-#&gt;  5 2015-07-03 08:09:30                        NA    NA  57.8      NA
-#&gt;  6 2015-07-03 08:09:35                        NA    NA    NA      NA
-#&gt;  7 2015-07-03 14:52:30                        NA    NA  54.7      NA
-#&gt;  8 2015-07-03 14:52:35                        NA    NA    NA      NA
-#&gt;  9 2015-07-03 14:52:40                        NA  87.5  55.0      NA
-#&gt; 10 2015-07-03 14:52:45                        NA    NA    NA      NA
-#&gt; # ... with 93 more rows, and 10 more variables: inlet_press &lt;dbl&gt;,
-#&gt; #   orifice_press &lt;dbl&gt;, flow &lt;dbl&gt;, x_axis &lt;dbl&gt;, y_axis &lt;dbl&gt;, z_axis &lt;dbl&gt;,
-#&gt; #   vector_sum_composite &lt;dbl&gt;, shutdownreason &lt;chr&gt;, wearing_compliance &lt;chr&gt;,
-#&gt; #   validitywearingcompliance_validation &lt;chr&gt;</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>micropemChai</span>)
+<span class='no'>cleanMP</span> <span class='kw'>&lt;-</span> <span class='fu'>clean_measures</span>(<span class='no'>micropemChai</span>)
+<span class='no'>cleanMP</span>$<span class='fu'>summary</span>()</div><div class='output co'>#&gt; # A tibble: 7 x 7
+#&gt;                     measure no._of_not_missing_values median       mean minimum
+#&gt;                       &lt;chr&gt;                     &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+#&gt; 1 rh_corrected_nephelometer                      8634  49.00 49.3745657   45.00
+#&gt; 2                      temp                      2878  84.50 84.6830438   82.30
+#&gt; 3                        rh                      8634  54.60 55.0061733   46.20
+#&gt; 4                   battery                      1464   4.10  4.0872268    3.90
+#&gt; 5               inlet_press                      2878   0.11  0.1111015    0.10
+#&gt; 6             orifice_press                      2878   0.15  0.1505455    0.14
+#&gt; 7                      flow                      2878   0.77  0.7703023    0.77
+#&gt; # ... with 2 more variables: maximum &lt;dbl&gt;, variance &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -129,6 +134,8 @@ missing with a time to previous missing values smaller than the nephelometer log
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

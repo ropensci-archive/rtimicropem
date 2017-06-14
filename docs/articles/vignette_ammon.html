@@ -61,7 +61,7 @@
 </h1>
                         <h4 class="author">M. Salmon and other CHAI project members</h4>
             
-            <h4 class="date">2017-05-15</h4>
+            <h4 class="date">2017-06-14</h4>
           </div>
 
     
@@ -139,49 +139,49 @@ micropem_example &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 ## 
 ##  Settings were:
 ## 
-##                                     value                  
-## ----------------------------------  -----------------------
-## downloadDate                        2015-04-07             
-## totalDownloadTime                   18                     
-## deviceSerial                        MP1411                 
-## dateTimeHardware                    2013-02-15             
-## dateTimeSoftware                    2014-01-24             
-## version                             v2.0.5136.37657        
-## participantID                                              
-## filterID                            CM1411                 
-## participantWeight                   NA                     
-## inletAerosolSize                    PM2.5                  
-## laserCyclingVariablesDelay          1                      
-## laserCyclingVariablesSamplingTime   1                      
-## laserCyclingVariablesOffTime        8                      
-## SystemTimes                         No cycling - Always On 
-## nephelometerSlope                   10                     
-## nephelometerOffset                  0                      
-## nephelometerLogInterval             10                     
-## temperatureSlope                    10                     
-## temperatureOffset                   0                      
-## temperatureLog                      30                     
-## humiditySlope                       10                     
-## humidityOffset                      0                      
-## humidityLog                         10                     
-## inletPressureSlope                  40.950.000             
-## inletPressureOffset                 0                      
-## inletPressureLog                    30                     
-## inletPressureHighTarget             1280                   
-## inletPressureLowTarget              768                    
-## orificePressureSlope                40.950.000             
-## orificePressureOffset               0                      
-## orificePressureLog                  30                     
-## orificePressureHighTarget           2167                   
-## orificePressureLowTarget            1592                   
-## flowLog                             30                     
-## flowHighTarget                      900                    
-## flowLowTarget                       200                    
-## flowRate                            0.5                    
-## accelerometerLog                    5                      
-## batteryLog                          60                     
-## ventilationSlope                    NA                     
-## ventilationOffset                   NA</code></pre>
+##                                         value                  
+## --------------------------------------  -----------------------
+## download_date                           2015-04-07             
+## total_download_time                     18                     
+## device_serial                           MP1411                 
+## datetime_hardware                       2013-02-15             
+## datetime_software                       2014-01-24             
+## version                                 v2.0.5136.37657        
+## participantID                                                  
+## filterID                                CM1411                 
+## participant_weight                      NA                     
+## inlet_aerosol_size                      PM2.5                  
+## laser_cycling_variables_delay           1                      
+## laser_cycling_variables_sampling_time   1                      
+## laser_cycling_variables_off_time        8                      
+## system_times                            No cycling - Always On 
+## nephelometer_slope                      10                     
+## nephelometer_offset                     0                      
+## nephelometer_log_interval               10                     
+## temperature_slope                       10                     
+## temperature_offset                      0                      
+## temperature_log                         30                     
+## humidity_slope                          10                     
+## humidity_offset                         0                      
+## humidity_log                            10                     
+## inlet_pressure_slope                    40.950.000             
+## inlet_pressure_offset                   0                      
+## inlet_pressure_log                      30                     
+## inlet_pressure_high_target              1280                   
+## inlet_pressure_low_target               768                    
+## orifice_pressure_slope                  40.950.000             
+## orifice_pressure_offset                 0                      
+## orifice_pressure_log                    30                     
+## orifice_pressure_high_target            2167                   
+## orifice_pressure_low_target             1592                   
+## flow_log                                30                     
+## flow_high_target                        900                    
+## flow_low_target                         200                    
+## flow_rate                               0.5                    
+## accelerometer_log                       5                      
+## battery_log                             60                     
+## ventilation_slope                       NA                     
+## ventilation_offset                      NA</code></pre>
 </div>
 <div id="visualizing-information-contained-in-a-micropem-object" class="section level2">
 <h2 class="hasAnchor">
@@ -294,7 +294,7 @@ results %&gt;%<span class="st"> </span>knitr::<span class="kw">kable</span>()</c
 <p>In the context of the <a href="http://www.chaiproject.org/">CHAI project</a>, we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function <code>run_shiny_app</code> with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:</p>
 <ul>
 <li><p>One with the output of a call to the <code>summary</code> method of the <code>micropem</code> object created,</p></li>
-<li><p>One with the output of a call to the <code>alarmCHAI</code> function that performs a few checks specific to the CHAI project,</p></li>
+<li><p>One with the output of a call to the <code>chai_alarm</code> function that performs a few checks specific to the CHAI project,</p></li>
 <li><p>One with the output of a call to the plot method,</p></li>
 <li><p>One with the output of a call to <code>summarySettings</code>.</p></li>
 </ul>
