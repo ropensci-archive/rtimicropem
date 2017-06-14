@@ -11,3 +11,4 @@ data_management.R
 ^README\.Rmd$
 ^CONDUCT\.md$
 ^README
+paper/
