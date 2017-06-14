@@ -69,14 +69,14 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h1>
-<p>Continuous personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a> resulted in 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours. Data were collected using 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we developed this framework.In the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain the issues we encountered, we present the framework we used for data cleaning, and provide some details about our code.</p>
+<p>Continuous personal monitoring of PM2.5 in the <a href="http://www.chaiproject.org/">CHAI project</a> resulted in 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours. Data were collected using 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we developed this framework. In the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain the issues we encountered, we present the framework we used for data cleaning, and provide some details about our code.</p>
 <p>Brief overview of issues encountered in MicroPEM data:</p>
 <ul>
 <li><p>Temperature sensitivity (zero decreasing with increasing temperature), apparently random baseline shifts.</p></li>
 <li><p>Negative relative humidity for a few points, leading to aberrant rh-corrected nephelometer values.</p></li>
 <li><p>Strange variations of internal parameters such as flow or orifice pressure, indicating the flow was not constant. For one MicroPEM that finally broke, the inlet pressure of some files indicated the device had been sucking air from the device instead of air from the environment.</p></li>
 <li><p>The internal flowmeter was not always reliable. Sometimes it wasn’t logging at all, sometimes it was logging 0.15 instead of 0.5. Because of the unreliable performance form the internal flowmeter, data from an external flowmeter pre and post-sampling is very valuable.</p></li>
-<li><p>There were holes in some filters for gravimetric measurements. Fitlers weights were also very variable sometimes unrealistic (extremely high or small). We hypothesized that some filters might have contained small holes not visible to the eye. Therefore, we did not use MicroPEM filters for gravimetric correction in our study. Instead, we used colocated gravimetric measurements using an SKC pump fitted with BGI cyclone.</p></li>
+<li><p>There were holes in some filters for gravimetric measurements. Filter weights were also very variable and sometimes unrealistic (extremely high or small). We hypothesized that some filters might have contained small holes not visible to the eye. Therefore, we did not use MicroPEM filters for gravimetric correction in our study. Instead, we used colocated gravimetric measurements using an SKC pump fitted with BGI cyclone.</p></li>
 </ul>
 </div>
 <div id="definition-of-the-data-cleaning-framework" class="section level1">
@@ -123,7 +123,7 @@
 <html><body><a href="#identification-of-negative-baseline-shifts" class="anchor"> </a></body></html>Identification of negative baseline shifts</h2>
 <p>We identified baseline shifts based on the following:</p>
 <ul>
-<li><p>Changes in values measured with a HEPA filter attached to inleft immeidately pre and post sampling in the field. We observed changes in zero over time (e.g. if zeroed a few hours before sampling) and during sampling. Zero drift could be positive or negative, with no relation to other parameters e.g. temperature.</p></li>
+<li><p>Changes in values measured with a HEPA filter attached to inleft immediately pre and post sampling in the field. We observed changes in zero over time (e.g. if zeroed a few hours before sampling) and during sampling. Zero drift could be positive or negative, with no relation to other parameters e.g. temperature.</p></li>
 <li><p>Files with a high proportion of negative nephelometer values. We identified files with a negative baseline shift as those where the mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files.</p></li>
 </ul>
 <p>Files identified as having negative baseline shift were corrected as follows: add the opposite of the minimum to all values so that the minimum is zero.</p>
@@ -143,8 +143,10 @@
 <div id="technical-details-about-r-implementation-of-the-data-cleaning-framework" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#technical-details-about-r-implementation-of-the-data-cleaning-framework" class="anchor"> </a></body></html>Technical details about R implementation of the data cleaning framework</h1>
-<p>The first step of the data cleaning was to transform all MicroPEM files into two <code>data.frames</code> using <code>rtimicropem::batch_convert()</code>. Since in our study the filename was informative (it contained participant ID, date, etc.) we parsed the filenames. The table with settings was joined with information from the logsheet such as pre and post-sampling flow rate.</p>
+<p>We cannot share our code but provide some details.</p>
+<p>The first step of the data cleaning was to transform all MicroPEM files into two <code>data.frames</code> using <code>rtimicropem::batch_convert()</code>. Since in our study the filename was informative (it contained participant ID, date, etc.) we parsed the filenames using our internal package. The table with settings was joined with information from the logsheet such as pre and post-sampling flow rate.</p>
 <p>Then we created a <code>sqlite</code> database with the measurements, in which the filename was an index.</p>
+<p>Because of the huge number of files we had to process, we defined functions operating on participant-days/files, and used <a href="https://github.com/mllg/batchtools"><code>batchtools</code></a> to parallelize the process.</p>
 </div>
 <div id="conclusion" class="section level1">
 <h1 class="hasAnchor">

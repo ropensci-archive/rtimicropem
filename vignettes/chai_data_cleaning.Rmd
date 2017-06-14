@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Introduction
 
-Continuous personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/) resulted in 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours. Data were collected using 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we developed this framework.In the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain the issues we encountered, we present the framework we used for data cleaning, and provide some details about our code. 
+Continuous personal monitoring of PM2.5 in the [CHAI project](http://www.chaiproject.org/) resulted in 261 MicroPEM files corresponding to 250 measurements sessions of 24 hours. Data were collected using 5 distinct MicroPEMs. Since there is no central RTI MicroPEM documentation nor agreed-on harmonized data cleaning process, we developed this framework. In the literature, details about data cleaning were too scarce to allow reproducibility. In this document we explain the issues we encountered, we present the framework we used for data cleaning, and provide some details about our code. 
 
 Brief overview of issues encountered in MicroPEM data:
 
@@ -26,7 +26,7 @@ Brief overview of issues encountered in MicroPEM data:
 
 * The internal flowmeter was not always reliable. Sometimes it wasn't logging at all, sometimes it was logging 0.15 instead of 0.5. Because of the unreliable performance form the internal flowmeter, data from an external flowmeter pre and post-sampling is very valuable.
 
-* There were holes in some filters for gravimetric measurements. Fitlers weights were also very variable sometimes unrealistic (extremely high or small). We hypothesized that some filters might have contained small holes not visible to the eye. Therefore, we did not use MicroPEM filters for gravimetric correction in our study. Instead, we used colocated gravimetric measurements using an SKC pump fitted with BGI cyclone.
+* There were holes in some filters for gravimetric measurements. Filter weights were also very variable and sometimes unrealistic (extremely high or small). We hypothesized that some filters might have contained small holes not visible to the eye. Therefore, we did not use MicroPEM filters for gravimetric correction in our study. Instead, we used colocated gravimetric measurements using an SKC pump fitted with BGI cyclone.
 
 # Definition of the data cleaning framework
 
@@ -70,7 +70,7 @@ The criterion on post-sampling flow rate led to the exclusion of 5 files from th
 
 We identified baseline shifts based on the following:
 
-* Changes in values measured with a HEPA filter attached to inleft immeidately pre and post sampling in the field. We observed changes in zero over time (e.g. if zeroed a few hours before sampling) and during sampling. Zero drift could be positive or negative, with no relation to other parameters e.g. temperature.
+* Changes in values measured with a HEPA filter attached to inleft immediately pre and post sampling in the field. We observed changes in zero over time (e.g. if zeroed a few hours before sampling) and during sampling. Zero drift could be positive or negative, with no relation to other parameters e.g. temperature.
 
 * Files with a high proportion of negative nephelometer values. We identified files with a negative baseline shift as those where the mean was changed by more than 5% if holding off negative values. The criterion was met by 31 files. 
  
@@ -90,9 +90,13 @@ Note that in our final table we kept
 
 # Technical details about R implementation of the data cleaning framework
 
-The first step of the data cleaning was to transform all MicroPEM files into two `data.frames` using `rtimicropem::batch_convert()`. Since in our study the filename was informative (it contained participant ID, date, etc.) we parsed the filenames. The table with settings was joined with information from the logsheet such as pre and post-sampling flow rate.
+We cannot share our code but provide some details.
+
+The first step of the data cleaning was to transform all MicroPEM files into two `data.frames` using `rtimicropem::batch_convert()`. Since in our study the filename was informative (it contained participant ID, date, etc.) we parsed the filenames using our internal package. The table with settings was joined with information from the logsheet such as pre and post-sampling flow rate.
 
 Then we created a `sqlite` database with the measurements, in which the filename was an index.
+
+Because of the huge number of files we had to process, we defined functions operating on participant-days/files, and used [`batchtools`](https://github.com/mllg/batchtools) to parallelize the process. 
 
 # Conclusion
 

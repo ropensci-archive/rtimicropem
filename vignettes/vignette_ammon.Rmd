@@ -84,7 +84,6 @@ This is a "plain" plot.
 
 ```{r, fig.width=7, fig.height=7, warning=FALSE}
 data("micropemChai")
-par(mar=c(1,4,2,1))
 micropemChai$plot()
 ```
 
@@ -100,7 +99,7 @@ p
 
 ### `summary` method
 
-Plotting the `micropem` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except timeDate.
+Plotting the `micropem` object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called `summary` and outputs a table with summary statistics for each time-varying measures, except time.
 
 Below is an example of use of this method.
 

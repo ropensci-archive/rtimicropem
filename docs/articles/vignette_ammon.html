@@ -193,7 +193,6 @@ micropem_example &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <p>Below we show to examples of uses of the plot method on a <code>micropem</code> object.</p>
 <p>This is a “plain” plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">"micropemChai"</span>)
-<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))
 micropemChai$<span class="kw">plot</span>()</code></pre></div>
 <p><img src="vignette_ammon_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>The code below would produce an interactive representation: the y-value is displayed when mouse is over each point. It is intended to be used as quick visualization tool as well, not as a plot method for putting a nice figure in a paper.</p>
@@ -205,7 +204,7 @@ p</code></pre></div>
 <h3 class="hasAnchor">
 <html><body><a href="#summary-method" class="anchor"> </a></body></html>
 <code>summary</code> method</h3>
-<p>Plotting the <code>micropem</code> object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called <code>summary</code> and outputs a table with summary statistics for each time-varying measures, except timeDate.</p>
+<p>Plotting the <code>micropem</code> object is already a good way to notice any problem. Another methods aims at providing more compact information about the time-varying measures. It is called <code>summary</code> and outputs a table with summary statistics for each time-varying measures, except time.</p>
 <p>Below is an example of use of this method.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"xtable"</span>)
 <span class="kw">data</span>(<span class="st">"micropemChai"</span>)
