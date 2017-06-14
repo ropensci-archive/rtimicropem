@@ -1,7 +1,7 @@
 -   [Installation](#installation)
 -   [Introduction](#introduction)
 
-[![Build Status](https://travis-ci.org/masalmon/rtimicropem.svg?branch=master)](https://travis-ci.org/masalmon/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/6nt0r1qsblfm07im?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem-4jo57) [![codecov.io](https://codecov.io/github/masalmon/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/masalmon/rtimicropem?branch=master)
+[![Build Status](https://travis-ci.org/maelle/rtimicropem.svg?branch=master)](https://travis-ci.org/maelle/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/dfp77q03989j90fw?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/maelle/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/maelle/rtimicropem?branch=master)
 
 Please note that this package is under development.
 
