@@ -12,3 +12,5 @@ data_management.R
 ^CONDUCT\.md$
 ^README
 paper/
+_pkgdown.yml
+docs/

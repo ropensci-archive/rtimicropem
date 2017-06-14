@@ -68,11 +68,11 @@ transform_date <- function(date){
 
 
 make_plot_one_param <- function(x, donnees, title){
-  data <- filter_(donnees, lazyeval::interp(~parameter == x))
+  data <- dplyr::filter_(donnees, lazyeval::interp(~parameter == x))
 
   rbokeh::figure(width = 700, height = 175)  %>%
-    rbokeh::ly_points(datetime, value, data = data) %>%
-    rbokeh::ly_text(min(data$datetime), quantile(data$value, 0.95),
+    rbokeh::ly_points(x = datetime, y = value, data = data) %>%
+    rbokeh::ly_text(min(data$datetime), stats::quantile(data$value, 0.95),
                     text = paste(x, title),
             font_size = "14pt") %>%
     rbokeh::ly_abline(h = 0)
@@ -114,13 +114,13 @@ find_zeros <- function(nephelometer = NULL,
 
   if (hepa_end){
     # changepoint for the end
-    mean2.MP  <- changepoint::cpt.mean(tail(nephelometer, n = 50),
+    mean2.MP  <- changepoint::cpt.mean(utils::tail(nephelometer, n = 50),
                                        method = "AMOC",
                                        penalty = "BIC")
-    start2 <- tail(mp_timedate, n = 50)[
-      tail(mean2.MP@cpts, n = 2)][1]
-    end2 <- tail(mp_timedate, n = 1)
-    value2 <- tail(mean2.MP@param.est$mean, n = 1)
+    start2 <- utils::tail(mp_timedate, n = 50)[
+      utils::tail(mean2.MP@cpts, n = 2)][1]
+    end2 <- utils::tail(mp_timedate, n = 1)
+    value2 <- utils::tail(mean2.MP@param.est$mean, n = 1)
   }
   else{
     start2 <- lubridate::ymd_hms("1900-01-01 12:12:12")

@@ -25,16 +25,15 @@ batch_convert <- function(path_input, path_output = path_input){
                 path_output))# nolint
   }
 
-  dir(path = path_input, full.names = TRUE) %>%
-    purrr::keep(grepl(".csv",  .)) %>%
-    purrr::map(convert_output) %>%
+  files <- dir(path = path_input, full.names = TRUE)
+
+ lapply(files[grepl(".csv",  files)], convert_output) %>%
     function_tables(path_output)
 
 }
 
 function_bind <- function(list_micropem, name){
-  list_micropem %>%
-    purrr::map(add_name, name = name) %>%
+  lapply(list_micropem, add_name, name = name) %>%
     dplyr::bind_rows()
 }
 

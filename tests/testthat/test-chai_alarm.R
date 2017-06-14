@@ -21,12 +21,6 @@ test_that("we get the right error messages", {
                "Nephelometer slope is not 3")
 
 
-  data("micropemC1")
-  micropemC1bis <- micropemC1$clone()
-  micropemC1bis$measures$flow <- 0.5
-  expect_equal(as.character(chai_alarm(micropemC1bis)$alarm[1]),
-               "Maybe two days of measures")
-
   micropemChai2 <- micropemChai$clone()
   micropemChai2$settings$nephelometer_slope <- 3
   micropemChai2$measures$flow <- rep(0.5, length(micropemChai2$measures$flow))

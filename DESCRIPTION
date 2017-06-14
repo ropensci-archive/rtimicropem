@@ -28,9 +28,9 @@ Imports: lubridate,
     lazyeval,
     readr,
     pathological,
-    purrr,
     stringr,
-    knitr
+    knitr,
+    methods
 Depends: R (>= 3.3.1)
 VignetteBuilder: knitr
 URL: http://github.com/masalmon/rtimicropem

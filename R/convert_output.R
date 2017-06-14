@@ -17,7 +17,8 @@ convert_output <- function(path) {
     dummy <- dummy[!is.na(dummy)]
     dummy <- dummy[!grepl("Errored Line", dummy)]
     dummy <- dummy[gsub(",", "", dummy) != ""]
-    pm_data <- tibble::tibble_(list(name = ~dummy[25:length(dummy)]))
+    pm_data <- data.frame(name = dummy[25:length(dummy)])
+    pm_data <- tibble::as_tibble(pm_data)
     names_pm_data <- strsplit(dummy[23], ",")[[1]]
     goal_length <- length(strsplit(dummy[25], ",")[[1]])
     if (length(names_pm_data) == (goal_length - 1)){
@@ -26,8 +27,8 @@ convert_output <- function(path) {
     names_pm_data <- tolower(names_pm_data)
     names_pm_data <- gsub(" ", "_", names_pm_data)
     names_pm_data <- gsub("-", "_", names_pm_data)
-    measures <-  suppressWarnings(tidyr::separate(pm_data,
-                                                  name,
+    measures <-  suppressWarnings(tidyr::separate_(pm_data,
+                                                  "name",
                                        names_pm_data,
                                        sep = ","))
     # known wrong dates

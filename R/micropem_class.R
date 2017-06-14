@@ -144,9 +144,9 @@ plotmicropem <- function(self, type, title, ...){# nocov start
   if (type == "plain"){
 
     p <- ggplot(long_data) +
-      geom_point(aes(x = datetime,
-                     y = measurement,
-                     col = variable)) +
+      geom_point(aes_string(x = "datetime",
+                     y = "measurement",
+                     col = "variable")) +
       facet_grid(variable ~ ., scales = "free_y") +
       scale_color_manual(values =  chai_palette) +
       ggplot2::theme_bw() +
@@ -170,8 +170,10 @@ plotmicropem <- function(self, type, title, ...){# nocov start
       tidyr::gather_("parameter", "value", .dots)
 
     df <- dplyr::filter_(df, ~!is.na(value))
-    plots_list <- unique(df$parameter) %>%
-      purrr::map(make_plot_one_param, title = title, donnees = df)
+    plots_list <- lapply(unique(df$parameter),
+                                make_plot_one_param,
+                                title = title,
+                                donnees = df)
 
     p <- rbokeh::grid_plot(plots_list, ncol = 1)
 
@@ -187,9 +189,9 @@ summarymicropem <- function(self){
                              .dots = ~rh_corrected_nephelometer:flow)
   measures <- names(measures)
 
-  dplyr::select_(self$measures,
-                 .dots = ~rh_corrected_nephelometer:flow) %>%
-    purrr::map(summaryPM) %>%
+  data_to_summarize <- dplyr::select_(self$measures,
+                 .dots = ~rh_corrected_nephelometer:flow)
+  lapply(data_to_summarize, summaryPM) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate_(measure = ~measures) %>%
     dplyr::select_(.dots = list(quote(measure),
@@ -202,7 +204,7 @@ summarymicropem <- function(self){
 }
 
 summaryPM <- function(x) {
-  if (is(x, "character")){
+  if (methods::is(x, "character")){
     x <- as.numeric(x)
   }
   sumup <- tibble::tibble_(list(no._of_not_missing_values = ~sum(!is.na(x)),
@@ -240,7 +242,7 @@ order_factors <- function(dat){
                                                       "battery")),
                                   a = dat)
 
-  dplyr::mutate_(dat, .dots = setNames(list(mutate_call),
+  dplyr::mutate_(dat, .dots = stats::setNames(list(mutate_call),
                                           "variable"))
 }
 # nocov end
