@@ -17,18 +17,18 @@ convert_output <- function(path) {
     dummy <- dummy[!is.na(dummy)]
     dummy <- dummy[!grepl("Errored Line", dummy)]
     dummy <- dummy[gsub(",", "", dummy) != ""]
-    dataPEM <- tibble::tibble_(list(name = ~dummy[25:length(dummy)]))
-    names_dataPEM <- strsplit(dummy[23], ",")[[1]]
+    pm_data <- tibble::tibble_(list(name = ~dummy[25:length(dummy)]))
+    names_pm_data <- strsplit(dummy[23], ",")[[1]]
     goal_length <- length(strsplit(dummy[25], ",")[[1]])
-    if(length(names_dataPEM) == (goal_length - 1)){
-      names_dataPEM <- c(names_dataPEM, "message")
+    if (length(names_pm_data) == (goal_length - 1)){
+      names_pm_data <- c(names_pm_data, "message")
     }
-    names_dataPEM <- tolower(names_dataPEM)
-    names_dataPEM <- gsub(" ", "_", names_dataPEM)
-    names_dataPEM <- gsub("-", "_", names_dataPEM)
-    measures <-  suppressWarnings(tidyr::separate(dataPEM,
+    names_pm_data <- tolower(names_pm_data)
+    names_pm_data <- gsub(" ", "_", names_pm_data)
+    names_pm_data <- gsub("-", "_", names_pm_data)
+    measures <-  suppressWarnings(tidyr::separate(pm_data,
                                                   name,
-                                       names_dataPEM,
+                                       names_pm_data,
                                        sep = ","))
     # known wrong dates
     potential_errors <- c("21/05/105",
@@ -59,7 +59,7 @@ convert_output <- function(path) {
                minute = lubridate::minute(time),
                second = lubridate::second(time))
     )) %>%
-      dplyr::select_(.dots = list(quote(-date), quote(-time)))%>%
+      dplyr::select_(.dots = list(quote( - date), quote( - time))) %>%
       dplyr::select_(.dots = list(quote(datetime), quote(dplyr::everything())))
 
     measures$rh_corrected_nephelometer <-
@@ -80,176 +80,176 @@ convert_output <- function(path) {
     # READ THE TOP OF THE FILE
     ###########################################
 
-    # downloadDate
-    downloadDate <- strsplit(dummy[2], ",")[[1]][2]
-    downloadDate <- transform_date(downloadDate)
+    # download_date
+    download_date <- strsplit(dummy[2], ",")[[1]][2]
+    download_date <- transform_date(download_date)
 
-    # totalDownloadTime
-    totalDownloadTime <- as.numeric(strsplit(dummy[3], ",")[[1]][2])
-    # deviceSerial
-    deviceSerial <- as.character(strsplit(dummy[4], ",")[[1]][2])
-    # dateTimeHardware
-    dateTimeHardware <- strsplit(dummy[5], ",")[[1]][2]
-    dateTimeHardware <- transform_date(dateTimeHardware)
+    # total_download_time
+    total_download_time <- as.numeric(strsplit(dummy[3], ",")[[1]][2])
+    # device_serial
+    device_serial <- as.character(strsplit(dummy[4], ",")[[1]][2])
+    # datetime_hardware
+    datetime_hardware <- strsplit(dummy[5], ",")[[1]][2]
+    datetime_hardware <- transform_date(datetime_hardware)
 
-    # dateTimeSoftware
-    dateTimeSoftware <- strsplit(dummy[6], ",")[[1]][2]
-    dateTimeSoftware <- transform_date(dateTimeSoftware)
+    # datetime_software
+    datetime_software <- strsplit(dummy[6], ",")[[1]][2]
+    datetime_software <- transform_date(datetime_software)
 
     # version
     version <- as.character(strsplit(dummy[6], ",")[[1]][3])
 
     # participantID
-    participantID <- strsplit(dummy[7], ",")[[1]][2]
+    participantID <- strsplit(dummy[7], ",")[[1]][2]# nolint
 
     # filterID
-    filterID <- strsplit(dummy[8], ",")[[1]][2]
+    filterID <- strsplit(dummy[8], ",")[[1]][2]# nolint
 
-    # participantWeight
-    participantWeight <- suppressWarnings(
+    # participant_weight
+    participant_weight <- suppressWarnings(
       as.numeric(strsplit(dummy[9], ",")[[1]][2]))
 
-    # inletAerosolSize
-    inletAerosolSize <- as.character(strsplit(dummy[10], ",")[[1]][2])
+    # inlet_aerosol_size
+    inlet_aerosol_size <- as.character(strsplit(dummy[10], ",")[[1]][2])
 
-    # laserCyclingVariablesDelay
+    # laser_cycling_variables_delay
     laser_temp <- strsplit(dummy[11], ",")[[1]]
-    laserCyclingVariablesDelay <- as.numeric(laser_temp[2])
+    laser_cycling_variables_delay <- as.numeric(laser_temp[2])
 
-    # laserCyclingVariablesSamplingTime
-    laserCyclingVariablesSamplingTime <- as.numeric(laser_temp[3])
+    # laser_cycling_variables_sampling_time
+    laser_cycling_variables_sampling_time <- as.numeric(laser_temp[3])# nolint
 
-    # laserCyclingVariablesOffTime
-    laserCyclingVariablesOffTime <- as.numeric(laser_temp[4])
+    # laser_cycling_variables_off_time
+    laser_cycling_variables_off_time <- as.numeric(laser_temp[4])# nolint
 
-    # SystemTimes
-    SystemTimes <- as.character(paste(strsplit(dummy[12], ",")[[1]][2],
+    # system_times
+    system_times <- as.character(paste(strsplit(dummy[12], ",")[[1]][2],
                          strsplit(dummy[12], ",")[[1]][3]))
 
-    # nephelometerSlope
+    # nephelometer_slope
     nephelometer_temp <- strsplit(dummy[14], ",")[[1]]
-    nephelometerSlope <- as.numeric(nephelometer_temp[2])
-    # nephelometerOffset
-    nephelometerOffset <- as.numeric(nephelometer_temp[3])
-    # nephelometerLogInterval
-    nephelometerLogInterval <- as.numeric(nephelometer_temp[4])
+    nephelometer_slope <- as.numeric(nephelometer_temp[2])
+    # nephelometer_offset
+    nephelometer_offset <- as.numeric(nephelometer_temp[3])
+    # nephelometer_log_interval
+    nephelometer_log_interval <- as.numeric(nephelometer_temp[4])
 
-    # temperatureSlope
+    # temperature_slope
     temperature_temp <- strsplit(dummy[15], ",")[[1]]
-    temperatureSlope <- as.numeric(temperature_temp[2])
-    # temperatureOffset
-    temperatureOffset <- as.numeric(temperature_temp[3])
-    # temperatureLog
-    temperatureLog <- as.numeric(temperature_temp[4])
+    temperature_slope <- as.numeric(temperature_temp[2])
+    # temperature_offset
+    temperature_offset <- as.numeric(temperature_temp[3])
+    # temperature_log
+    temperature_log <- as.numeric(temperature_temp[4])
 
-    # humiditySlope
+    # humidity_slope
     humidity_temp <- strsplit(dummy[16], ",")[[1]]
-    humiditySlope <- as.numeric(humidity_temp[2])
-    # humidityOffset
-    humidityOffset <- as.numeric(humidity_temp[3])
-    # humidityLog
-    humidityLog <- as.numeric(humidity_temp[4])
+    humidity_slope <- as.numeric(humidity_temp[2])
+    # humidity_offset
+    humidity_offset <- as.numeric(humidity_temp[3])
+    # humidity_log
+    humidity_log <- as.numeric(humidity_temp[4])
 
-    # inletPressureSlope
-    inletPressure_temp <- strsplit(dummy[17], ",")[[1]]
-    inletPressureSlope <- as.character(inletPressure_temp[2])
-    # inletPressureOffset
-    inletPressureOffset <- as.numeric(inletPressure_temp[3])
-    # inletPressureLog
-    inletPressureLog <- as.numeric(inletPressure_temp[4])
-    # inletPressureHighTarget
-    inletPressureHighTarget <- as.numeric(inletPressure_temp[5])
-    # inletPressureLowTarget
-    inletPressureLowTarget <- as.numeric(inletPressure_temp[6])
+    # inlet_pressure_slope
+    inlet_pressure_temp <- strsplit(dummy[17], ",")[[1]]
+    inlet_pressure_slope <- as.character(inlet_pressure_temp[2])
+    # inlet_pressure_offset
+    inlet_pressure_offset <- as.numeric(inlet_pressure_temp[3])
+    # inlet_pressure_log
+    inlet_pressure_log <- as.numeric(inlet_pressure_temp[4])
+    # inlet_pressure_high_target
+    inlet_pressure_high_target <- as.numeric(inlet_pressure_temp[5])
+    # inlet_pressure_low_target
+    inlet_pressure_low_target <- as.numeric(inlet_pressure_temp[6])
 
-    # orificePressureSlope
-    orificePressure_temp <- strsplit(dummy[18], ",")[[1]]
-    orificePressureSlope <- as.character(orificePressure_temp[2])
-    # orificePressureOffset
-    orificePressureOffset <- as.numeric(orificePressure_temp[3])
-    # orificePressureLog
-    orificePressureLog <- as.numeric(orificePressure_temp[4])
-    # orificePressureHighTarget
-    orificePressureHighTarget <- as.numeric(orificePressure_temp[5])
-    # orificePressureLowTarget
-    orificePressureLowTarget <- as.numeric(orificePressure_temp[6])
+    # orifice_pressure_slope
+    orifice_pressure_temp <- strsplit(dummy[18], ",")[[1]]
+    orifice_pressure_slope <- as.character(orifice_pressure_temp[2])
+    # orifice_pressure_offset
+    orifice_pressure_offset <- as.numeric(orifice_pressure_temp[3])
+    # orifice_pressure_log
+    orifice_pressure_log <- as.numeric(orifice_pressure_temp[4])
+    # orifice_pressure_high_target
+    orifice_pressure_high_target <- as.numeric(orifice_pressure_temp[5])
+    # orifice_pressure_low_target
+    orifice_pressure_low_target <- as.numeric(orifice_pressure_temp[6])
 
-    # flowLog
+    # flow_log
     flow_temp <- strsplit(dummy[19], ",")[[1]]
-    flowLog <- as.numeric(flow_temp[4])
-    # flowHighTarget
-    flowHighTarget <- as.numeric(flow_temp[5])
-    # flowLowTarget
-    flowLowTarget <- as.numeric(flow_temp[6])
-    # flowRate
-    flowRate <- as.numeric(flow_temp[7])
-    # accelerometerLog
-    accelerometerLog <- as.numeric(strsplit(dummy[20], ",")[[1]][4])
-    # batteryLog
-    batteryLog <- as.numeric(strsplit(dummy[21], ",")[[1]][4])
-    # ventilationSlope
-    ventilationSlope <-
+    flow_log <- as.numeric(flow_temp[4])
+    # flow_high_target
+    flow_high_target <- as.numeric(flow_temp[5])
+    # flow_low_target
+    flow_low_target <- as.numeric(flow_temp[6])
+    # flow_rate
+    flow_rate <- as.numeric(flow_temp[7])
+    # accelerometer_log
+    accelerometer_log <- as.numeric(strsplit(dummy[20], ",")[[1]][4])
+    # battery_log
+    battery_log <- as.numeric(strsplit(dummy[21], ",")[[1]][4])
+    # ventilation_slope
+    ventilation_slope <-
       suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][2]))
-    # ventilationOffset
-    ventilationOffset <-
+    # ventilation_offset
+    ventilation_offset <-
       suppressWarnings(as.numeric(strsplit(dummy[22], ",")[[1]][3]))
     ###########################################
     # settings table
     ###########################################
-    settings <- tibble::tibble(downloadDate = downloadDate,
-                    totalDownloadTime = totalDownloadTime,
-                    deviceSerial = deviceSerial,
-                    dateTimeHardware = dateTimeHardware,
-                    dateTimeSoftware = dateTimeSoftware,
+    settings <- tibble::tibble(download_date = download_date,
+                    total_download_time = total_download_time,
+                    device_serial = device_serial,
+                    datetime_hardware = datetime_hardware,
+                    datetime_software = datetime_software,
                     version = version,
-                    participantID = participantID,
-                    filterID = filterID,
-                    participantWeight = participantWeight,
-                    inletAerosolSize = inletAerosolSize,
-                    laserCyclingVariablesDelay =
-                      laserCyclingVariablesDelay,
-                    laserCyclingVariablesSamplingTime =
-                      laserCyclingVariablesSamplingTime,
-                    laserCyclingVariablesOffTime =
-                      laserCyclingVariablesOffTime,
-                    SystemTimes = SystemTimes,
-                    nephelometerSlope = nephelometerSlope,
-                    nephelometerOffset = nephelometerOffset,
-                    nephelometerLogInterval =
-                      nephelometerLogInterval,
-                    temperatureSlope = temperatureSlope,
-                    temperatureOffset = temperatureOffset,
-                    temperatureLog = temperatureLog,
-                    humiditySlope = humiditySlope,
-                    humidityOffset = humidityOffset,
-                    humidityLog = humidityLog,
-                    inletPressureSlope =
-                      inletPressureSlope,
-                    inletPressureOffset =
-                      inletPressureOffset,
-                    inletPressureLog = inletPressureLog,
-                    inletPressureHighTarget =
-                      inletPressureHighTarget,
-                    inletPressureLowTarget =
-                      inletPressureLowTarget,
-                    orificePressureSlope =
-                      orificePressureSlope,
-                    orificePressureOffset =
-                      orificePressureOffset,
-                    orificePressureLog =
-                      orificePressureLog,
-                    orificePressureHighTarget =
-                      orificePressureHighTarget,
-                    orificePressureLowTarget =
-                      orificePressureLowTarget,
-                    flowLog = flowLog,
-                    flowHighTarget = flowHighTarget,
-                    flowLowTarget = flowLowTarget,
-                    flowRate = flowRate,
-                    accelerometerLog = accelerometerLog,
-                    batteryLog = batteryLog,
-                    ventilationSlope = ventilationSlope,
-                    ventilationOffset = ventilationOffset)
+                    participantID = participantID,# nolint
+                    filterID = filterID,# nolint
+                    participant_weight = participant_weight,
+                    inlet_aerosol_size = inlet_aerosol_size,
+                    laser_cycling_variables_delay =
+                      laser_cycling_variables_delay,
+                    laser_cycling_variables_sampling_time =# nolint
+                      laser_cycling_variables_sampling_time,# nolint
+                    laser_cycling_variables_off_time =# nolint
+                      laser_cycling_variables_off_time,# nolint
+                    system_times = system_times,
+                    nephelometer_slope = nephelometer_slope,
+                    nephelometer_offset = nephelometer_offset,
+                    nephelometer_log_interval =
+                      nephelometer_log_interval,
+                    temperature_slope = temperature_slope,
+                    temperature_offset = temperature_offset,
+                    temperature_log = temperature_log,
+                    humidity_slope = humidity_slope,
+                    humidity_offset = humidity_offset,
+                    humidity_log = humidity_log,
+                    inlet_pressure_slope =
+                      inlet_pressure_slope,
+                    inlet_pressure_offset =
+                      inlet_pressure_offset,
+                    inlet_pressure_log = inlet_pressure_log,
+                    inlet_pressure_high_target =
+                      inlet_pressure_high_target,
+                    inlet_pressure_low_target =
+                      inlet_pressure_low_target,
+                    orifice_pressure_slope =
+                      orifice_pressure_slope,
+                    orifice_pressure_offset =
+                      orifice_pressure_offset,
+                    orifice_pressure_log =
+                      orifice_pressure_log,
+                    orifice_pressure_high_target =
+                      orifice_pressure_high_target,
+                    orifice_pressure_low_target =
+                      orifice_pressure_low_target,
+                    flow_log = flow_log,
+                    flow_high_target = flow_high_target,
+                    flow_low_target = flow_low_target,
+                    flow_rate = flow_rate,
+                    accelerometer_log = accelerometer_log,
+                    battery_log = battery_log,
+                    ventilation_slope = ventilation_slope,
+                    ventilation_offset = ventilation_offset)
     settings <- tibble::as_tibble(settings)
     ###########################################
     # CREATE THE OBJECT
@@ -265,6 +265,3 @@ convert_output <- function(path) {
                             include_dir = FALSE))
     return(micropem_object)
 }
-########################################################################
-
-

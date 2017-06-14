@@ -7,12 +7,12 @@ library("DT")
 library("rbokeh")
 library("ggplot2")
 
-shinyServer(function(input, output) {
+shiny::shinyServer(function(input, output) {
 
 
-  microPEMObject <- eventReactive(input$go, {
+  micropem_object <- shiny::eventReactive(input$go, {
 
-    file <- reactive({input$file1})
+    file <- shiny::reactive({input$file1})
     if (is.null(input$file1))
     return(NULL)
 
@@ -21,13 +21,13 @@ shinyServer(function(input, output) {
     }
        })
 
-  output$Settings<- DT::renderDataTable({
-    file <- reactive({input$file1})
+  output$Settings <- DT::renderDataTable({
+    file <- shiny::reactive({input$file1})
     if (is.null(input$file1))
       return(NULL)
 
     else {
-      data.frame(value = t(microPEMObject()$settings))
+      data.frame(value = t(micropem_object()$settings))
 
     }
   }, options = list(pageLength = 41))
@@ -36,23 +36,20 @@ shinyServer(function(input, output) {
 
 
     output$Summary <- DT::renderDataTable({
-      microPEMObject()$summary()
+      micropem_object()$summary()
     })
 
     output$Alarms <- DT::renderDataTable({
-      alarmCHAI(microPEMObject())
+      chai_alarm(micropem_object())
     })
 
 
-    output$plotPM <- rbokeh::renderRbokeh({microPEMObject()$
-        plot(type="interactive")})
+    output$plotpm <- rbokeh::renderRbokeh({micropem_object()$
+        plot(type = "interactive")})
 
-    output$plotPM2 <- renderPlot({microPEMObject()$plot(type="plain")+
-        ggplot2::theme(legend.position="none")
+    output$plotpm2 <- shiny::renderPlot({micropem_object()$plot(type = "plain") +
+        ggplot2::theme(legend.position = "none")
                              },
                              width = 600, height = 600)
 
-
-
 })
-

@@ -120,7 +120,7 @@ In the context of the [CHAI project](http://www.chaiproject.org/), we developped
 
 * One with the output of a call to the `summary` method of the `micropem` object created,
 
-* One with the output of a call to the `alarmCHAI` function that performs a few checks specific to the CHAI project,
+* One with the output of a call to the `chai_alarm` function that performs a few checks specific to the CHAI project,
 
 * One with the output of a call to the plot method,
 

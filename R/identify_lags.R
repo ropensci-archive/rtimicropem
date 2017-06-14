@@ -22,5 +22,5 @@ identify_lags <- function(micropem,
   dplyr::filter_(data_na,
                 lazyeval::interp(~ difftime(datetime, lag(datetime),
                                             units = "secs") <
-                                   micropem$settings$nephelometerLogInterval))
+                                   micropem$settings[["nephelometer_log_interval"]]))
 }

@@ -19,13 +19,13 @@ run_shiny_app <- function() {
     return(NULL)
   }
     # nocov start
-    appDir <- system.file("shiny-examples",
+    app_dir <- system.file("shiny-examples",
                           "myapp", package = "rtimicropem")
-    if (appDir == "") {
+    if (app_dir == "") {
         stop("Could not find example directory. Try re-installing `micropem`.",
              call. = FALSE)
     }
 
-    shiny::runApp(appDir, display.mode = "normal")
+    shiny::runApp(app_dir, display.mode = "normal")
 }
 # nocov end

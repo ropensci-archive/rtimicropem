@@ -64,7 +64,7 @@ micropem <- R6::R6Class("micropem",
                                                 measures,
                                                 filename,
                                                 original = TRUE) {
-                            if(any(is.null(c(settings,
+                            if (any(is.null(c(settings,
                                              calibration,
                                              measures)))){
                               stop("all fields must be known")
@@ -102,7 +102,7 @@ plotmicropem <- function(self, type, title, ...){# nocov start
                      c("plain", "interactive"))
 
   # filter when datetime not missing
-  dataPM <- dplyr::select_(self$measures,
+  pm_data <- dplyr::select_(self$measures,
                            .dots = list("datetime",
                                         "rh_corrected_nephelometer",
                                           "temp",
@@ -112,48 +112,48 @@ plotmicropem <- function(self, type, title, ...){# nocov start
                                           "orifice_press",
                                           "battery"))
 
-  filterCriteria <- lazyeval::interp(~(!is.na(datetime)))
-  dataPM <- dataPM %>%
-    dplyr::filter_(.dots = filterCriteria)
+  filter_criteria <- lazyeval::interp(~ (!is.na(datetime)))
+  pm_data <- pm_data %>%
+    dplyr::filter_(.dots = filter_criteria)
 
-  .dots <- names(dataPM)[which(names(dataPM) == "rh_corrected_nephelometer"):
-                           which(names(dataPM) == "battery")]
-  dataLong <- tidyr::gather_(dataPM, "variable", "measurement",
+  .dots <- names(pm_data)[which(names(pm_data) == "rh_corrected_nephelometer"):
+                           which(names(pm_data) == "battery")]
+  long_data <- tidyr::gather_(pm_data, "variable", "measurement",
                             .dots)
 
-  filterCriteria2 <- lazyeval::interp(~(!is.na(measurement)))
-  dataLong <- dataLong %>%
-    dplyr::filter_(.dots = filterCriteria2)
+  filter_criteria2 <- lazyeval::interp(~(!is.na(measurement)))
+  long_data <- long_data %>%
+    dplyr::filter_(.dots = filter_criteria2)
 
-  dataLong <- changeVariable(dataLong)
+  long_data <- order_factors(long_data)
   red <- "#FF3D31"
   yellow <- "#FF9704"
   brown <- "#000200"
-  lightRed <- "#EE9F8E"
+  light_red <- "#EE9F8E"
   blue <- "#70B6C5"
   green <- "#497866"
 
-  nicePalette <- c(red,
+  chai_palette <- c(red,
                    yellow,
                    blue,
                    green,
-                   lightRed,
-                   lightRed,
+                   light_red,
+                   light_red,
                    brown)
 
   if (type == "plain"){
 
-    p <- ggplot(dataLong) +
+    p <- ggplot(long_data) +
       geom_point(aes(x = datetime,
                      y = measurement,
                      col = variable)) +
       facet_grid(variable ~ ., scales = "free_y") +
-      scale_color_manual(values =  nicePalette) +
+      scale_color_manual(values =  chai_palette) +
       ggplot2::theme_bw() +
       ggplot2::theme(strip.text.y = element_text(angle = 0),
             legend.position = "none") +
       xlab("time")
-    if(!is.null(title)){
+    if (!is.null(title)){
       p <- p + ggtitle(title)
     }
   }
@@ -170,7 +170,6 @@ plotmicropem <- function(self, type, title, ...){# nocov start
       tidyr::gather_("parameter", "value", .dots)
 
     df <- dplyr::filter_(df, ~!is.na(value))
-    params <- unique(df$parameter)
     plots_list <- unique(df$parameter) %>%
       purrr::map(make_plot_one_param, title = title, donnees = df)
 
@@ -184,13 +183,15 @@ plotmicropem <- function(self, type, title, ...){# nocov start
 ##########################################################################
 summarymicropem <- function(self){
 
+  measures <- dplyr::select_(self$measures,
+                             .dots = ~rh_corrected_nephelometer:flow)
+  measures <- names(measures)
+
   dplyr::select_(self$measures,
                  .dots = ~rh_corrected_nephelometer:flow) %>%
     purrr::map(summaryPM) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate_(measure = lazyeval::interp(~dplyr::select_(self$measures,
-                                            .dots = ~rh_corrected_nephelometer:flow) %>%
-                     names)) %>%
+    dplyr::mutate_(measure = ~measures) %>%
     dplyr::select_(.dots = list(quote(measure),
                                 quote(no._of_not_missing_values),
                                 quote(median),
@@ -201,7 +202,7 @@ summarymicropem <- function(self){
 }
 
 summaryPM <- function(x) {
-  if(is(x, "character")){
+  if (is(x, "character")){
     x <- as.numeric(x)
   }
   sumup <- tibble::tibble_(list(no._of_not_missing_values = ~sum(!is.na(x)),
@@ -224,12 +225,12 @@ printmicropem <- function(self){
   cat("A summary of measures is:")
   print(knitr::kable(self$summary()))
   cat( "\n", "Settings were:")
-  settingsTable <- data.frame(value = t(self$settings)[,1])
-  print(knitr::kable(settingsTable))
+  settings_table <- data.frame(value = t(self$settings)[, 1])
+  print(knitr::kable(settings_table))
 }
 
-changeVariable <- function(dat) {
-  mutateCall <- lazyeval::interp( ~ factor(a$variable,
+order_factors <- function(dat){
+  mutate_call <- lazyeval::interp( ~ factor(a$variable,
                                            levels = c("rh_corrected_nephelometer",
                                                       "temp",
                                                       "rh",
@@ -239,7 +240,7 @@ changeVariable <- function(dat) {
                                                       "battery")),
                                   a = dat)
 
-  dat %>% dplyr::mutate_(.dots = setNames(list(mutateCall),
+  dplyr::mutate_(dat, .dots = setNames(list(mutate_call),
                                           "variable"))
 }
 # nocov end

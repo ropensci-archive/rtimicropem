@@ -5,30 +5,30 @@
 #' alarm was flagged, the \code{data table} only has one line indicating that all is good.
 #' @examples
 #' data(micropemChai)
-#' alarmCHAI(micropemChai)
+#' chai_alarm(micropemChai)
 #' @export
 #'
-alarmCHAI <- function(micropem_object) {
-    Alarm <- NULL
-    Action <- NULL
+chai_alarm <- function(micropem_object) {
+    alarm <- NULL
+    action <- NULL
     # nephelometer slope
-    if (micropem_object$settings$nephelometerSlope != 3) {
-        Alarm <- c(Alarm, "Nephelometer slope is not 3")
-        Action <- c(Action, "Please contact Sreekanth")
+    if (micropem_object$settings[["nephelometer_slope"]] != 3) {
+        alarm <- c(alarm, "Nephelometer slope is not 3")
+        action <- c(action, "Please contact Sreekanth")
     }
 
     # flow should be between 0.45 and 0.55
     if (any(micropem_object$measures$flow < 0.45, na.rm = TRUE) |
         any(micropem_object$measures$flow > 0.55, na.rm = TRUE)) {
-        Alarm <- c(Alarm, "Flow outside of normal range at least once")
-        Action <- c(Action, "Please contact Sreekanth")
+        alarm <- c(alarm, "Flow outside of normal range at least once")
+        action <- c(action, "Please contact Sreekanth")
     }
 
     # Not too many measures
     no_na <- sum(!is.na(micropem_object$measures$rh_corrected_nephelometer))
     if (no_na > 10000) {
-        Alarm <- c(Alarm, "Maybe two days of measures")
-        Action <- c(Action, "Please contact Sreekanth")
+        alarm <- c(alarm, "Maybe two days of measures")
+        action <- c(action, "Please contact Sreekanth")
     }
 
     # More than 2% negative values
@@ -39,14 +39,14 @@ alarmCHAI <- function(micropem_object) {
                                        rh_corrected_nephelometer))
 
     if (no_neg > two_percent) {
-        Alarm <- c(Alarm, "Too many negative values")
-        Action <- c(Action, "Please contact Sreekanth")
+        alarm <- c(alarm, "Too many negative values")
+        action <- c(action, "Please contact Sreekanth")
     }
-    if (is.null(Alarm)) {
-        Alarm <- c("All is good")
-        Action <- c(Action, "Nothing to do")
+    if (is.null(alarm)) {
+        alarm <- c("All is good")
+        action <- c(action, "Nothing to do")
     }
-    alarmTable <- data.frame(Alarm = Alarm, Action = Action)
-    alarmTable <- dplyr::tbl_df(alarmTable)
-    return(alarmTable)
+    alarms_table <- data.frame(alarm = alarm, action = action)
+    alarms_table <- tibble::as_tibble(alarms_table)
+    return(alarms_table)
 }

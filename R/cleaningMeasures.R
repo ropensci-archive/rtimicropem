@@ -1,12 +1,12 @@
 #' Outputs clean rh_corrected_nephelometer measures for analysis.
 #'
-#' @param micropemObject the MicroPEM object
-#' @param hepaStart Boolean indicating whether there were measurements with HEPA filters at the beginning.
-#' @param hepaEnd Boolean indicating whether there were measurements with HEPA filters at the end.
+#' @param micropem_object the MicroPEM object
+#' @param hepa_start Boolean indicating whether there were measurements with HEPA filters at the beginning.
+#' @param hepa_end Boolean indicating whether there were measurements with HEPA filters at the end.
 #' @return A MicroPEM object.
 #' @examples
 #' data(micropemChai)
-#' cleanMP <- cleaningMeasures(micropemChai)
+#' cleanMP <- clean_measures(micropemChai)
 #' cleanMP$summary()
 #' @details
 #' rh_corrected_nephelometer values are set to NA if they are negative or
@@ -20,44 +20,44 @@
 #' is substracted from the rh_corrected_nephelometer values.
 #' @export
 #'
-cleaningMeasures <- function(micropemObject,
-                             hepaStart = FALSE,
-                             hepaEnd = FALSE) {
+clean_measures <- function(micropem_object,
+                             hepa_start = FALSE,
+                             hepa_end = FALSE) {
     # use a clone!
-   micropemObject2 <- micropemObject$clone()
+   micropem_object2 <- micropem_object$clone()
     # If relative humidity is higher than 90%
     # then the corresponding rh_corrected_nephelometer values should be ignored
-    toBeErased <- which(!is.na(micropemObject2$
+    to_be_erased <- which(!is.na(micropem_object2$
                                  measures$rh) &
-                          micropemObject2$
+                          micropem_object2$
                           measures$rh >= 90)
-    micropemObject2$measures$rh_corrected_nephelometer[toBeErased] <- NA
+    micropem_object2$measures$rh_corrected_nephelometer[to_be_erased] <- NA
 
     # If relative humidity is negative
     # then the corresponding rh_corrected_nephelometer values should be ignored
-    toBeErased <- which(!is.na(micropemObject2$
+    to_be_erased <- which(!is.na(micropem_object2$
                                  measures$rh) &
-                          micropemObject2$
+                          micropem_object2$
                           measures$rh < 0)
-    micropemObject2$measures$rh_corrected_nephelometer[toBeErased] <- NA
+    micropem_object2$measures$rh_corrected_nephelometer[to_be_erased] <- NA
 
     # correct time series using HEPA measures
-    tableHEPA <- findZeros(micropemObject2$
+    hepa_table <- find_zeros(micropem_object2$
                              measures$rh_corrected_nephelometer,
-                           micropemObject2$
+                           micropem_object2$
                              measures$datetime,
-                           hepaStart,
-                           hepaEnd)
+                           hepa_start,
+                           hepa_end)
     # More than 3 minutes stable reading
-    if (tableHEPA$duration[1] >= 180){
-      value1 <- tableHEPA$value[1]
+    if (hepa_table$duration[1] >= 180){
+      value1 <- hepa_table$value[1]
     }
     else{
       value1 <- 0
     }
 
-    if (tableHEPA$duration[2] >= 180){
-      value2 <- tableHEPA$value[2]
+    if (hepa_table$duration[2] >= 180){
+      value2 <- hepa_table$value[2]
     }
     else{
       value2 <- 0
@@ -67,25 +67,25 @@ cleaningMeasures <- function(micropemObject,
     if (value1 == 0 | value2 == 0){
       correction <- rep(value1 + value2,
                         length = nrow(
-                          micropemObject2$measures
+                          micropem_object2$measures
                         ))
     }
     else{
       correction <- seq(from = value1,
                         to = value2,
                         length = nrow(
-                          micropemObject2$measures
+                          micropem_object2$measures
                           ))
     }
 
     # now correct the measures
-    micropemObject2$measures <- dplyr::mutate_(micropemObject2$measures,
+    micropem_object2$measures <- dplyr::mutate_(micropem_object2$measures,
                                              rh_corrected_nephelometer =
-                                               ~(rh_corrected_nephelometer -
+                                               ~ (rh_corrected_nephelometer -
                                                correction))
 
     # keep trace of modifications
-    micropemObject2$original <- FALSE
+    micropem_object2$original <- FALSE
 
-    return(micropemObject2)
+    return(micropem_object2)
 }

@@ -13,9 +13,8 @@ reference:
   - title: Explore files
     contents:
     - run_shiny_app
-    - micropem
     - identify_lags
-    - alarmCHAI
+    - chai_alarm
   - title: Example data
     contents:
     - micropemC1

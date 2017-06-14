@@ -7,46 +7,45 @@ library("DT")
 library("rbokeh")
 library("rtimicropem")
 library("ggplot2")
-options(RCHART_LIB = 'highcharts')
-shinyUI(fluidPage(
+options(RCHART_LIB = "highcharts")
+shiny::shinyUI(shiny::fluidPage(
 
-  titlePanel("Exploring RTI MicroPEM output"),
+  shiny::titlePanel("Exploring RTI MicroPEM output"),
 
-  sidebarLayout(
-    sidebarPanel(
-      fileInput('file1', 'Choose file to explore',
+  shiny::sidebarLayout(
+    shiny::sidebarPanel(
+      shiny::fileInput("file1", "Choose file to explore",
                 accept = c(
-                  'text/csv',
-                  'text/comma-separated-values',
-                  'text/tab-separated-values',
-                  'text/plain',
-                  '.csv',
-                  '.tsv'
+                  "text/csv",
+                  "text/comma-separated-values",
+                  "text/tab-separated-values",
+                  "text/plain",
+                  ".csv",
+                  ".tsv"
                 )),
-      selectInput('graphtype', 'Plot type (interactive takes a while to load!)',
+      shiny::selectInput("graphtype",
+                         "Plot type (interactive takes a while to load!)",
                   c("plain", "interactive"),
                   selected = "plain"),
-      actionButton("go", "Go")
+      shiny::actionButton("go", "Go")
     ),
-    mainPanel(
-      tabsetPanel(
-        tabPanel("Summary",
+    shiny::mainPanel(
+      shiny::tabsetPanel(
+        shiny::tabPanel("Summary",
                  DT::dataTableOutput("Summary")),
-        tabPanel("Alarms",
+        shiny::tabPanel("Alarms",
                  DT::dataTableOutput("Alarms")),
-        tabPanel("Plot",
-                 conditionalPanel(condition =
+        shiny::tabPanel("Plot",
+                        shiny::conditionalPanel(condition =
                                     "input.graphtype == 'interactive'",
-                                  rbokehOutput("plotPM")),
-                 conditionalPanel(condition = "input.graphtype == 'plain'",
-                                  plotOutput("plotPM2"))),
+                                  rbokeh::rbokehOutput("plotpm")),
+                        shiny::conditionalPanel(condition = "input.graphtype == 'plain'",
+                                                shiny::plotOutput("plotpm2"))),
 
-        tabPanel("Settings",
+        shiny::tabPanel("Settings",
                  DT::dataTableOutput("Settings"))
     )
   )
   )
 
   ))
-
-
