@@ -8,8 +8,7 @@
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' micropemExample <- convert_output(system.file('extdata', 'CHAI.csv', package = 'micropem'),
-#' version='CHAI')
+#' micropemExample <- convert_output(system.file('extdata', 'CHAI.csv', package = 'rtimicropem'))
 #' micropemExample$plot()
 #' }
 NULL
@@ -25,8 +24,7 @@ NULL
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' micropemExample <- convert_output(system.file('extdata', 'Columbia.csv', package = 'micropem'),
-#' version='Columbia1')
+#' micropemExample <- convert_output(system.file('extdata', 'Columbia.csv', package = 'rtimicropem'))
 #' micropemExample$plot()
 #' }
 NULL
@@ -41,8 +39,7 @@ NULL
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' micropemExample <- convert_output(system.file('extdata', 'Columbia2.csv', package = 'micropem'),
-#' version='Columbia2')
+#' micropemExample <- convert_output(system.file('extdata', 'Columbia2.csv', package = 'rtimicropem'))
 #' micropemExample$plot()
 #' }
 NULL

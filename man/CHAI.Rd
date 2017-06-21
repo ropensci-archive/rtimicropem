@@ -10,8 +10,7 @@ A  csv micropem output file of version CHAI of the output file.
 }
 \examples{
 \dontrun{
-micropemExample <- convert_output(system.file('extdata', 'CHAI.csv', package = 'micropem'),
-version='CHAI')
+micropemExample <- convert_output(system.file('extdata', 'CHAI.csv', package = 'rtimicropem'))
 micropemExample$plot()
 }
 }

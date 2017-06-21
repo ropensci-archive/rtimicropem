@@ -2,7 +2,6 @@
 #'
 #' @docType class
 #' @importFrom dplyr "%>%"
-#' @import ggplot2
 #' @export
 #' @keywords data
 #' @return Object of \code{\link{R6Class}}.
@@ -143,18 +142,18 @@ plotmicropem <- function(self, type, title, ...){# nocov start
 
   if (type == "plain"){
 
-    p <- ggplot(long_data) +
-      geom_point(aes_string(x = "datetime",
+    p <- ggplot2::ggplot(long_data) +
+      ggplot2::geom_point(ggplot2::aes_string(x = "datetime",
                      y = "measurement",
                      col = "variable")) +
-      facet_grid(variable ~ ., scales = "free_y") +
-      scale_color_manual(values =  chai_palette) +
+      ggplot2::facet_grid(variable ~ ., scales = "free_y") +
+      ggplot2::scale_color_manual(values =  chai_palette) +
       ggplot2::theme_bw() +
-      ggplot2::theme(strip.text.y = element_text(angle = 0),
+      ggplot2::theme(strip.text.y = ggplot2::element_text(angle = 0),
             legend.position = "none") +
-      xlab("time")
+      ggplot2::xlab("time")
     if (!is.null(title)){
-      p <- p + ggtitle(title)
+      p <- p + ggplot2::ggtitle(title)
     }
   }
 

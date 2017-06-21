@@ -10,8 +10,7 @@ A  csv micropem output file of version Columbia2 of the output file.
 }
 \examples{
 \dontrun{
-micropemExample <- convert_output(system.file('extdata', 'Columbia2.csv', package = 'micropem'),
-version='Columbia2')
+micropemExample <- convert_output(system.file('extdata', 'Columbia2.csv', package = 'rtimicropem'))
 micropemExample$plot()
 }
 }
