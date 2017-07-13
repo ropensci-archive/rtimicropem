@@ -1,6 +1,5 @@
 #' Run a built-in Shiny App.
 #'
-#' @return Nothing, it does something.
 #' @examples
 #' \dontrun{
 #' run_shiny_app()

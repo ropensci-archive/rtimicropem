@@ -6,9 +6,6 @@
 \usage{
 run_shiny_app()
 }
-\value{
-Nothing, it does something.
-}
 \description{
 Run a built-in Shiny App.
 }

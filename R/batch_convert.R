@@ -12,7 +12,6 @@
 #' batch_convert(path_input = c(system.file('extdata', 'dummyCHAI.csv', package = 'micropem'),
 #' system.file('extdata', 'dummyCHAI.csv', package = 'micropem')),
 #' path_output = getwd())}
-#' @return The function does not return anything.
 #' @export
 #'
 batch_convert <- function(path_input, path_output = path_input){
