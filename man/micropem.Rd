@@ -54,4 +54,20 @@ An R6 class to represent MicroPEM output information.
   }
 }
 
+\examples{
+data("micropemChai")
+# Plot method, type = "plain" by default.
+micropemChai$plot()
+# Example with type = "interactive", for RStudio viewer,
+# RMardown html documents and Shiny apps.
+\dontrun{
+library("rbokeh")
+p <- micropemChai$plot(type = "interactive")
+p
+# Summary method
+micropemChai$summary()
+# Print method
+micropemChai$print()
+}
+}
 \keyword{data}
