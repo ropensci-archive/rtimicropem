@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_convert.R
 \name{batch_convert}
 \alias{batch_convert}
-\title{Reading several MicroPEM files and converting the settings and measurement tables to csv.}
+\title{Reading several MicroPEM files and saving the settings and measurement tables to csv.}
 \usage{
 batch_convert(path_input, path_output = path_input)
 }
@@ -18,7 +18,7 @@ One file is settings.csv with all settings, the other one is measures.csv
 It saves them directly for not loading all of them at the same time in the session.}
 }
 \description{
-Reading several MicroPEM files and converting the settings and measurement tables to csv.
+Reading several MicroPEM files and saving the settings and measurement tables to csv.
 }
 \examples{
 \dontrun{
