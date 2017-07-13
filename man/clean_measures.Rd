@@ -24,7 +24,7 @@ rh_corrected_nephelometer values are set to NA if they are negative or
 if the RH at the same time is higher than 90\%.
 rh_corrected_nephelometer values are also corrected for the HEPA zeroings (start and end, if there were done):
 if a stable period longer than 3 minutes can be identified for the HEPA period,
-using the changepoint cpt.mean function, there is a zero value.
+using the changepoint cpt.mean\code{\link[changepoint]{cpt.mean}} function, there is a zero value.
 There can be no zero values, only one (beginning or end) or two.
 If there is only one zero value, it is substracted from all rh_corrected_nephelometer values.
 If there are two, a linear interpolation is done between the two values and the resulting vector
