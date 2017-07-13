@@ -10,8 +10,6 @@ batch_convert(path_input, path_output = path_input)
 \item{path_input}{path to the directory with files (\code{character})}
 
 \item{path_output}{path where the files should be created, by default equal to \code{path_input} (\code{character}).
-See the data in inst/data to see
-which one applies.
 
 The function saves results in the input directory as csv files with a "," as separator.
 One file is settings.csv with all settings, the other one is measures.csv

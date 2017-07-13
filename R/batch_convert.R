@@ -2,8 +2,6 @@
 #'
 #' @param path_input path to the directory with files (\code{character})
 #' @param path_output path where the files should be created, by default equal to \code{path_input} (\code{character}).
-#' See the data in inst/data to see
-#' which one applies.
 #'
 #' The function saves results in the input directory as csv files with a "," as separator.
 #' One file is settings.csv with all settings, the other one is measures.csv
