@@ -61,7 +61,7 @@
 </h1>
                         <h4 class="author">M. Salmon and other CHAI project members</h4>
             
-            <h4 class="date">2017-06-14</h4>
+            <h4 class="date">2017-07-13</h4>
           </div>
 
     
@@ -76,7 +76,7 @@
 <li><p>Checking individual MicroPEM output files after, say, one day of data collection.</p></li>
 <li><p>Building a data base based on output files, and clean and transform the data for further analysis.</p></li>
 </ul>
-<p>For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called <code>micropem</code>, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts.</p>
+<p>For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called <code>micropem</code>, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the <a href="http://www.chaiproject.org/">CHAI project</a>, but that could easily be adapted to other contexts.</p>
 <p>This document aims at providing an overview of the functionalities of the package.</p>
 </div>
 <div id="checking-individual-files-from-input-data-to-micropem-objects" class="section level1">
@@ -87,7 +87,7 @@
 <li><p>the measures themselves (relative humidity corrected nephelometer),</p></li>
 <li><p>other measures that can help interpret them or check that no problem occured (temperature, relative humidity, battery, orifice pressure, inlet pressure, flow, accelerometer variables, reasons for shutdown, and variables related to user compliance),</p></li>
 <li><p>a reminder of parameters set by the user (calibration parameters, frequency of measures)</p></li>
-<li><p>and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.</p></li>
+<li><p>and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not losing any data along the way, but not practical for analysis.</p></li>
 </ul>
 <p>Therefore, the <code>micropem</code> package offers a R6 class called <code>micropem</code> for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called <code>settings</code>. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.</p>
 <div class="figure">

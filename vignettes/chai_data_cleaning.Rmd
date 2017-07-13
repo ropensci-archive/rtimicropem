@@ -36,7 +36,7 @@ Files were removed from the analysis if
 
 - the post-sampling flow rate as measured by an external flowmeter was either 1) non available 2) higher than 120% of the pre-sampling flow rate.
 
-- there were to few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.
+- there were too few, e.g. 0 or 10, measures in total. Such files actually indicated a MicroPEM failure.
 
 - Relative humidity was not logged at all, which happened to one of our files, since relative humidity is used to correct nephelometer vales
 

@@ -39,7 +39,7 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 * a reminder of parameters set by the user (calibration parameters, frequency of measures)
 
-* and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not loosing any data along the way, but not practical for analysis.
+* and information about the device (filter ID, version of the software, etc). This is a lot of information, compiled in a handy csv format that is optimal for not losing any data along the way, but not practical for analysis.
 
 Therefore, the `micropem` package offers a R6 class called `micropem` for storing the information, that will be easier to use by other functions. The class has fields with measures over time and a field that is a list containing all the information located at the top of the MicroPEM output file, called `settings`. Here is a picture of a RTI MicroPEM output file showing how the information is stored in the R6 class.
 
