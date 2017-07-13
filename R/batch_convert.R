@@ -1,7 +1,7 @@
 #' Reading several MicroPEM files and converting the settings and measurement tables to csv.
 #'
-#' @param path_input path to the directory with files
-#' @param path_output path where the files should be created, by default equal to \code{path_input}.
+#' @param path_input path to the directory with files (\code{character})
+#' @param path_output path where the files should be created, by default equal to \code{path_input} (\code{character}).
 #' See the data in inst/data to see
 #' which one applies.
 #'

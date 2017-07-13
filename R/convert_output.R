@@ -1,6 +1,6 @@
 #' Uses output file from MicroPEM to create a \code{micropem} object.
 #'
-#' @param path the path to the file
+#' @param path the path to the file (\code{character})
 #' @return A \code{micropem} object.
 #' @examples
 #' micropem_example <- convert_output(system.file('extdata', 'CHAI.csv', package = 'rtimicropem'))

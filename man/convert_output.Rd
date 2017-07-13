@@ -7,7 +7,7 @@
 convert_output(path)
 }
 \arguments{
-\item{path}{the path to the file}
+\item{path}{the path to the file (\code{character})}
 }
 \value{
 A \code{micropem} object.

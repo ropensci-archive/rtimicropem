@@ -2,7 +2,7 @@
 #'
 #' @param micropem a R6 micropem object
 #' @param column by default "rh_corrected_nephelometer",
-#' but could be "nephelometer", the column in which to look for gaps.
+#' but could be "nephelometer", the column in which to look for gaps (\code{character}).
 #'
 #' @return A data.frame with all the rows of measures where the nephelometer measures is
 #' missing with a time to previous missing values smaller than the nephelometer log.

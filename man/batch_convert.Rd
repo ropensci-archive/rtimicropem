@@ -7,9 +7,9 @@
 batch_convert(path_input, path_output = path_input)
 }
 \arguments{
-\item{path_input}{path to the directory with files}
+\item{path_input}{path to the directory with files (\code{character})}
 
-\item{path_output}{path where the files should be created, by default equal to \code{path_input}.
+\item{path_output}{path where the files should be created, by default equal to \code{path_input} (\code{character}).
 See the data in inst/data to see
 which one applies.
 

@@ -10,7 +10,7 @@ identify_lags(micropem, column = "rh_corrected_nephelometer")
 \item{micropem}{a R6 micropem object}
 
 \item{column}{by default "rh_corrected_nephelometer",
-but could be "nephelometer", the column in which to look for gaps.}
+but could be "nephelometer", the column in which to look for gaps (\code{character}).}
 }
 \value{
 A data.frame with all the rows of measures where the nephelometer measures is
