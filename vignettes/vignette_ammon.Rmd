@@ -24,7 +24,7 @@ The goal of the package functions is to help in two main tasks:
 
 * Building a data base based on output files, and clean and transform the data for further analysis.
 
-For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `micropem`, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the CHAI project, but that could easily be adapted to other contexts. 
+For the examination of individual files, the package provides a function for transforming the output of a RTI MicroPEM into an object of a R6 class called `micropem`, functions for examining this information in order to look for possible problems in the data. The package moreover provides a Shiny app used for the field work of the [CHAI project](http://www.chaiproject.org/), but that could easily be adapted to other contexts. 
 
 This document aims at providing an overview of the functionalities of the package.
 
