@@ -1,5 +1,9 @@
+-   [rtimicropem](#rtimicropem)
 -   [Installation](#installation)
 -   [Introduction](#introduction)
+
+rtimicropem
+===========
 
 [![Build Status](https://travis-ci.org/maelle/rtimicropem.svg?branch=master)](https://travis-ci.org/maelle/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/dfp77q03989j90fw?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/maelle/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/maelle/rtimicropem?branch=master)
 
