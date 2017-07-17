@@ -5,7 +5,7 @@
 rtimicropem
 ===========
 
-[![Build Status](https://travis-ci.org/maelle/rtimicropem.svg?branch=master)](https://travis-ci.org/maelle/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/dfp77q03989j90fw?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/maelle/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/maelle/rtimicropem?branch=master)
+[![Build Status](https://travis-ci.org/maelle/rtimicropem.svg?branch=master)](https://travis-ci.org/maelle/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/dfp77q03989j90fw?svg=true)](https://ci.appveyor.com/project/masalmon/rtimicropem) [![codecov.io](https://codecov.io/github/maelle/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/maelle/rtimicropem?branch=master) [![](https://ropensci.org/badges/126_status.svg)](https://github.com/ropensci/onboarding/issues/126)
 
 Please note that this project is released with a [Contributor Code of Conduct](https://github.com/masalmon/rtimicropem/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.
 

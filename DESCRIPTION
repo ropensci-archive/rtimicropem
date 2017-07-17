@@ -8,7 +8,9 @@ Authors@R: c(person("Maëlle", "Salmon", email = "maelle.salmon@yahoo.se", role 
              person("Carles", "Milà", role = c("ctb")),
              person("Sreekanth", "Vakacherla", role = c("ctb")),
              person("Cathryn", "Tonne", role = c("ctb")),
-             person("Julian", "Marshall", role = c("ctb")))
+             person("Julian", "Marshall", role = c("ctb")),
+             person("Lucy", "D'Agostino McGowan", role = c("rev"), comment = "Lucy D'Agostino McGowan reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126"),
+             person("Kara ", "Woo", role = c("rev"), comment = "Kara Woo reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126"))
 Description: Supports the input and reproducible analysis of RTI MicroPEM output files.
 License: GPL (>= 2)
 LazyData: TRUE
