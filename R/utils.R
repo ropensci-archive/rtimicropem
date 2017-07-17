@@ -57,6 +57,11 @@ transform_date <- function(date){
 
 
   }
+
+  if(all(is.na(output))){
+    output <- lubridate::ymd(date)
+  }
+
   return(output)
 }
 

@@ -32,6 +32,8 @@ Other contributors:
   \item Sreekanth Vakacherla [contributor]
   \item Cathryn Tonne [contributor]
   \item Julian Marshall [contributor]
+  \item Lucy D'Agostino McGowan (Lucy D'Agostino McGowan reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126) [NA]
+  \item Kara  Woo (Kara Woo reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126) [NA]
 }
 
 }
