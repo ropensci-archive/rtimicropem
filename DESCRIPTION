@@ -35,6 +35,6 @@ Imports: lubridate,
     methods
 Depends: R (>= 3.3.1)
 VignetteBuilder: knitr
-URL: http://github.com/masalmon/rtimicropem
-BugReports: http://github.com/masalmon/rtimicropem/issues
+URL: http://github.com/ropensci/rtimicropem
+BugReports: http://github.com/ropensci/rtimicropem/issues
 Encoding: UTF-8
