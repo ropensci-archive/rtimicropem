@@ -10,12 +10,12 @@ authors:
    affiliation: 1
  - name: Sreekanth Vakacherla
    orcid: 0000-0003-0400-6584
-   affiliation:2
+   affiliation: 2
  - name: Carles Milà
    orcid: 0000-0003-0470-0760
    affiliation: 1
  - name: Julian D. Marshall
-   orcid: 
+   orcid:
    affiliation: 2
  - name: Cathryn Tonne
    orcid: 0000-0003-3919-8264
@@ -31,7 +31,7 @@ bibliography: paper.bib
 
 # Summary
 
-This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. [RTI MicroPEM](https://www.rti.org/sites/default/files/brochures/rti_micropem.pdf) are personal monitoring devices (PM2.5 and PM10) developped by [RTI international](https://www.rti.org/).
+This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. [RTI MicroPEM](https://www.rti.org/sites/default/files/brochures/rti_micropem.pdf) are personal monitoring devices (PM2.5 and PM10) developed by [RTI international](https://www.rti.org/).
 
 The goal of the package functions is to help in two main tasks:
 
@@ -40,4 +40,5 @@ The goal of the package functions is to help in two main tasks:
 -   Building a data base based on output files, and clean and transform the data for further analysis.
 
 The documentation includes a transparent report of the data cleaning process used in the [CHAI project](http://www.chaiproject.org/).
+
 # References
