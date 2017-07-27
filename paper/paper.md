@@ -41,9 +41,4 @@ The goal of the package functions is to help in two main tasks:
 
 The documentation includes a transparent report of the data cleaning process used in the [CHAI project](http://www.chaiproject.org/) [@TONNE20171081].
 
-<<<<<<< HEAD
-=======
-The documentation includes a transparent report of the data cleaning process used in the [CHAI project](http://www.chaiproject.org/).
-
->>>>>>> 485e12ab694865e709611e309d784e29211fc849
 # References
