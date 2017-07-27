@@ -10,12 +10,12 @@ authors:
    affiliation: 1
  - name: Sreekanth Vakacherla
    orcid: 0000-0003-0400-6584
-   affiliation:2
+   affiliation: 2
  - name: Carles Milà
    orcid: 0000-0003-0470-0760
    affiliation: 1
  - name: Julian D. Marshall
-   orcid: 
+   orcid:
    affiliation: 2
  - name: Cathryn Tonne
    orcid: 0000-0003-3919-8264
@@ -41,4 +41,9 @@ The goal of the package functions is to help in two main tasks:
 
 The documentation includes a transparent report of the data cleaning process used in the [CHAI project](http://www.chaiproject.org/) [@TONNE20171081].
 
+<<<<<<< HEAD
+=======
+The documentation includes a transparent report of the data cleaning process used in the [CHAI project](http://www.chaiproject.org/).
+
+>>>>>>> 485e12ab694865e709611e309d784e29211fc849
 # References
