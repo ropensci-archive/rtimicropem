@@ -4,7 +4,7 @@ author: "M. Salmon, S. Vakacherla, C. Mila, J. Marshall, C. Tonne"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{2. MicroPEM data Cleaning process developed through the CHAI project}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
