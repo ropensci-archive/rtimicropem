@@ -12,8 +12,6 @@
   Lucy D'Agostino McGowan [rev] (Lucy D'Agostino McGowan reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126)
   Kara  Woo [rev] (Kara Woo reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126)" these authors have the "rev" role which is not a standard role but which was deemed ok after an email exchange with CRAN maintainers.
   
-  * "Found the following (possibly) invalid DOIs:
-  DOI: http://dx.doi.org/10.21105/joss.00333" The link is valid and the DOI will be registered soon by the journal.
 
 ## Release summary
 
