@@ -5,7 +5,7 @@
 rtimicropem
 ===========
 
-[![Build Status](https://travis-ci.org/ropensci/rtimicropem.svg?branch=master)](https://travis-ci.org/ropensci/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/m77xbrmdktarl1e6?svg=true)](https://ci.appveyor.com/project/ropensci/rtimicropem) [![codecov.io](https://codecov.io/github/ropensci/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rtimicropem?branch=master) [![](https://badges.ropensci.org/126_status.svg)](https://github.com/ropensci/onboarding/issues/126) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.831438.svg)](https://doi.org/10.5281/zenodo.831438)
+[![Build Status](https://travis-ci.org/ropensci/rtimicropem.svg?branch=master)](https://travis-ci.org/ropensci/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/m77xbrmdktarl1e6?svg=true)](https://ci.appveyor.com/project/ropensci/rtimicropem) [![codecov.io](https://codecov.io/github/ropensci/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rtimicropem?branch=master) [![](https://badges.ropensci.org/126_status.svg)](https://github.com/ropensci/onboarding/issues/126) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.831438.svg)](https://doi.org/10.5281/zenodo.831438) [![status](http://joss.theoj.org/papers/10.21105/joss.00333/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00333)
 
 Please note that this project is released with a [Contributor Code of Conduct](https://github.com/ropensci/rtimicropem/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.
 
