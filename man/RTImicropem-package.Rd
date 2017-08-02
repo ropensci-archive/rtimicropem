@@ -12,8 +12,8 @@ in a reproducible way.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://github.com/masalmon/rtimicropem}
-  \item Report bugs at \url{http://github.com/masalmon/rtimicropem/issues}
+  \item \url{http://github.com/ropensci/rtimicropem}
+  \item Report bugs at \url{http://github.com/ropensci/rtimicropem/issues}
 }
 
 }

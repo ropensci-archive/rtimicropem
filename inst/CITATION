@@ -1,0 +1,10 @@
+citHeader("To cite the rtimicropem package in publications please use::")
+
+citEntry(entry = "Article",
+  author = "Maëlle Salmon and V. Sreekanth and Carles Milà and Julian D. Marshall and Cathryn Tonne",
+  title = "rtimicropem: an R package supporting the analysis of RTI MicroPEM output files",
+  year = "2017",
+  journal = "Journal of Open Source Software",
+  doi = "http://dx.doi.org/10.21105/joss.00333",
+  textVersion = "Maëlle Salmon, V. Sreekanth, Carles Milà, Julian D. Marshall, Cathryn Tonne (2017). rtimicropem: an R package supporting the analysis of RTI MicroPEM output files, Journal of Open Source Software"
+)
