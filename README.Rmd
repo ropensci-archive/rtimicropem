@@ -10,7 +10,7 @@ output:
 
 rtimicropem
 ============
-
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rtimicropem)](http://cran.r-project.org/package=rtimicropem)
 [![Build Status](https://travis-ci.org/ropensci/rtimicropem.svg?branch=master)](https://travis-ci.org/ropensci/rtimicropem)
 [![Build status](https://ci.appveyor.com/api/projects/status/m77xbrmdktarl1e6?svg=true)](https://ci.appveyor.com/project/ropensci/rtimicropem)
 [![codecov.io](https://codecov.io/github/ropensci/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rtimicropem?branch=master)
@@ -27,10 +27,17 @@ knitr::opts_chunk$set(
 ```
 # Installation
 
-```{r, eval=FALSE}
-library("devtools")
-install_github("ropensci/rtimicropem", build_vignettes=TRUE)
+Install the package with:
+
+```{r eval = FALSE}
+install.packages("rtimicropem")
 ```
+
+Or install the development version using [devtools](https://github.com/hadley/devtools) with:
+
+```{r, eval = FALSE}
+library("devtools")
+install_github("ropensci/rtimicropem")
 
 # Introduction
 

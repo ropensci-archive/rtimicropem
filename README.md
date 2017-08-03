@@ -1,24 +1,30 @@
 -   [rtimicropem](#rtimicropem)
 -   [Installation](#installation)
--   [Introduction](#introduction)
 
 rtimicropem
 ===========
 
-[![Build Status](https://travis-ci.org/ropensci/rtimicropem.svg?branch=master)](https://travis-ci.org/ropensci/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/m77xbrmdktarl1e6?svg=true)](https://ci.appveyor.com/project/ropensci/rtimicropem) [![codecov.io](https://codecov.io/github/ropensci/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rtimicropem?branch=master) [![](https://badges.ropensci.org/126_status.svg)](https://github.com/ropensci/onboarding/issues/126) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.831438.svg)](https://doi.org/10.5281/zenodo.831438) [![status](http://joss.theoj.org/papers/10.21105/joss.00333/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00333)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rtimicropem)](http://cran.r-project.org/package=rtimicropem) [![Build Status](https://travis-ci.org/ropensci/rtimicropem.svg?branch=master)](https://travis-ci.org/ropensci/rtimicropem) [![Build status](https://ci.appveyor.com/api/projects/status/m77xbrmdktarl1e6?svg=true)](https://ci.appveyor.com/project/ropensci/rtimicropem) [![codecov.io](https://codecov.io/github/ropensci/rtimicropem/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rtimicropem?branch=master) [![](https://badges.ropensci.org/126_status.svg)](https://github.com/ropensci/onboarding/issues/126) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.831438.svg)](https://doi.org/10.5281/zenodo.831438) [![status](http://joss.theoj.org/papers/10.21105/joss.00333/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00333)
 
 Please note that this project is released with a [Contributor Code of Conduct](https://github.com/ropensci/rtimicropem/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Installation
 ============
 
+Install the package with:
+
 ``` r
-library("devtools")
-install_github("ropensci/rtimicropem", build_vignettes=TRUE)
+install.packages("rtimicropem")
 ```
 
-Introduction
-============
+Or install the development version using [devtools](https://github.com/hadley/devtools) with:
+
+``` r
+library("devtools")
+install_github("ropensci/rtimicropem")
+
+# Introduction
+```
 
 This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. [RTI MicroPEM](https://www.rti.org/sites/default/files/brochures/rti_micropem.pdf) are personal monitoring devices (PM2.5 and PM10) developped by [RTI international](https://www.rti.org/).
 
