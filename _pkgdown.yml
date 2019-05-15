@@ -31,3 +31,6 @@ articles:
   - title: Data cleaning processes
     contents:
     - chai_data_cleaning
+
+development:
+  mode: auto
