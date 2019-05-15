@@ -46,7 +46,7 @@ Files were removed from the analysis if
   
     - For MP724 we eliminated files with an abrupt baseline shift, or where inlet pressure wasn't constantly increasing.
     
-The criterion on post-sampling flow rate led to the exclusion of 5 files from the analysis, the other criteria led in total to the exclusin of 28 files. Therefore our final table contains data from 228 files.
+The criterion on post-sampling flow rate led to the exclusion of 5 files from the analysis, the other criteria led in total to the exclusion of 28 files. Therefore our final table contains data from 228 files.
     
 ## Correction/removal of individual data points in time series.
 

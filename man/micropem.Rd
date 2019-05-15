@@ -21,7 +21,7 @@ An R6 class to represent MicroPEM output information.
 
 \item{\code{calibration}}{List of calibration information.}
 
-\item{\code{filename}}{Filename from which the oject was built.}
+\item{\code{filename}}{Filename from which the object was built.}
 
 \item{\code{measures}}{Data.frame (\code{dplyr "tbl_df"}) with all time-varying measures, possibly:
 \describe{

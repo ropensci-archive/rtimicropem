@@ -23,7 +23,7 @@
 #' }
 #' @field settings Data.frame (\code{dplyr "tbl_df"}) with settings of the micropem device and other information such as download time.
 #' @field calibration List of calibration information.
-#' @field filename Filename from which the oject was built.
+#' @field filename Filename from which the object was built.
 #' @field measures Data.frame (\code{dplyr "tbl_df"}) with all time-varying measures, possibly:
 #' \describe{
 #'   \item{datetime}{Time and date of each measurement, as a POSIXt object. Depending on the different logs of the time-varying variables there is not a measure for all variables associated to each timepoint.}

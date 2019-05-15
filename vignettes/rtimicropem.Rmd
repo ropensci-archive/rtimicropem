@@ -16,7 +16,7 @@ library("knitr")
 library("dplyr")
 ```
 
-This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. [RTI MicroPEM](https://www.rti.org/sites/default/files/brochures/rti_micropem.pdf) are personal monitoring devices (PM2.5 and PM10) developped by [RTI international](https://www.rti.org/).
+This package aims at supporting the analysis of PM2.5 measures made with RTI MicroPEM. [RTI MicroPEM](https://www.rti.org/sites/default/files/brochures/rti_micropem.pdf) are personal monitoring devices (PM2.5 and PM10) developed by [RTI international](https://www.rti.org/).
 
 The goal of the package functions is to help in two main tasks:
 
@@ -35,7 +35,7 @@ The MicroPEM device outputs a csv file with all the information about the measur
 
 * the measures themselves (relative humidity corrected nephelometer), 
 
-* other measures that can help interpret them or check that no problem occured (temperature, relative humidity, battery, orifice pressure, inlet pressure, flow, accelerometer variables, reasons for shutdown, and variables related to user compliance),
+* other measures that can help interpret them or check that no problem occurred (temperature, relative humidity, battery, orifice pressure, inlet pressure, flow, accelerometer variables, reasons for shutdown, and variables related to user compliance),
 
 * a reminder of parameters set by the user (calibration parameters, frequency of measures)
 
@@ -113,9 +113,9 @@ results %>% knitr::kable()
 ```
 
 
-### Shiny app developped for the CHAI project
+### Shiny app developed for the CHAI project
 
-In the context of the [CHAI project](http://www.chaiproject.org/), we developped a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `run_shiny_app` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
+In the context of the [CHAI project](http://www.chaiproject.org/), we developed a Shiny app based on the previous functions, that allows to explore a MicroPEM output file. The app is called by the function `run_shiny_app` with no argument. There is one side panel where one can choose the file to analyse. There are four tabs:
 
 * One with the output of a call to the `summary` method of the `micropem` object created,
 
