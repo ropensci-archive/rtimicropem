@@ -1,7 +1,7 @@
 Package: rtimicropem
 Type: Package
 Title: Supports the Analysis of RTI MicroPEM Output Files
-Version: 1.3
+Version: 1.4.0
 Authors@R: c(person("Maëlle", "Salmon", email = "maelle.salmon@yahoo.se", role = c("aut", "cre")),
              person("Zheng", "Zhou", comment = "Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA", role = c("aut")),
              person(family = "ERC Grant Agreement number 336167 - the CHAI Project", role = c("fnd")),
@@ -14,7 +14,7 @@ Authors@R: c(person("Maëlle", "Salmon", email = "maelle.salmon@yahoo.se", role 
 Description: Supports the input and reproducible analysis of RTI MicroPEM output files.
 License: GPL (>= 2)
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: testthat,
     rmarkdown,
     xtable,
@@ -29,12 +29,12 @@ Imports: lubridate,
     tidyr,
     lazyeval,
     readr,
-    pathological,
+    fs,
     stringr,
     knitr,
     methods
-Depends: R (>= 3.3.1)
+Depends: R (>= 3.3.0)
 VignetteBuilder: knitr
-URL: http://github.com/ropensci/rtimicropem, https://docs.ropensci.org/rtimicropem/
-BugReports: http://github.com/ropensci/rtimicropem/issues
+URL: https://github.com/ropensci/rtimicropem, https://docs.ropensci.org/rtimicropem/
+BugReports: https://github.com/ropensci/rtimicropem/issues
 Encoding: UTF-8

@@ -1,3 +1,7 @@
+# rtimicropem 1.4.0
+
+* Remo
+
 # rtimicropem 1.3
 
 * All functions now have snake_case names.
