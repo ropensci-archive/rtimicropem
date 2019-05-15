@@ -12,9 +12,9 @@ in a reproducible way.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://github.com/ropensci/rtimicropem}
+  \item \url{https://github.com/ropensci/rtimicropem}
   \item \url{https://docs.ropensci.org/rtimicropem/}
-  \item Report bugs at \url{http://github.com/ropensci/rtimicropem/issues}
+  \item Report bugs at \url{https://github.com/ropensci/rtimicropem/issues}
 }
 
 }

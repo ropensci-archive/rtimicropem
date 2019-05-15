@@ -27,21 +27,7 @@ reference:
 articles:
   - title: Introduction
     contents:
-    - vignette_ammon
+    - rtimicropem
   - title: Data cleaning processes
     contents:
     - chai_data_cleaning
-
-navbar:
-  title: rtimicropem
-  type: default
-  left:
-  - text: Home
-    href: index.html
-  - text: Overview
-    href: articles/index.html
-  - text: Reference
-    href: reference/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/masalmon/rtimicropem
