@@ -1,40 +1,69 @@
-Package: rtimicropem
 Type: Package
+Package: rtimicropem
 Title: Supports the Analysis of RTI MicroPEM Output Files
 Version: 1.4.0
-Authors@R: c(person("Maëlle", "Salmon", email = "maelle.salmon@yahoo.se", role = c("aut", "cre")),
-             person("Zheng", "Zhou", comment = "Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA", role = c("aut")),
-             person(family = "ERC Grant Agreement number 336167 - the CHAI Project", role = c("fnd")),
-             person("Carles", "Milà", role = c("ctb")),
-             person("Sreekanth", "Vakacherla", role = c("ctb")),
-             person("Cathryn", "Tonne", role = c("ctb")),
-             person("Julian", "Marshall", role = c("ctb")),
-             person("Lucy", "D'Agostino McGowan", role = c("rev"), comment = "Lucy D'Agostino McGowan reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126"),
-             person("Kara ", "Woo", role = c("rev"), comment = "Kara Woo reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126"))
-Description: Supports the input and reproducible analysis of RTI MicroPEM output files.
+Authors@R: 
+    c(person(given = "Maëlle",
+             family = "Salmon",
+             role = c("aut", "cre"),
+             email = "maelle.salmon@yahoo.se"),
+      person(given = "Zheng",
+             family = "Zhou",
+             role = "aut",
+             comment = "Department of Environmental Health Sciences Mailman School of Public Health at Columbia University, New York, USA"),
+      person(family = "ERC Grant Agreement number 336167 - the CHAI Project",
+             role = "fnd"),
+      person(given = "Carles",
+             family = "Milà",
+             role = "ctb"),
+      person(given = "Sreekanth",
+             family = "Vakacherla",
+             role = "ctb"),
+      person(given = "Cathryn",
+             family = "Tonne",
+             role = "ctb"),
+      person(given = "Julian",
+             family = "Marshall",
+             role = "ctb"),
+      person(given = "Lucy",
+             family = "D'Agostino McGowan",
+             role = "rev",
+             comment = "Lucy D'Agostino McGowan reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126"),
+      person(given = "Kara ",
+             family = "Woo",
+             role = "rev",
+             comment = "Kara Woo reviewed the package for rOpenSci, see https://github.com/ropensci/onboarding/issues/126"))
+Description: Supports the input and reproducible analysis of RTI
+    MicroPEM output files.
 License: GPL (>= 2)
+URL: https://github.com/ropensci/rtimicropem,
+    https://docs.ropensci.org/rtimicropem/
+BugReports: https://github.com/ropensci/rtimicropem/issues
+Depends: 
+    R (>= 3.3.0)
+Imports: 
+    changepoint,
+    dplyr (>= 0.4.3),
+    fs,
+    ggplot2,
+    knitr,
+    lazyeval,
+    lubridate,
+    methods,
+    R6,
+    rbokeh,
+    readr,
+    stringr,
+    tibble,
+    tidyr
+Suggests: 
+    DT,
+    rmarkdown,
+    shiny,
+    testthat,
+    xtable
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 6.1.1
-Suggests: testthat,
-    rmarkdown,
-    xtable,
-    shiny
-Imports: lubridate,
-   ggplot2,
-   dplyr (>= 0.4.3),
-   rbokeh,
-    R6,
-   changepoint,
-   tibble,
-    tidyr,
-    lazyeval,
-    readr,
-    fs,
-    stringr,
-    knitr,
-    methods
-Depends: R (>= 3.3.0)
-VignetteBuilder: knitr
-URL: https://github.com/ropensci/rtimicropem, https://docs.ropensci.org/rtimicropem/
-BugReports: https://github.com/ropensci/rtimicropem/issues
-Encoding: UTF-8

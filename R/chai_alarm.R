@@ -14,21 +14,21 @@ chai_alarm <- function(micropem_object) {
     # nephelometer slope
     if (micropem_object$settings[["nephelometer_slope"]] != 3) {
         alarm <- c(alarm, "Nephelometer slope is not 3")
-        action <- c(action, "Please contact Sreekanth")
+        action <- c(action, "Investigate")
     }
 
     # flow should be between 0.45 and 0.55
     if (any(micropem_object$measures$flow < 0.45, na.rm = TRUE) |
         any(micropem_object$measures$flow > 0.55, na.rm = TRUE)) {
         alarm <- c(alarm, "Flow outside of normal range at least once")
-        action <- c(action, "Please contact Sreekanth")
+        action <- c(action, "Investigate")
     }
 
     # Not too many measures
     no_na <- sum(!is.na(micropem_object$measures$rh_corrected_nephelometer))
     if (no_na > 10000) {
         alarm <- c(alarm, "Maybe two days of measures")
-        action <- c(action, "Please contact Sreekanth")
+        action <- c(action, "Investigate")
     }
 
     # More than 2% negative values
@@ -40,7 +40,7 @@ chai_alarm <- function(micropem_object) {
 
     if (no_neg > two_percent) {
         alarm <- c(alarm, "Too many negative values")
-        action <- c(action, "Please contact Sreekanth")
+        action <- c(action, "Investigate")
     }
     if (is.null(alarm)) {
         alarm <- c("All is good")
