@@ -2,10 +2,6 @@
 title: "Vignette of the R package `micropem`"
 author: "Maëlle Salmon and other CHAI project members"
 date: "`r Sys.Date()`"
-output:
-  md_document:
-    toc: true
-    variant: markdown_github
 ---
 
 rtimicropem

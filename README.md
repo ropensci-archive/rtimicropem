@@ -1,6 +1,3 @@
--   [rtimicropem](#rtimicropem)
--   [Installation](#installation)
-
 rtimicropem
 ===========
 
