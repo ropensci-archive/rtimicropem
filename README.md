@@ -52,6 +52,6 @@ The goal of the package functions is to help in two main tasks:
     the data for further analysis.
 
 For more information check out the [package
-website](http://ropensci.github.io/rtimicropem/), in particular the
+website](http://docs.ropensci.org/rtimicropem/), in particular the
 [introductory
-vignette](http://ropensci.github.io/rtimicropem/articles/vignette_ammon.html).
+vignette](http://docs.ropensci.org/rtimicropem/articles/chai_data_cleaning.html).
