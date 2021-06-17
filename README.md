@@ -1,6 +1,7 @@
 rtimicropem
 ===========
 
+[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rtimicropem)](http://cran.r-project.org/package=rtimicropem)
 [![Build
 Status](https://travis-ci.org/ropensci/rtimicropem.svg?branch=master)](https://travis-ci.org/ropensci/rtimicropem)
